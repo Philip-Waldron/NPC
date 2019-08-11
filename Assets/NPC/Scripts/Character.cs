@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace NPC.Scripts
 {
-    public abstract class Character : MonoBehaviour, IScan, IEmote<int, float>, ISpeak<string, float>
+    public abstract class Character : MonoBehaviour, IScan, IEmote<int, float>, ISpeak<string, float>, IShoot
     {
         [SerializeField] protected Sprite defaultSprite;
         [SerializeField] protected Sprite revealedSprite;
@@ -57,6 +57,7 @@ namespace NPC.Scripts
 
         public void Emote(int emoteIndex, float duration)
         {
+            StopCoroutine($"Emote");
             StartCoroutine(Emote(emotes[emoteIndex], duration));
         }
         
@@ -73,6 +74,7 @@ namespace NPC.Scripts
 
         public void Speak(string speechText, float duration)
         {
+            StopCoroutine($"Speech");
             StartCoroutine(Speech(speechText, duration));
         }
 
@@ -84,6 +86,13 @@ namespace NPC.Scripts
             yield return new WaitForSeconds(duration);
             speech.SetText(Reset);
             speechBubble.SetActive(false);
+        }
+
+        public void Shot()
+        {
+            gameObject.GetComponent<ParticleSystem>().Play();
+            Scanned();
+            Emote(0, 3f);
         }
     }
 }

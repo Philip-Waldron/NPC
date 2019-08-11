@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace NPC.Scripts
 {
-    public class Player : Character, IShoot, ISap<float>, IInteractable
+    public class Player : Character, ISap<float>, IInteractable
     {
         [SerializeField, Space(10), Range(1, 3)] private int startAmmo = 1;
         [SerializeField, Range(0f, 100f)] private float startDisguise = 100f;
@@ -58,7 +58,8 @@ namespace NPC.Scripts
             disguiseBar.SetValueWithoutNotify(Disguise / Max);
             t += Time.deltaTime / disguiseDuration;
             Disguise = Mathf.Lerp(startDisguise, Min, t);
-
+            bulletCount.SetText(AmmoCount.ToString());
+            
             if (scan)
             {
                 Scanned();
@@ -167,7 +168,7 @@ namespace NPC.Scripts
             }
         }
 
-        public void Shoot()
+        void Shoot()
         {
             if (_lineRendererAnimation != null)
             {
@@ -177,22 +178,26 @@ namespace NPC.Scripts
         
             _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.1f, 3, Color.red, Color.cyan, true));
 
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x,
-                Mouse.current.position.ReadValue().y));
-            RaycastHit2D[] hits = Physics2D
-                                  .RaycastAll(transform.position, mousePosition - new Vector2(transform.position.x, transform.position.y),
-                                      Vector2.Distance(mousePosition, transform.position)).OrderBy(h => h.distance).ToArray();
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
+            Vector3 position = transform.position;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y),
+                                      Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
 
             Collider2D thisCollider = transform.GetComponent<Collider2D>();
 
-            foreach (var hit in hits)
+            bool hitPlayer = false;
+            foreach (RaycastHit2D hit in hits)
             {
                 if (hit.collider != null && hit.collider != thisCollider)
                 {
-                    Player player = hit.transform.GetComponent<Player>();
-                    if (player != null)
+                    Character character = hit.transform.GetComponent<Character>();
+                    if (character != null)
                     {
-                        player.Shot();
+                        character.Shot();
+                        if (character is Player)
+                        {
+                            hitPlayer = true;
+                        }
                     }
                     else
                     {
@@ -201,14 +206,10 @@ namespace NPC.Scripts
                 }
             }
 
-            AmmoCount--;
-        }
-
-        public void Shot()
-        {
-            gameObject.GetComponent<ParticleSystem>().Play();
-            Scanned();
-            Emote(0, 3f);
+            if (!hitPlayer)
+            {
+                AmmoCount--;
+            }
         }
 
         public void Sap()
@@ -246,7 +247,7 @@ namespace NPC.Scripts
         {
             if (context.action.triggered)
             {
-                Emote(1, 2f);
+                Emote(0, 2f);
             }
         }
         
@@ -254,7 +255,7 @@ namespace NPC.Scripts
         {
             if (context.action.triggered)
             {
-                Emote(2, 2f);
+                Emote(1, 2f);
             }
         }
         
@@ -262,7 +263,7 @@ namespace NPC.Scripts
         {
             if (context.action.triggered)
             {
-                Emote(3, 2f);
+                Emote(2, 2f);
             }
         }
         
@@ -270,7 +271,7 @@ namespace NPC.Scripts
         {
             if (context.action.triggered)
             {
-                Emote(4, 2f);
+                Emote(3, 2f);
             }
         }
         public void Interact(InputAction.CallbackContext context)
