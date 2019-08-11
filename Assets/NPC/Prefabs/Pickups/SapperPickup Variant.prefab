@@ -15,6 +15,10 @@ MonoBehaviour:
   pickupDuration: 5
   pickupBar: {fileID: 6299416574588971026}
   pickupSprite: {fileID: 21300000, guid: 5a82156f2f175fa4a8609a444041a942, type: 3}
+  sapperAreaOfEffect: 3
+  sapperStrength: 0.5
+  particleEffect: {fileID: 4948150618654322501, guid: 10d629decb1b48a44bb008003e4e3511,
+    type: 3}
 --- !u!1001 &7642550165839362071
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26,6 +30,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SapperPickup Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5a82156f2f175fa4a8609a444041a942,
+        type: 3}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2032267457349828954, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
@@ -81,27 +106,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 5a82156f2f175fa4a8609a444041a942,
-        type: 3}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c58c7da86937344a9d52e779bb3810d, type: 3}

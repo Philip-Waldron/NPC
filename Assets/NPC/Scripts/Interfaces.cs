@@ -20,9 +20,10 @@
         void Emote(T emoteIndex, X duration);
     }
     
-    public interface ISpeak<in T, in X>
+    public interface ISpeak<in T, in X, in D>
     {
-        void Speak(T speechText, X duration);
+        void SpeakText(T speechText, X duration);
+        void SpeakAudio(D audioClipIndex);
     }
     
     public interface IInteractable<in T>

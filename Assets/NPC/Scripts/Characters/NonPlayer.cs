@@ -31,13 +31,6 @@ namespace NPC.Scripts.Characters
             InvokeRepeating(nameof(CheckPlayers), detectionFrequency, detectionFrequency);
         }
 
-        private void Update()
-        {
-            if (scan)
-            {
-                Scanned();
-            }
-        }
 
         private void CheckPlayers()
         {
@@ -47,19 +40,22 @@ namespace NPC.Scripts.Characters
                 if (distance <= detectionRange && player.Disguise <= detectionThreshold)
                 {
                     _detectionChance = Max - player.Disguise;
+                    Alert(_detectionChance < 0 ? 0 : _detectionChance);
                     _detected = true;
                 }
             }
+            /*
             switch (_detected)
             {
                 case true:
-                    StopAllCoroutines();
+                    //StopAllCoroutines();
                     Alert(_detectionChance < 0 ? 0 : _detectionChance);
                     break;
                 default:
                     speechBubble.SetActive(false);
                     break;
             }
+            */
         }
 
         private void Alert(float threshold)
@@ -67,8 +63,7 @@ namespace NPC.Scripts.Characters
             float x = Random.Range(100, threshold);
             if (x >= Max - detectionSensitivity)
             {
-                Speak(alerts[Random.Range(0, alerts.Count)], detectionFrequency);
-                //Emote(Random.Range(0, emotes.Count), detectionFrequency);
+                SpeakText(alerts[Random.Range(0, alerts.Count)], detectionFrequency);
             }
             _detectionChance = 0f;
             _detected = false;

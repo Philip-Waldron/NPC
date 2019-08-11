@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using NPC.Scripts.Characters;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,7 +42,7 @@ namespace NPC.Scripts.Pickups
             
             switch (PickupCountdown)
             {
-                case true:
+                case true when Math.Abs(_p) > float.Epsilon:
                     _t += Time.deltaTime / pickupDuration;
                     _p = Mathf.Lerp(100f, 0, _t);
                     if (Vector2.Distance(transform.position, AccessingPlayer.transform.position) > AccessingPlayer.pickupRange)
@@ -49,7 +50,10 @@ namespace NPC.Scripts.Pickups
                         PickupCountdown = false;
                     }
                     break;
-                case false : //while (AccessingPlayer == null)
+                case true:
+                    _p = 0;
+                    break;
+                case false:
                     _t = 0;
                     _p = 100;
                     break;

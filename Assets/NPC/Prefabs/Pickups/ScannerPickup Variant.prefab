@@ -15,6 +15,9 @@ MonoBehaviour:
   pickupDuration: 5
   pickupBar: {fileID: 7934090967445270344}
   pickupSprite: {fileID: 21300000, guid: 67583d87d3d745645a83e10aaf156601, type: 3}
+  scanLineDuration: 3
+  particleEffect: {fileID: 1018188143152966057, guid: 065ce00efc378de47adb5e9a04311254,
+    type: 3}
 --- !u!1001 &6014630622584487757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26,6 +29,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ScannerPickup Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 67583d87d3d745645a83e10aaf156601,
+        type: 3}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2032267457349828954, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
@@ -81,27 +105,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 67583d87d3d745645a83e10aaf156601,
-        type: 3}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 0.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}

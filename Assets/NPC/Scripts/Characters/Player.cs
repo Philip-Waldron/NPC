@@ -38,7 +38,6 @@ namespace NPC.Scripts.Characters
         
         private Coroutine _lineRendererAnimation;
 
-        public bool sap;
         private int AmmoCount { get; set; }
         public float Disguise { get; private set; }
 
@@ -66,15 +65,6 @@ namespace NPC.Scripts.Characters
             _t += Time.deltaTime / disguiseDuration;
             Disguise = Mathf.Lerp(startDisguise, Min, _t);
             bulletCount.SetText(AmmoCount.ToString());
-            
-            if (scan)
-            {
-                Scanned();
-            }
-            if (sap)
-            {
-                Sapped(.5f);
-            }
             
             if (!_moving && _moveDirection != Vector2.zero)
             {
@@ -229,7 +219,6 @@ namespace NPC.Scripts.Characters
             startDisguise *= sapFactor;
             startDisguise = startDisguise > 100 ? 100 : startDisguise;
             startDisguise = startDisguise < 0 ? 0 : startDisguise;
-            sap = false;
         }
         
         public void Move(InputAction.CallbackContext context)
@@ -301,7 +290,7 @@ namespace NPC.Scripts.Characters
             pickup.PickupCountdown = true;
             pickup.AccessingPlayer = this;
             yield return new WaitForSecondsRealtime(delay);
-            if (Vector2.Distance(pickup.transform.position, transform.position) <= pickupRange)
+            if (Vector2.Distance(pickup.transform.position, transform.position) <= pickupRange && pickup.PickupCountdown)
             {
                 pickup.Pickup(this);
             }
