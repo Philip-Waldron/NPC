@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using I_Spy.Scripts;
+using NPC.Scripts.Pickups;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace NPC.Scripts
+namespace NPC.Scripts.Characters
 {
     public abstract class Character : MonoBehaviour, IScan, IEmote<int, float>, ISpeak<string, float>, IShoot
     {
@@ -19,8 +19,9 @@ namespace NPC.Scripts
         [SerializeField, Space(10)] protected List<Sprite> emotes = new List<Sprite>();
 
         const string Reset = "";
-        protected PlayerManager playerManager;
-        SpriteRenderer spriteRenderer;
+        protected PlayerManager PlayerManager;
+        protected PickupManager PickupManager;
+        SpriteRenderer _spriteRenderer;
         public bool scan;
         protected const float Min = 0f;
         protected const float Max = 100f;
@@ -30,9 +31,10 @@ namespace NPC.Scripts
         
         void Awake()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            spriteRenderer.sprite = defaultSprite;
-            playerManager = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerManager>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _spriteRenderer.sprite = defaultSprite;
+            PlayerManager = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerManager>();
+            PickupManager = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PickupManager>();
             speech.SetText(Reset);
             emoteImage.color = disabledColor;
         }
@@ -50,9 +52,9 @@ namespace NPC.Scripts
 
         IEnumerator OnScan()
         {
-            spriteRenderer.sprite = revealedSprite;
+            _spriteRenderer.sprite = revealedSprite;
             yield return new WaitForSeconds(scanDuration);
-            spriteRenderer.sprite = defaultSprite;
+            _spriteRenderer.sprite = defaultSprite;
         }
 
         public void Emote(int emoteIndex, float duration)

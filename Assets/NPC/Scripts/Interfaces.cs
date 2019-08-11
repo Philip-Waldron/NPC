@@ -2,13 +2,11 @@
 {
     public interface IScan
     {
-        void Scan();
         void Scanned();
     }
     
     public interface ISap<in T>
     {
-        void Sap();
         void Sapped(T sap);
     }
     
@@ -27,9 +25,13 @@
         void Speak(T speechText, X duration);
     }
     
-    public interface IInteractable
+    public interface IInteractable<in T>
     {
-        void Pickup();
+       void Pickup(T player);
     }
 
+    public interface IEquipment
+    {
+        void UseEquipment();
+    }
 }

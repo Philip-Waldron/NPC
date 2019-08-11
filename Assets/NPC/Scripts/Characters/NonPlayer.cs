@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using I_Spy.Scripts;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace NPC.Scripts
+namespace NPC.Scripts.Characters
 {
     public class NonPlayer : Character
     {
@@ -18,20 +17,21 @@ namespace NPC.Scripts
     
         private enum ENonPlayerState
         {
-            WAIT,
-            WALK_RANDOM,
-            WALK_DIRECTION,
-            WALK_LOCATION
+            WalkRandom,
+            Wait,
+            WalkDirection,
+            WalkLocation
         }
 
-        float detectionChance;
-        bool detected;
-        void Start()
+        private float _detectionChance;
+        private bool _detected;
+        
+        private void Start()
         {
             InvokeRepeating(nameof(CheckPlayers), detectionFrequency, detectionFrequency);
         }
 
-        void Update()
+        private void Update()
         {
             if (scan)
             {
@@ -41,20 +41,20 @@ namespace NPC.Scripts
 
         private void CheckPlayers()
         {
-            foreach (Player player in playerManager.players)
+            foreach (Player player in PlayerManager.players)
             {
                 float distance = Vector2.Distance(transform.position, player.transform.position);
                 if (distance <= detectionRange && player.Disguise <= detectionThreshold)
                 {
-                    detectionChance = Max - player.Disguise;
-                    detected = true;
+                    _detectionChance = Max - player.Disguise;
+                    _detected = true;
                 }
             }
-            switch (detected)
+            switch (_detected)
             {
                 case true:
                     StopAllCoroutines();
-                    Alert(detectionChance < 0 ? 0 : detectionChance);
+                    Alert(_detectionChance < 0 ? 0 : _detectionChance);
                     break;
                 default:
                     speechBubble.SetActive(false);
@@ -70,8 +70,8 @@ namespace NPC.Scripts
                 Speak(alerts[Random.Range(0, alerts.Count)], detectionFrequency);
                 //Emote(Random.Range(0, emotes.Count), detectionFrequency);
             }
-            detectionChance = 0f;
-            detected = false;
+            _detectionChance = 0f;
+            _detected = false;
         }
         
         private void Move()

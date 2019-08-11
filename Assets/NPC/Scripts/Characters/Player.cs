@@ -1,44 +1,51 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using I_Spy.Scripts;
+using NPC.Scripts.Pickups;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace NPC.Scripts
+namespace NPC.Scripts.Characters
 {
-    public class Player : Character, ISap<float>, IInteractable
+    public class Player : Character, ISap<float>
     {
         [SerializeField, Space(10), Range(1, 3)] private int startAmmo = 1;
         [SerializeField, Range(0f, 100f)] private float startDisguise = 100f;
         [SerializeField, Range(0f, 600f)] private float disguiseDuration = 300f;
         [SerializeField, Space(10)] private Slider disguiseBar;
         [SerializeField] private TextMeshPro bulletCount;
+        [SerializeField, Space(10f), Range(.1f, 1f)] private float timeToMove;
+        [SerializeField, Range(.5f, 3f)] private float bulletChargeTime;
+        [SerializeField, Space(10f), Range(.1f, 3f)] public float pickupRange;
+        [SerializeField] private SpriteRenderer inventorySlot;
 
-
-        [SerializeField, Range(.1f, 1f)] private float _timeToMove;
-        [SerializeField, Range(.5f, 3f)] private float _bulletChargeTime;
-
+        private List<BasePickup> _inventory = new List<BasePickup>();
+        
         private Vector2 _moveDirection;
+        
         private bool _moving;
-    
         private bool _bulletCharging;
         private bool _chargeReady;
+        
         private int _startBulletChargeFrame;
         private float _chargingFor;
+        private float _t;
+        
         private LineRenderer _bulletLine;
+        
         private Coroutine _lineRendererAnimation;
 
         public bool sap;
-        int AmmoCount { get; set; }
+        private int AmmoCount { get; set; }
         public float Disguise { get; private set; }
-        float t;
+
         
         void Start()
         {
-            playerManager.players.Add(this);
+            PlayerManager.players.Add(this);
             AmmoCount = startAmmo;
             Disguise = startDisguise;
             bulletCount.SetText(AmmoCount.ToString());
@@ -56,8 +63,8 @@ namespace NPC.Scripts
         void Update()
         { 
             disguiseBar.SetValueWithoutNotify(Disguise / Max);
-            t += Time.deltaTime / disguiseDuration;
-            Disguise = Mathf.Lerp(startDisguise, Min, t);
+            _t += Time.deltaTime / disguiseDuration;
+            Disguise = Mathf.Lerp(startDisguise, Min, _t);
             bulletCount.SetText(AmmoCount.ToString());
             
             if (scan)
@@ -71,7 +78,7 @@ namespace NPC.Scripts
             
             if (!_moving && _moveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
+                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), timeToMove));
             }
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
@@ -79,7 +86,7 @@ namespace NPC.Scripts
                 _bulletLine.SetPositions(new Vector3[] { transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y)) });
                 _chargingFor += Time.deltaTime;
 
-                if (_chargingFor >= _bulletChargeTime && !_chargeReady)
+                if (_chargingFor >= bulletChargeTime && !_chargeReady)
                 {
                     if (_lineRendererAnimation != null)
                     {
@@ -106,7 +113,7 @@ namespace NPC.Scripts
 
             if (_moveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
+                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this.timeToMove));
             }
             else
             {
@@ -153,7 +160,7 @@ namespace NPC.Scripts
         {
             if (context.performed && _bulletCharging)
             {
-                if (_chargingFor >= _bulletChargeTime)
+                if (_chargingFor >= bulletChargeTime)
                 {
                     Shoot();
                 }
@@ -168,7 +175,7 @@ namespace NPC.Scripts
             }
         }
 
-        void Shoot()
+        private void Shoot()
         {
             if (_lineRendererAnimation != null)
             {
@@ -278,13 +285,48 @@ namespace NPC.Scripts
         {
             if (context.action.triggered)
             {
-                print("Interact");
+                foreach (BasePickup pickup in PickupManager.pickups)
+                {
+                    if (Vector2.Distance(pickup.transform.position, transform.position) <= pickupRange)
+                    {
+                        StartCoroutine(PickupDelay(pickup, pickup.pickupDuration));
+                        break;
+                    }
+                }
             }
         }
 
-        public void Pickup()
+        private IEnumerator PickupDelay(BasePickup pickup, float delay)
         {
-            throw new NotImplementedException();
+            pickup.PickupCountdown = true;
+            pickup.AccessingPlayer = this;
+            yield return new WaitForSecondsRealtime(delay);
+            if (Vector2.Distance(pickup.transform.position, transform.position) <= pickupRange)
+            {
+                pickup.Pickup(this);
+            }
+        }
+        
+        public void AddAmmo(int ammo)
+        {
+            AmmoCount += ammo;
+        }
+
+        public void PickupInventoryItem(BasePickup item, Sprite pickup)
+        {
+            inventorySlot.sprite = pickup;
+            _inventory.Clear();
+            _inventory.Add(item);
+        }
+
+        public void UseEquipment()
+        {
+            if (_inventory.Count > 0)
+            {
+                _inventory[0].UseEquipment();
+                _inventory.Clear();
+                inventorySlot.sprite = null;
+            }
         }
     }
 }

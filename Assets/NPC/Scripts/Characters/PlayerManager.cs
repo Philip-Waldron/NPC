@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using NPC.Scripts;
 using UnityEngine;
 
-namespace NPC.Scripts
+namespace NPC.Scripts.Characters
 {
     public class PlayerManager : MonoBehaviour
     {
