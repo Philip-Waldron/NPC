@@ -300,6 +300,12 @@ namespace NPC.Scripts.Characters
         {
             AmmoCount += ammo;
         }
+        
+        public void AddDisguise(float addAmount)
+        {
+            startDisguise += addAmount;
+            startDisguise = startDisguise > 100 ? 100 : startDisguise;
+        }
 
         public void PickupInventoryItem(BasePickup item, Sprite pickup)
         {
