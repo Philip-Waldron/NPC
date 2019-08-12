@@ -473,6 +473,18 @@ MonoBehaviour:
   m_DefaultActionMap: bc17f7d1-57a0-4c9e-956f-39baed694873
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4936721767484796950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401289235728265823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6093c76b4a64094fac1afc008cbc1c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7371148554405414928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,27 +513,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
   - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
   startAmmo: 1
-  startDisguise: 50
-  disguiseDuration: 300
+  startDisguise: 100
+  disguiseDuration: 60
   disguiseBar: {fileID: 563555919284338026}
   bulletCount: {fileID: 694813295602972189}
   timeToMove: 0.2
   bulletChargeTime: 1
   pickupRange: 2
   inventorySlot: {fileID: 6173594050144270177}
-  networkPosition: {fileID: 0}
---- !u!114 &4936721767484796950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3401289235728265823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6093c76b4a64094fac1afc008cbc1c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  networkPosition: {fileID: 4936721767484796950}
 --- !u!1001 &1018501896238206733
 PrefabInstance:
   m_ObjectHideFlags: 0
