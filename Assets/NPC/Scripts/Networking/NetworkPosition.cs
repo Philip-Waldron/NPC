@@ -11,7 +11,7 @@ namespace NPC.Scripts.Networking
 
         private void Start()
         {
-            gameObject.name = networkObject.UniqueIdentity.ToString();
+            gameObject.name = networkObject.Owner.Ip;
             isOwner = networkObject.IsOwner;
             
             if (!networkObject.IsOwner)
