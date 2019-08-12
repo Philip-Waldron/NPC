@@ -1672,8 +1672,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   players: []
   nonPlayers: []
-  playerPrefab: {fileID: 0}
-  nonPlayerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 3401289235728265823, guid: 2f1c6c51c4cd1694d906234a69a0bd31,
+    type: 3}
+  nonPlayerPrefab: {fileID: 6091310760022007451, guid: b1236795118869a43a8f1bc05016912d,
+    type: 3}
   nonPlayerCount: 0
 --- !u!114 &2017042758
 MonoBehaviour:

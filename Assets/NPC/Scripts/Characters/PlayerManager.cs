@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Unity;
 
 namespace NPC.Scripts.Characters
@@ -17,6 +16,7 @@ namespace NPC.Scripts.Characters
         private void Awake()
         {
             NetworkManager.Instance.InstantiatePlayer();
+            
             for (int i = 0; i < nonPlayerCount; i++)
             {
                 
