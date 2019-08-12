@@ -1901,6 +1901,11 @@ PrefabInstance:
       propertyPath: pickupDuration
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1403690286379088069, guid: cc6a90aa15fc20148a2c285fbe096701,
+        type: 3}
+      propertyPath: disguiseBuff
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8840528603394914143, guid: cc6a90aa15fc20148a2c285fbe096701,
         type: 3}
       propertyPath: m_AnchorMin.x

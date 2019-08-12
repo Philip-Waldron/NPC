@@ -8,6 +8,11 @@ namespace NPC.Scripts.Networking
         public Vector2 MoveDirection { get; private set; }
         public void UpdatePosition(Vector2 moveDirection)
         {
+            MoveDirection = moveDirection;
+            networkObject.moveDirection = moveDirection;
+            name = networkObject.UniqueIdentity.ToString();
+            
+            return;
             if (networkObject.IsOwner)
             {
                 MoveDirection = moveDirection;
