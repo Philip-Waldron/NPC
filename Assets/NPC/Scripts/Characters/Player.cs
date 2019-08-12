@@ -43,10 +43,17 @@ namespace NPC.Scripts.Characters
         private int AmmoCount { get; set; }
         public float Disguise { get; private set; }
 
+        public void IsNotPlayer()
+        {
+            Destroy(transform.GetComponent<PlayerInput>());
+            disguiseBar.gameObject.SetActive(false);
+            bulletCount.enabled = false;
+        }
 
         private void Start()
         {
             PlayerManager.players.Add(this);
+            PlayerManager.networkPosition.Add(GetComponent<NetworkPosition>());
             AmmoCount = startAmmo;
             Disguise = startDisguise;
             bulletCount.SetText(AmmoCount.ToString());

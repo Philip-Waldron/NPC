@@ -80,6 +80,241 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4432000262945000134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401289235728265823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 8233c0d0edd94974caf1ee4873d7799e,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+DeviceLostEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+DeviceRegainedEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 501a9e2d-f7cd-404a-b5dd-376066fe5596
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: ShootCharge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 76f3a8cb-9c17-4539-a777-820eb7b7d6be
+    m_ActionName: Player/Fire[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: Emote1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 674aa9da-5a45-4558-9211-ef40f5c94e87
+    m_ActionName: Player/Emote[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: Emote2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 5ffd307c-b769-4b0f-b964-83f95cc36418
+    m_ActionName: Player/Emote2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: Emote3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: fa3d279b-d3ac-4df6-80fa-b1b466a32a1e
+    m_ActionName: Player/Emote3[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: Emote4
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 248dfea7-d999-4cec-b0be-91877a3cd3fe
+    m_ActionName: Player/Emote4[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: Interact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: ba62ce30-bb59-48fc-88d7-1406ed20b630
+    m_ActionName: Player/Interact[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: ShootRelease
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 7e6e1249-56be-4398-a44d-1780fbc884f3
+    m_ActionName: Player/ShootRelease[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7371148554405414928}
+        m_MethodName: UseEquipment
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 26105400-4978-4def-bdae-0057833d6076
+    m_ActionName: Player/UsePickup[/Mouse/rightButton]
+  m_AutoSwitchControlScheme: 0
+  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultActionMap: bc17f7d1-57a0-4c9e-956f-39baed694873
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &4936721767484796950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401289235728265823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6093c76b4a64094fac1afc008cbc1c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOwner: 0
+--- !u!114 &7371148554405414928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401289235728265823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 966cda07e37da4648a9c81e913cf6a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: 21300000, guid: 80e955b2f75cd794db1e4e1588e9714d, type: 3}
+  revealedSprite: {fileID: 21300000, guid: a1bb8970d61052644be2dd3d39b3b2a1, type: 3}
+  scanDuration: 5
+  speechBubble: {fileID: 1688860375142978185}
+  speech: {fileID: 1688860376378952803}
+  emoteImage: {fileID: 8556056456838900142}
+  emotes:
+  - {fileID: 21300000, guid: 94baa8d4e647fff4b928f75d6cb99856, type: 3}
+  - {fileID: 21300000, guid: dc44eaa98ca355244abbdfec703f5b3d, type: 3}
+  - {fileID: 21300000, guid: e98b61a838b0c5345996d46d0be033dc, type: 3}
+  - {fileID: 21300000, guid: b146bed5476ae804585d34b0a4e58c82, type: 3}
+  audioClips:
+  - {fileID: 8300000, guid: 3a49720b59736604aa029408885ebbd8, type: 3}
+  - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
+  - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
+  startAmmo: 1
+  startDisguise: 100
+  disguiseDuration: 60
+  disguiseBar: {fileID: 563555919284338026}
+  bulletCount: {fileID: 694813295602972189}
+  timeToMove: 0.2
+  bulletChargeTime: 1
+  pickupRange: 2
+  inventorySlot: {fileID: 6173594050144270177}
+  networkPosition: {fileID: 4936721767484796950}
 --- !u!1 &9139884647232058137
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,240 +523,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
---- !u!114 &4432000262945000134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3401289235728265823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 8233c0d0edd94974caf1ee4873d7799e,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+DeviceLostEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+DeviceRegainedEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: Move
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 501a9e2d-f7cd-404a-b5dd-376066fe5596
-    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: ShootCharge
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 76f3a8cb-9c17-4539-a777-820eb7b7d6be
-    m_ActionName: Player/Fire[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: Emote1
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 674aa9da-5a45-4558-9211-ef40f5c94e87
-    m_ActionName: Player/Emote[/Keyboard/f]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: Emote2
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 5ffd307c-b769-4b0f-b964-83f95cc36418
-    m_ActionName: Player/Emote2[/Keyboard/2]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: Emote3
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: fa3d279b-d3ac-4df6-80fa-b1b466a32a1e
-    m_ActionName: Player/Emote3[/Keyboard/3]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: Emote4
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 248dfea7-d999-4cec-b0be-91877a3cd3fe
-    m_ActionName: Player/Emote4[/Keyboard/4]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: Interact
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: ba62ce30-bb59-48fc-88d7-1406ed20b630
-    m_ActionName: Player/Interact[/Keyboard/f]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: ShootRelease
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 7e6e1249-56be-4398-a44d-1780fbc884f3
-    m_ActionName: Player/ShootRelease[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7371148554405414928}
-        m_MethodName: UseEquipment
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 26105400-4978-4def-bdae-0057833d6076
-    m_ActionName: Player/UsePickup[/Mouse/rightButton]
-  m_AutoSwitchControlScheme: 0
-  m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: bc17f7d1-57a0-4c9e-956f-39baed694873
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &4936721767484796950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3401289235728265823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6093c76b4a64094fac1afc008cbc1c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7371148554405414928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3401289235728265823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 966cda07e37da4648a9c81e913cf6a0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSprite: {fileID: 21300000, guid: 80e955b2f75cd794db1e4e1588e9714d, type: 3}
-  revealedSprite: {fileID: 21300000, guid: a1bb8970d61052644be2dd3d39b3b2a1, type: 3}
-  scanDuration: 5
-  speechBubble: {fileID: 1688860375142978185}
-  speech: {fileID: 1688860376378952803}
-  emoteImage: {fileID: 8556056456838900142}
-  emotes:
-  - {fileID: 21300000, guid: 94baa8d4e647fff4b928f75d6cb99856, type: 3}
-  - {fileID: 21300000, guid: dc44eaa98ca355244abbdfec703f5b3d, type: 3}
-  - {fileID: 21300000, guid: e98b61a838b0c5345996d46d0be033dc, type: 3}
-  - {fileID: 21300000, guid: b146bed5476ae804585d34b0a4e58c82, type: 3}
-  audioClips:
-  - {fileID: 8300000, guid: 3a49720b59736604aa029408885ebbd8, type: 3}
-  - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
-  - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
-  startAmmo: 1
-  startDisguise: 100
-  disguiseDuration: 60
-  disguiseBar: {fileID: 563555919284338026}
-  bulletCount: {fileID: 694813295602972189}
-  timeToMove: 0.2
-  bulletChargeTime: 1
-  pickupRange: 2
-  inventorySlot: {fileID: 6173594050144270177}
-  networkPosition: {fileID: 4936721767484796950}
 --- !u!1001 &1018501896238206733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -678,7 +679,7 @@ PrefabInstance:
     - target: {fileID: 5783446487236402224, guid: c0b576c965f5a204292158ccb0a09940,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.145
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5783446487236402224, guid: c0b576c965f5a204292158ccb0a09940,
         type: 3}

@@ -69,7 +69,7 @@ namespace NPC.Scripts.Pickups
 
         public virtual void UseEquipment()
         {
-            Debug.Log(name + " used.");
+
         }
     }
 }
