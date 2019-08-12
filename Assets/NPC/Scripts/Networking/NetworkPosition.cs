@@ -10,7 +10,7 @@ namespace NPC.Scripts.Networking
         {
             MoveDirection = moveDirection;
             networkObject.moveDirection = moveDirection;
-            name = networkObject.UniqueIdentity.ToString();
+            gameObject.name = networkObject.UniqueIdentity.ToString();
             
             return;
             if (networkObject.IsOwner)
