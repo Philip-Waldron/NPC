@@ -28,6 +28,7 @@ namespace NPC.Scripts.Characters
         
         private void Start()
         {
+            PlayerManager.nonPlayers.Add(this);
             InvokeRepeating(nameof(CheckPlayers), detectionFrequency, detectionFrequency);
         }
 

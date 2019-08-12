@@ -43,11 +43,6 @@ namespace NPC.Scripts.Characters
             emoteImage.color = _disabledColor;
         }
 
-        public void Scan()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Scanned()
         {
             StartCoroutine(OnScan());

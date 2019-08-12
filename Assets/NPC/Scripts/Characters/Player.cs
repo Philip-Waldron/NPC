@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NPC.Scripts.Networking;
 using NPC.Scripts.Pickups;
 using TMPro;
 using UnityEngine;
@@ -21,8 +22,9 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(.5f, 3f)] private float bulletChargeTime;
         [SerializeField, Space(10f), Range(.1f, 3f)] public float pickupRange;
         [SerializeField] private SpriteRenderer inventorySlot;
+        [SerializeField, Space(20)] private NetworkPosition networkPosition;
 
-        private List<BasePickup> _inventory = new List<BasePickup>();
+        private readonly List<BasePickup> _inventory = new List<BasePickup>();
         
         private Vector2 _moveDirection;
         
@@ -41,8 +43,8 @@ namespace NPC.Scripts.Characters
         private int AmmoCount { get; set; }
         public float Disguise { get; private set; }
 
-        
-        void Start()
+
+        private void Start()
         {
             PlayerManager.players.Add(this);
             AmmoCount = startAmmo;
@@ -59,14 +61,15 @@ namespace NPC.Scripts.Characters
             _bulletLine.material.color = Color.cyan;
             _bulletLine.alignment = LineAlignment.TransformZ;
         }
-        void Update()
+
+        private void Update()
         { 
             disguiseBar.SetValueWithoutNotify(Disguise / Max);
             _t += Time.deltaTime / disguiseDuration;
             Disguise = Mathf.Lerp(startDisguise, Min, _t);
             bulletCount.SetText(AmmoCount.ToString());
             
-            if (!_moving && _moveDirection != Vector2.zero)
+            if (!_moving && networkPosition.MoveDirection != Vector2.zero)
             {
                 StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), timeToMove));
             }
@@ -209,11 +212,6 @@ namespace NPC.Scripts.Characters
             }
         }
 
-        public void Sap()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Sapped(float sapFactor)
         {
             startDisguise *= sapFactor;
@@ -232,6 +230,8 @@ namespace NPC.Scripts.Characters
                 {
                     _moveDirection = moveDirection;
                 }
+                
+                networkPosition.UpdatePosition(moveDirection);
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
             {
