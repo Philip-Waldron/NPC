@@ -245,6 +245,26 @@ namespace NPC.Scripts.Characters
                 print("Pickup");
             }
         }
+
+        public void AddInventoryItem(Item item, Sprite pickup)
+        {
+            _inventorySlot.sprite = pickup;
+            _inventory.Clear();
+            _inventory.Add(item);
+        }
+
+        public void UseEquipmentItem(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                if (_inventory.Count > 0)
+                {
+                    _inventory[0].Use(this);
+                    _inventory.Clear();
+                    _inventorySlot.sprite = null;
+                }
+            }
+        }
         
         public void AdjustDisguise(bool scalar, float adjustment)
         {
@@ -259,25 +279,6 @@ namespace NPC.Scripts.Characters
 
             _disguiseIntegrity = _disguiseIntegrity > MaxDisguiseIntegrity ? MaxDisguiseIntegrity : _disguiseIntegrity;
             _disguiseIntegrity = _disguiseIntegrity < 0 ? 0 : _disguiseIntegrity;
-        }
-
-        public void PickupInventoryItem(Item item, Sprite pickup)
-        {
-            _inventorySlot.sprite = pickup;
-            _inventory.Clear();
-            _inventory.Add(item);
-        }
-
-        public void UseEquipment()
-        {
-            print("UseEquipmentDEBUG");
-            
-            if (_inventory.Count > 0)
-            {
-                _inventory[0].Use(this);
-                _inventory.Clear();
-                _inventorySlot.sprite = null;
-            }
         }
 
         private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)

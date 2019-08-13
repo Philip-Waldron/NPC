@@ -70,7 +70,7 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "UsePickup",
+                    "name": "UseItem",
                     "type": "Button",
                     "id": "26105400-4978-4def-bdae-0057833d6076",
                     "expectedControlType": "",
@@ -306,7 +306,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "UsePickup",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -317,7 +317,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "UsePickup",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

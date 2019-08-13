@@ -28,7 +28,7 @@ namespace NPC.Scripts.Pickups
         {
             if (character is Player player)
             {
-                player.PickupInventoryItem(this, _itemSprite);
+                player.AddInventoryItem(this, _itemSprite);
                 return true;
             }
             
