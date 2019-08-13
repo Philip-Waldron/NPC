@@ -34,6 +34,10 @@ namespace NPC.Scripts.Characters
         private Vector2 waitTimeRange;
         [SerializeField]
         private Vector2 walkRandomTimeRange;
+        
+        [Header("Emote")]
+        private float _emoteDuration = 2f;
+        private float _alertDuration = 2f;
 
         private void Start()
         {
@@ -63,7 +67,7 @@ namespace NPC.Scripts.Characters
                 return false;
             }
             
-            SpeakText(_alerts[Random.Range(0, _alerts.Count)], _detectionFrequency);
+            SpeakText(_alerts[Random.Range(0, _alerts.Count)], _alertDuration);
             return true;
         }
         

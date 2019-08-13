@@ -15,7 +15,7 @@ TagManager:
   - 
   - 
   - Player
-  - 
+  - NPC
   - 
   - 
   - 
@@ -48,6 +48,9 @@ TagManager:
   - name: Foreground
     uniqueID: 2164136947
     locked: 0
-  - name: Player
+  - name: Character
     uniqueID: 152665507
+    locked: 0
+  - name: CharacterUI
+    uniqueID: 1137483109
     locked: 0

@@ -55,6 +55,9 @@ namespace NPC.Scripts.Characters
 
         private Vector2 _moveDirection;
         private bool _moving;
+
+        [Header("Emote")]
+        private float _emoteDuration = 2f;
         
         private void Start()
         {
@@ -104,6 +107,24 @@ namespace NPC.Scripts.Characters
                     _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.2f, 1, Color.white, Color.cyan));
                     _chargeReady = true;
                 }
+            }
+        }
+        
+        public void Move(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                Vector2 moveDirection = context.ReadValue<Vector2>();
+
+                if (moveDirection == Vector2.up || moveDirection == Vector2.down ||
+                    moveDirection == Vector2.left || moveDirection == Vector2.right)
+                {
+                    _moveDirection = moveDirection;
+                }
+            }
+            else if (context.ReadValue<Vector2>() == Vector2.zero)
+            {
+                _moveDirection = Vector2.zero;
             }
         }
 
@@ -186,29 +207,11 @@ namespace NPC.Scripts.Characters
             }
         }
 
-        public void Move(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                Vector2 moveDirection = context.ReadValue<Vector2>();
-
-                if (moveDirection == Vector2.up || moveDirection == Vector2.down ||
-                    moveDirection == Vector2.left || moveDirection == Vector2.right)
-                {
-                    _moveDirection = moveDirection;
-                }
-            }
-            else if (context.ReadValue<Vector2>() == Vector2.zero)
-            {
-                _moveDirection = Vector2.zero;
-            }
-        }
-
         public void Emote1(InputAction.CallbackContext context)
         {
             if (context.action.triggered)
             {
-                Emote(0, 2f);
+                Emote(0, _emoteDuration);
             }
         }
         
@@ -216,7 +219,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
-                Emote(1, 2f);
+                Emote(1, _emoteDuration);
             }
         }
         
@@ -224,7 +227,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
-                Emote(2, 2f);
+                Emote(2, _emoteDuration);
             }
         }
         
@@ -232,7 +235,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
-                Emote(3, 2f);
+                Emote(3, _emoteDuration);
             }
         }
         public void Interact(InputAction.CallbackContext context)
@@ -286,6 +289,7 @@ namespace NPC.Scripts.Characters
             {
                 currentTime += Time.deltaTime / timeToMove;
                 targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
+                _bulletLine.SetPositions(new Vector3[] { transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y)) });
                 yield return null;
             }
 
