@@ -14,7 +14,9 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(1, 3)]
         public int AmmoCount = 1;
         [SerializeField]
-        private SpriteRenderer[] _bulletChargeSprites;
+        private GameObject _bulletChargeSprite;
+        [SerializeField]
+        private Transform _bulletCharges;
         [SerializeField, Range(0f, 3f)]
         private float _bulletChargeTime = 1;
 
@@ -61,10 +63,7 @@ namespace NPC.Scripts.Characters
         
         private void Start()
         {
-            for (int i = 0; i < AmmoCount; i++)
-            {
-                _bulletChargeSprites[i].enabled = true;
-            }
+            AdjustAmmo();
             _thisCollider2D = transform.GetComponent<Collider2D>();
             _startDisguise = _disguiseIntegrity;
             SetupLineRenderer();
@@ -203,7 +202,7 @@ namespace NPC.Scripts.Characters
             if (!hitPlayer)
             {
                 AmmoCount--;
-                _bulletChargeSprites[AmmoCount].enabled = false;
+                AdjustAmmo();
             }
         }
 
@@ -279,6 +278,19 @@ namespace NPC.Scripts.Characters
 
             _disguiseIntegrity = _disguiseIntegrity > MaxDisguiseIntegrity ? MaxDisguiseIntegrity : _disguiseIntegrity;
             _disguiseIntegrity = _disguiseIntegrity < 0 ? 0 : _disguiseIntegrity;
+        }
+
+        public void AdjustAmmo()
+        {
+            foreach (Transform charge in _bulletCharges)
+            {
+                Destroy(charge.gameObject);
+            }
+            
+            for (int i = 0; i < AmmoCount; i++)
+            {
+                Instantiate(_bulletChargeSprite, _bulletCharges);
+            }
         }
 
         private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)

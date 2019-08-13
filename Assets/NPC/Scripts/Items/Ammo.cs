@@ -23,6 +23,7 @@ namespace NPC.Scripts.Pickups
         {
             var player = (Player)character;
             player.AmmoCount += ammoCount;
+            player.AdjustAmmo();
         }
     }
 }
