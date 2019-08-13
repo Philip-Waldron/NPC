@@ -1,77 +1,92 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NPC.Scripts.Networking;
 using NPC.Scripts.Pickups;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace NPC.Scripts.Characters
 {
-    public class Player : Character, ISap<float>
+    public class Player : Character
     {
-        [SerializeField, Space(10), Range(1, 3)] private int startAmmo = 1;
-        [SerializeField, Range(0f, 100f)] private float startDisguise = 100f;
-        [SerializeField, Range(0f, 600f)] private float disguiseDuration = 300f;
-        [SerializeField, Space(10)] private Slider disguiseBar;
-        [SerializeField] private TextMeshPro bulletCount;
-        [SerializeField, Space(10f), Range(.1f, 1f)] private float timeToMove;
-        [SerializeField, Range(.5f, 3f)] private float bulletChargeTime;
-        [SerializeField, Space(10f), Range(.1f, 3f)] public float pickupRange;
-        [SerializeField] private SpriteRenderer inventorySlot;
-        [SerializeField, Space(20)] private NetworkPosition networkPosition;
+        [Header("Ammo")]
+        [SerializeField, Range(1, 3)]
+        public int AmmoCount = 1;
+        [SerializeField]
+        private SpriteRenderer[] _bulletChargeSprites;
+        [SerializeField, Range(0f, 3f)]
+        private float _bulletChargeTime = 1;
 
-        private readonly List<BasePickup> _inventory = new List<BasePickup>();
-        
-        private Vector2 _moveDirection;
-        
-        private bool _moving;
-        private bool _bulletCharging;
-        private bool _chargeReady;
-        
         private int _startBulletChargeFrame;
         private float _chargingFor;
-        private float _t;
-        
+        private bool _bulletCharging;
+        private bool _chargeReady;
         private LineRenderer _bulletLine;
-        
         private Coroutine _lineRendererAnimation;
+        private Collider2D _thisCollider2D;
+        
+        [Header("Items")]
+        [SerializeField, Space(10f), Range(.1f, 3f)]
+        public float PickupRange;
+        [SerializeField]
+        private SpriteRenderer _inventorySlot;
+        
+        private readonly List<Item> _inventory = new List<Item>();
 
-        private int AmmoCount { get; set; }
-        public float Disguise { get; private set; }
+        [Header("Disguise")]
+        [SerializeField]
+        public float MaxDisguiseIntegrity = 100f;
+        [SerializeField]
+        private float _disguiseIntegrity = 100f;
+        public float DisguiseIntegrity => _disguiseIntegrity;
 
+        [SerializeField]
+        private float _disguiseDuration = 300f;
+        [SerializeField]
+        private Slider _disguiseBar;
 
+        private float _elapsedTime;
+        private float _startDisguise;
+
+        [Header("Movement")]
+        [SerializeField, Range(.1f, 1f)]
+        private float _timeToMove;
+
+        private Vector2 _moveDirection;
+        private bool _moving;
+        
         private void Start()
         {
-            PlayerManager.players.Add(this);
-            AmmoCount = startAmmo;
-            Disguise = startDisguise;
-            bulletCount.SetText(AmmoCount.ToString());
+            for (int i = 0; i < AmmoCount; i++)
+            {
+                _bulletChargeSprites[i].enabled = true;
+            }
+            _thisCollider2D = transform.GetComponent<Collider2D>();
+            _startDisguise = _disguiseIntegrity;
             SetupLineRenderer();
         }
+        
         private void SetupLineRenderer()
         {
             _bulletLine = gameObject.AddComponent<LineRenderer>();
             _bulletLine.positionCount = 2;
-            _bulletLine.startWidth = 0.1f;
-            _bulletLine.material = new Material(Shader.Find("Unlit/Color"));
-            _bulletLine.material.color = Color.cyan;
+            _bulletLine.startWidth = 0.05f;
+            _bulletLine.material = new Material(Shader.Find("Unlit/Color")) { color = Color.cyan };
             _bulletLine.alignment = LineAlignment.TransformZ;
         }
 
         private void Update()
-        { 
-            disguiseBar.SetValueWithoutNotify(Disguise / Max);
-            _t += Time.deltaTime / disguiseDuration;
-            Disguise = Mathf.Lerp(startDisguise, Min, _t);
-            bulletCount.SetText(AmmoCount.ToString());
+        {
+            // Update Disguise.
+            _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / MaxDisguiseIntegrity);
+            _elapsedTime += Time.deltaTime / _disguiseDuration;
+            _disguiseIntegrity = Mathf.Lerp(_startDisguise, 0, _elapsedTime);
             
-            if (!_moving && networkPosition.MoveDirection != Vector2.zero)
+            // Move.
+            if (!_moving && _moveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), timeToMove));
+                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
             }
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
@@ -79,7 +94,7 @@ namespace NPC.Scripts.Characters
                 _bulletLine.SetPositions(new Vector3[] { transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y)) });
                 _chargingFor += Time.deltaTime;
 
-                if (_chargingFor >= bulletChargeTime && !_chargeReady)
+                if (_chargingFor >= _bulletChargeTime && !_chargeReady)
                 {
                     if (_lineRendererAnimation != null)
                     {
@@ -92,46 +107,6 @@ namespace NPC.Scripts.Characters
             }
         }
 
-        private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
-        {
-            _moving = true;
-            Vector3 currentPos = targetTransform.position;
-            float currentTime = 0f;
-            while(currentTime < 1)
-            {
-                currentTime += Time.deltaTime / timeToMove;
-                targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
-                yield return null;
-            }
-
-            if (_moveDirection != Vector2.zero)
-            {
-                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this.timeToMove));
-            }
-            else
-            {
-                _moving = false;
-            }
-        }
-
-        private IEnumerator FlashLineRenderer(float flashTime, int flashCount, Color flashColor, Color baseColor, bool disableLineRenderer = false)
-        {
-            int count = 0;
-            while (count < flashCount)
-            {
-                _bulletLine.material.color = flashColor;
-                yield return new WaitForSeconds(flashTime);
-                _bulletLine.material.color = baseColor;
-                yield return new WaitForSeconds(flashTime);
-                count++;
-            }
-
-            if (disableLineRenderer)
-            {
-                _bulletLine.enabled = false;
-            }
-        }
-        
         public void ShootCharge(InputAction.CallbackContext context)
         {
             if (context.performed && AmmoCount > 0)
@@ -141,7 +116,7 @@ namespace NPC.Scripts.Characters
                     StopCoroutine(_lineRendererAnimation);
                     _bulletLine.material.color = Color.cyan;
                 }
-            
+
                 _bulletLine.SetPositions(new Vector3[] { transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y)) });
                 _bulletLine.enabled = true;
                 _bulletCharging = true;
@@ -153,7 +128,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.performed && _bulletCharging)
             {
-                if (_chargingFor >= bulletChargeTime)
+                if (_chargingFor >= _bulletChargeTime)
                 {
                     Shoot();
                 }
@@ -182,19 +157,17 @@ namespace NPC.Scripts.Characters
             Vector3 position = transform.position;
             RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y),
                                       Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
-
-            Collider2D thisCollider = transform.GetComponent<Collider2D>();
-
+            
             bool hitPlayer = false;
             foreach (RaycastHit2D hit in hits)
             {
-                if (hit.collider != null && hit.collider != thisCollider)
+                if (hit.collider != null && hit.collider != _thisCollider2D)
                 {
-                    Character character = hit.transform.GetComponent<Character>();
-                    if (character != null)
+                    IDamageable target = hit.transform.GetComponent<IDamageable>();
+                    if (target != null)
                     {
-                        character.Shot();
-                        if (character is Player)
+                        target.Damage();
+                        if (target is Player)
                         {
                             hitPlayer = true;
                         }
@@ -209,16 +182,10 @@ namespace NPC.Scripts.Characters
             if (!hitPlayer)
             {
                 AmmoCount--;
+                _bulletChargeSprites[AmmoCount].enabled = false;
             }
         }
 
-        public void Sapped(float sapFactor)
-        {
-            startDisguise *= sapFactor;
-            startDisguise = startDisguise > 100 ? 100 : startDisguise;
-            startDisguise = startDisguise < 0 ? 0 : startDisguise;
-        }
-        
         public void Move(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -230,8 +197,6 @@ namespace NPC.Scripts.Characters
                 {
                     _moveDirection = moveDirection;
                 }
-                
-                networkPosition.UpdatePosition(moveDirection);
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
             {
@@ -274,47 +239,81 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
-                foreach (BasePickup pickup in PickupManager.pickups)
-                {
-                    if (Vector2.Distance(pickup.transform.position, transform.position) <= pickupRange)
-                    {
-                        StartCoroutine(PickupDelay(pickup, pickup.pickupDuration));
-                        break;
-                    }
-                }
-            }
-        }
-
-        private IEnumerator PickupDelay(BasePickup pickup, float delay)
-        {
-            pickup.PickupCountdown = true;
-            pickup.AccessingPlayer = this;
-            yield return new WaitForSecondsRealtime(delay);
-            if (Vector2.Distance(pickup.transform.position, transform.position) <= pickupRange && pickup.PickupCountdown)
-            {
-                pickup.Pickup(this);
+                print("Pickup");
             }
         }
         
-        public void AddAmmo(int ammo)
+        public void AdjustDisguise(bool scalar, float adjustment)
         {
-            AmmoCount += ammo;
+            if (scalar)
+            {
+                _disguiseIntegrity += adjustment;
+            }
+            else
+            {
+                _disguiseIntegrity *= adjustment;
+            }
+
+            _disguiseIntegrity = _disguiseIntegrity > MaxDisguiseIntegrity ? MaxDisguiseIntegrity : _disguiseIntegrity;
+            _disguiseIntegrity = _disguiseIntegrity < 0 ? 0 : _disguiseIntegrity;
         }
 
-        public void PickupInventoryItem(BasePickup item, Sprite pickup)
+        public void PickupInventoryItem(Item item, Sprite pickup)
         {
-            inventorySlot.sprite = pickup;
+            _inventorySlot.sprite = pickup;
             _inventory.Clear();
             _inventory.Add(item);
         }
 
         public void UseEquipment()
         {
+            print("UseEquipmentDEBUG");
+            
             if (_inventory.Count > 0)
             {
-                _inventory[0].UseEquipment();
+                _inventory[0].Use(this);
                 _inventory.Clear();
-                inventorySlot.sprite = null;
+                _inventorySlot.sprite = null;
+            }
+        }
+
+        private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
+        {
+            _moving = true;
+            Vector3 currentPos = targetTransform.position;
+            float currentTime = 0f;
+            while(currentTime < 1)
+            {
+                currentTime += Time.deltaTime / timeToMove;
+                targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
+                yield return null;
+            }
+
+            if (_moveDirection != Vector2.zero)
+            {
+                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this._timeToMove));
+            }
+            else
+            {
+                _moving = false;
+            }
+        }
+
+        private IEnumerator FlashLineRenderer(float flashTime, int flashCount, Color flashColor, Color baseColor, bool disableLineRenderer = false)
+        {
+            int count = 0;
+            while (count < flashCount)
+            {
+                _bulletLine.material.color = flashColor;
+                yield return new WaitForSeconds(flashTime);
+                _bulletLine.material.color = baseColor;
+                yield return new WaitForSeconds(flashTime);
+                count++;
+            }
+
+            if (disableLineRenderer)
+            {
+                _bulletLine.enabled = false;
             }
         }
     }

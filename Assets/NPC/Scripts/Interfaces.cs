@@ -1,20 +1,15 @@
 ﻿namespace NPC.Scripts
 {
-    public interface IScan
+    public interface IDamageable
     {
-        void Scanned();
+        void Damage();
     }
     
-    public interface ISap<in T>
+    public interface IScannable
     {
-        void Sapped(T sap);
+        void Scan(float revealDuration);
     }
     
-    public interface IShoot
-    {
-        void Shot();
-    }
-
     public interface IEmote<in T, in X>
     {
         void Emote(T emoteIndex, X duration);
@@ -26,6 +21,11 @@
         void SpeakAudio(D audioClipIndex);
     }
     
+    public interface ISap<in T>
+    {
+        void Sapped(T sap);
+    }
+
     public interface IInteractable<in T>
     {
        void Pickup(T player);

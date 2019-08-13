@@ -6,34 +6,47 @@ using UnityEngine.InputSystem;
 
 namespace NPC.Scripts.Pickups
 {
-    public class Scanner : BasePickup
+    public class Scanner : Item
     {
-        [SerializeField, Range(1f, 5f), Space(10)] private float scanLineDuration = 3f;
-        [SerializeField] private GameObject particleEffect;
+        [SerializeField]
+        private float scanLineDuration = 3f;
+        [SerializeField]
+        private float revealDuration = 10f;
+        [SerializeField]
+        private GameObject particleEffect;
+        private Sprite _itemSprite;
 
-        public override void Pickup(Player player)
+        private void Awake()
         {
-            base.Pickup(player);
-            player.PickupInventoryItem(this, pickupSprite);
-            
+            _itemSprite = GetComponent<Sprite>();
         }
         
-        public override void UseEquipment()
+        public override bool Pickup(Character character)
         {
-            base.UseEquipment();
+            if (character is Player player)
+            {
+                player.PickupInventoryItem(this, _itemSprite);
+                return true;
+            }
+            
+            return false;
+        }
+        
+        public override void Use(Character character)
+        {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
-            Vector3 position = AccessingPlayer.transform.position;
+            Vector3 position = character.transform.position;
             RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y), Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
-            Collider2D thisCollider = AccessingPlayer.GetComponent<Collider2D>();
-            StartCoroutine(ParticleEffect(AccessingPlayer.transform.position, mousePosition));
+            Collider2D thisCollider = character.GetComponent<Collider2D>();
+            StartCoroutine(ParticleEffect(character.transform.position, mousePosition));
             foreach (RaycastHit2D hit in hits)
             {
                 if (hit.collider != null && hit.collider != thisCollider)
                 {
-                    Character character = hit.transform.GetComponent<Character>();
-                    if (character != null)
+                    Character hitCharacter = hit.transform.GetComponent<Character>();
+                    if (hitCharacter != null)
                     {
-                        character.Scanned();
+                        hitCharacter.Scan(revealDuration);
                     }
                     else
                     {
