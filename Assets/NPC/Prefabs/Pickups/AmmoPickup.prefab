@@ -1,22 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1403690286379088069
+--- !u!114 &6045228974804667108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4750355835825030108}
+  m_GameObject: {fileID: 6917399882403489544}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 748c481f042c5684d9bfbbb6b0485cb3, type: 3}
+  m_Script: {fileID: 11500000, guid: 34750bca848b1614786691c96d569142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pickupDuration: 5
-  pickupBar: {fileID: 4837957597011631264}
-  pickupSprite: {fileID: 21300000, guid: 5fd69707dcc20bf48925237628346ec1, type: 3}
-  disguiseBuff: 2
---- !u!1001 &9097323820777704613
+  pickupBar: {fileID: 4778918661288381157}
+  ammoCount: 1
+--- !u!1001 &6940893844763617393
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -26,17 +25,38 @@ PrefabInstance:
     - target: {fileID: 4588192368794636153, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_Name
-      value: DisguisePickup Variant
+      value: AmmoPickup
       objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c6a8baa670c90004ea36ddb2c5e255e9,
+        type: 3}
     - target: {fileID: 2032267457349828954, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.96
       objectReference: {fileID: 0}
     - target: {fileID: 2032267457349828954, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -3.015
       objectReference: {fileID: 0}
     - target: {fileID: 2032267457349828954, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
@@ -83,12 +103,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 5fd69707dcc20bf48925237628346ec1,
-        type: 3}
     - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -99,19 +113,29 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c58c7da86937344a9d52e779bb3810d, type: 3}
---- !u!1 &4750355835825030108 stripped
+--- !u!1 &6917399882403489544 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4588192368794636153, guid: 7c58c7da86937344a9d52e779bb3810d,
     type: 3}
-  m_PrefabInstance: {fileID: 9097323820777704613}
+  m_PrefabInstance: {fileID: 6940893844763617393}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4837957597011631264 stripped
+--- !u!114 &4778918661288381157 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4423606986501804037, guid: 7c58c7da86937344a9d52e779bb3810d,
+  m_CorrespondingSourceObject: {fileID: 2450278286308205204, guid: 7c58c7da86937344a9d52e779bb3810d,
     type: 3}
-  m_PrefabInstance: {fileID: 9097323820777704613}
+  m_PrefabInstance: {fileID: 6940893844763617393}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1

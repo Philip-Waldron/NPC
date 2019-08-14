@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NPC.Scripts.Characters;
-using NPC.Scripts.Pickups;
+using NPC.Scripts.Items;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;

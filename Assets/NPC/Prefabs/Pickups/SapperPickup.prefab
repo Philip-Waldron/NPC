@@ -1,22 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &6045228974804667108
+--- !u!114 &707844049537979542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6917399882403489544}
+  m_GameObject: {fileID: 6170848774988805998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34750bca848b1614786691c96d569142, type: 3}
+  m_Script: {fileID: 11500000, guid: 3815fb401536dbc40ba2b17df30b82cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pickupDuration: 5
-  pickupBar: {fileID: 6715092653013530740}
-  pickupSprite: {fileID: 21300000, guid: c6a8baa670c90004ea36ddb2c5e255e9, type: 3}
-  ammoCount: 1
---- !u!1001 &6940893844763617393
+  pickupBar: {fileID: 5192344692380260995}
+  sapperEffectRadius: 3
+  sapperStrength: 0.5
+  particleEffect: {fileID: 4948150618654322501, guid: 10d629decb1b48a44bb008003e4e3511,
+    type: 3}
+  _playerMask:
+    serializedVersion: 2
+    m_Bits: 256
+--- !u!1001 &7642550165839362071
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -26,13 +31,13 @@ PrefabInstance:
     - target: {fileID: 4588192368794636153, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_Name
-      value: AmmoPickup Variant
+      value: SapperPickup
       objectReference: {fileID: 0}
     - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c6a8baa670c90004ea36ddb2c5e255e9,
+      objectReference: {fileID: 21300000, guid: 5a82156f2f175fa4a8609a444041a942,
         type: 3}
     - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
@@ -42,7 +47,7 @@ PrefabInstance:
     - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_Size.y
-      value: 0.375
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8096932516011642380, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
@@ -104,29 +109,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c58c7da86937344a9d52e779bb3810d, type: 3}
---- !u!1 &6917399882403489544 stripped
+--- !u!1 &6170848774988805998 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4588192368794636153, guid: 7c58c7da86937344a9d52e779bb3810d,
     type: 3}
-  m_PrefabInstance: {fileID: 6940893844763617393}
+  m_PrefabInstance: {fileID: 7642550165839362071}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6715092653013530740 stripped
+--- !u!114 &5192344692380260995 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4423606986501804037, guid: 7c58c7da86937344a9d52e779bb3810d,
+  m_CorrespondingSourceObject: {fileID: 2450278286308205204, guid: 7c58c7da86937344a9d52e779bb3810d,
     type: 3}
-  m_PrefabInstance: {fileID: 6940893844763617393}
+  m_PrefabInstance: {fileID: 7642550165839362071}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1

@@ -4,7 +4,7 @@ using NPC.Scripts.Characters;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace NPC.Scripts.Pickups
+namespace NPC.Scripts.Items
 {
     public class Scanner : Item
     {
@@ -14,18 +14,12 @@ namespace NPC.Scripts.Pickups
         private float revealDuration = 10f;
         [SerializeField]
         private GameObject particleEffect;
-        private Sprite _itemSprite;
 
-        private void Awake()
-        {
-            _itemSprite = GetComponent<Sprite>();
-        }
-        
         public override bool Pickup(Character character)
         {
             if (character is Player player)
             {
-                player.AddInventoryItem(this, _itemSprite);
+                player.AddInventoryItem(this, itemSprite);
                 return true;
             }
             
@@ -59,7 +53,7 @@ namespace NPC.Scripts.Pickups
         private IEnumerator ParticleEffect(Vector2 position, Vector2 target)
         {
             particleEffect = Instantiate(particleEffect);
-            var particles = particleEffect.GetComponent<ParticleSystem>();
+            ParticleSystem particles = particleEffect.GetComponent<ParticleSystem>();
             particles.Play();
             particleEffect.transform.position = position;
             particleEffect.transform.LookAt(target);

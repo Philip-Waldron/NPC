@@ -1,7 +1,7 @@
 ﻿using NPC.Scripts.Characters;
 using UnityEngine;
 
-namespace NPC.Scripts.Pickups
+namespace NPC.Scripts.Items
 {
     public class Disguise : Item
     {
@@ -21,7 +21,7 @@ namespace NPC.Scripts.Pickups
 
         public override void Use(Character character)
         {
-            var player = (Player)character;
+            Player player = (Player)character;
             player.AdjustDisguise(true, disguiseBuff);
         }
     }

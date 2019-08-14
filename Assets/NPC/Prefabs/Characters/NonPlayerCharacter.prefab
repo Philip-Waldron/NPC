@@ -80,6 +80,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NonPlayerCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 474047629950386863, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 474047629950386865, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -140,6 +145,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3222394472677673887, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1790dee243fde984facda6fc64a0d6b5,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9caec9a4f2a35f9438883c2a774657c1, type: 3}
 --- !u!1 &3926907724607441394 stripped

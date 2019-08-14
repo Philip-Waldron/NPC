@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NPC.Scripts.Pickups;
+using NPC.Scripts.Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -30,7 +30,9 @@ namespace NPC.Scripts.Characters
         
         [Header("Items")]
         [SerializeField, Space(10f), Range(.1f, 3f)]
-        public float PickupRange;
+        public float pickupRange;
+        [SerializeField]
+        public LayerMask itemMask;
         [SerializeField]
         private SpriteRenderer _inventorySlot;
         
@@ -241,7 +243,16 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
-                print("Pickup");
+                Collider2D[] itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask);
+                foreach (Collider2D itemCollider in itemColliders)
+                {
+                    Item item = itemCollider.GetComponent<Item>();
+                    if (item != null)
+                    {
+                        item.PickupItem(this);
+                        break;
+                    }
+                }
             }
         }
 
@@ -282,11 +293,12 @@ namespace NPC.Scripts.Characters
 
         public void AdjustAmmo()
         {
+            // get rid of all the bullets
             foreach (Transform charge in _bulletCharges)
             {
                 Destroy(charge.gameObject);
             }
-            
+            // add as many new bullets as there is ammo
             for (int i = 0; i < AmmoCount; i++)
             {
                 Instantiate(_bulletChargeSprite, _bulletCharges);

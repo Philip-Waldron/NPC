@@ -1,7 +1,7 @@
 ﻿using NPC.Scripts.Characters;
 using UnityEngine;
 
-namespace NPC.Scripts.Pickups
+namespace NPC.Scripts.Items
 {
     public class Ammo : Item
     {
