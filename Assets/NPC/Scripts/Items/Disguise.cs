@@ -20,7 +20,7 @@ namespace NPC.Scripts.Items
         public override void Use(Character character)
         {
             Player player = (Player)character;
-            player.AdjustDisguise(false, disguiseBuff);
+            player.AdjustDisguise(disguiseBuff);
         }
     }
 }

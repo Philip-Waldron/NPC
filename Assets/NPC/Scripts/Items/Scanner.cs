@@ -35,14 +35,11 @@ namespace NPC.Scripts.Items
             
             foreach (RaycastHit2D hit in hits)
             {
-                Debug.Log(hit.collider.name + " - 1");
                 if (hit.collider != null && hit.collider != thisCollider)
                 {
                     Character hitCharacter = hit.transform.GetComponent<Character>();
-                    Debug.Log(hitCharacter.name + " - 2");
                     if (hitCharacter != null)
                     {
-                        Debug.Log(hitCharacter.name + " - 3");
                         hitCharacter.Scan(revealDuration);
                     }
                     else

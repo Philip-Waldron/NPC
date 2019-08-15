@@ -39,18 +39,18 @@ namespace NPC.Scripts.Characters
         private readonly List<Item> _inventory = new List<Item>();
 
         [Header("Disguise")]
-        [SerializeField]
-        public float MaxDisguiseIntegrity = 100f;
-        [SerializeField]
-        private float _disguiseIntegrity = 100f;
+        [SerializeField] public float MaxDisguiseIntegrity = 100f;
+        [SerializeField] public float MinDisguiseIntegrity = 0f;
+        [SerializeField] private float _disguiseIntegrity = 100f;
         public float DisguiseIntegrity => _disguiseIntegrity;
+        private float timeScalar;
 
         [SerializeField]
         private float _disguiseDuration = 300f;
         [SerializeField]
         private Slider _disguiseBar;
 
-        private float _elapsedTime;
+        [SerializeField] private float _elapsedTime;
         private float _startDisguise;
 
         [Header("Movement")]
@@ -68,9 +68,9 @@ namespace NPC.Scripts.Characters
             AdjustAmmo();
             _thisCollider2D = transform.GetComponent<Collider2D>();
             _startDisguise = _disguiseIntegrity;
+            timeScalar = _disguiseDuration / MaxDisguiseIntegrity;
             SetupLineRenderer();
         }
-        
         private void SetupLineRenderer()
         {
             _bulletLine = gameObject.AddComponent<LineRenderer>();
@@ -79,13 +79,12 @@ namespace NPC.Scripts.Characters
             _bulletLine.material = new Material(Shader.Find("Unlit/Color")) { color = Color.cyan };
             _bulletLine.alignment = LineAlignment.TransformZ;
         }
-
         private void Update()
         {
             // Update Disguise.
             _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / MaxDisguiseIntegrity);
             _elapsedTime += Time.deltaTime / _disguiseDuration;
-            _disguiseIntegrity = Mathf.Lerp(_startDisguise, 0, _elapsedTime);
+            _disguiseIntegrity = Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
             
             // Move.
             animationMoveDirection = _moveDirection;
@@ -112,7 +111,6 @@ namespace NPC.Scripts.Characters
                 }
             }
         }
-        
         public void Move(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -130,7 +128,6 @@ namespace NPC.Scripts.Characters
                 _moveDirection = Vector2.zero;
             }
         }
-
         public void ShootCharge(InputAction.CallbackContext context)
         {
             if (context.performed && AmmoCount > 0)
@@ -147,7 +144,6 @@ namespace NPC.Scripts.Characters
                 _startBulletChargeFrame = Time.frameCount;
             }
         }
-
         public void ShootRelease(InputAction.CallbackContext context)
         {
             if (context.performed && _bulletCharging)
@@ -166,7 +162,6 @@ namespace NPC.Scripts.Characters
                 _chargingFor = 0;
             }
         }
-
         private void Shoot()
         {
             if (_lineRendererAnimation != null)
@@ -179,8 +174,7 @@ namespace NPC.Scripts.Characters
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
             Vector3 position = transform.position;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y),
-                                      Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
+            RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y), Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
             
             bool hitPlayer = false;
             foreach (RaycastHit2D hit in hits)
@@ -209,38 +203,6 @@ namespace NPC.Scripts.Characters
                 AdjustAmmo();
             }
         }
-
-        public void Emote1(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                Emote(0, _emoteDuration);
-            }
-        }
-        
-        public void Emote2(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                Emote(1, _emoteDuration);
-            }
-        }
-        
-        public void Emote3(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                Emote(2, _emoteDuration);
-            }
-        }
-        
-        public void Emote4(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                Emote(3, _emoteDuration);
-            }
-        }
         public void Interact(InputAction.CallbackContext context)
         {
             if (context.action.triggered)
@@ -257,14 +219,12 @@ namespace NPC.Scripts.Characters
                 }
             }
         }
-
         public void AddInventoryItem(Item item, Sprite pickup)
         {
             _inventorySlot.sprite = pickup;
             _inventory.Clear();
             _inventory.Add(item);
         }
-
         public void UseEquipmentItem(InputAction.CallbackContext context)
         {
             if (context.action.triggered)
@@ -277,22 +237,25 @@ namespace NPC.Scripts.Characters
                 }
             }
         }
-        
-        public void AdjustDisguise(bool scalar, float adjustment)
+        public void AdjustDisguise(float adjustment, bool scalar = false)
         {
+            float adjustedDisguiseIntegrity = _disguiseIntegrity;
+
             if (scalar)
             {
-                _disguiseIntegrity += adjustment;
+                adjustedDisguiseIntegrity *= adjustment;
             }
             else
             {
-                _disguiseIntegrity *= adjustment;
+                adjustedDisguiseIntegrity += adjustment;
             }
 
+            _disguiseIntegrity = adjustedDisguiseIntegrity;
             _disguiseIntegrity = _disguiseIntegrity > MaxDisguiseIntegrity ? MaxDisguiseIntegrity : _disguiseIntegrity;
-            _disguiseIntegrity = _disguiseIntegrity < 0 ? 0 : _disguiseIntegrity;
+            _disguiseIntegrity = _disguiseIntegrity < MinDisguiseIntegrity ? MinDisguiseIntegrity : _disguiseIntegrity;
+            
+            _elapsedTime =Mathf.InverseLerp(MaxDisguiseIntegrity, MinDisguiseIntegrity, _disguiseIntegrity);
         }
-
         public void AdjustAmmo()
         {
             // get rid of all the bullets
@@ -306,7 +269,6 @@ namespace NPC.Scripts.Characters
                 Instantiate(_bulletChargeSprite, _bulletCharges);
             }
         }
-
         private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
         {
             _moving = true;
@@ -329,7 +291,6 @@ namespace NPC.Scripts.Characters
                 _moving = false;
             }
         }
-
         private IEnumerator FlashLineRenderer(float flashTime, int flashCount, Color flashColor, Color baseColor, bool disableLineRenderer = false)
         {
             int count = 0;
@@ -347,5 +308,38 @@ namespace NPC.Scripts.Characters
                 _bulletLine.enabled = false;
             }
         }
+        
+        #region Emotes
+
+        public void Emote1(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                Emote(0, _emoteDuration);
+            }
+        }
+        public void Emote2(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                Emote(1, _emoteDuration);
+            }
+        }
+        public void Emote3(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                Emote(2, _emoteDuration);
+            }
+        }
+        public void Emote4(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                Emote(3, _emoteDuration);
+            }
+        }
+
+        #endregion
     }
 }

@@ -34,7 +34,7 @@ namespace NPC.Scripts.Items
                 Player player = playerCollider.GetComponent<Player>();
                 if (Vector2.Distance(player.transform.position, mousePosition) <= sapperEffectRadius)
                 {
-                    player.AdjustDisguise(true, sapperStrength);
+                    player.AdjustDisguise(sapperStrength, true);
                 }
             }
         }
