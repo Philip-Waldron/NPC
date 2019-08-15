@@ -277,7 +277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6093c76b4a64094fac1afc008cbc1c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOwner: 0
 --- !u!114 &7371148554405414928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +313,7 @@ MonoBehaviour:
   bulletChargeTime: 1
   pickupRange: 2
   inventorySlot: {fileID: 6173594050144270177}
-  networkPosition: {fileID: 4936721767484796950}
+  synchronisedPlayerBehavior: {fileID: 0}
 --- !u!1 &9139884647232058137
 GameObject:
   m_ObjectHideFlags: 0

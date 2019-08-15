@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace NPC.Scripts.Networking
 {
-    public class SynchronisedPlayerPosition : PlayerBehavior
+    public class SynchronisedPlayerBehavior : PlayerBehavior
     {
         private Vector2 _moveDirection;
         public Vector2 MoveDirection

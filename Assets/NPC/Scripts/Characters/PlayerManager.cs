@@ -17,7 +17,7 @@ namespace NPC.Scripts.Characters
 
         private void Awake()
         {
-            NetworkManager.Instance.InstantiatePlayer();
+            var player = NetworkManager.Instance.InstantiatePlayer();
             return;
         }
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BeardedManStudios.Forge.Networking.Generated;
 using NPC.Scripts.Networking;
 using NPC.Scripts.Pickups;
 using TMPro;
@@ -22,7 +23,7 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(.5f, 3f)] private float bulletChargeTime;
         [SerializeField, Space(10f), Range(.1f, 3f)] public float pickupRange;
         [SerializeField] private SpriteRenderer inventorySlot;
-        [SerializeField, Space(20)] private SynchronisedPlayerPosition synchronisedPlayerPosition;
+        [SerializeField, Space(20)] private SynchronisedPlayerBehavior synchronisedPlayerBehavior;
 
         private readonly List<BasePickup> _inventory = new List<BasePickup>();
 
@@ -51,6 +52,7 @@ namespace NPC.Scripts.Characters
         private void Start()
         {
             PlayerManager.players.Add(this);
+            synchronisedPlayerBehavior = gameObject.GetComponent<SynchronisedPlayerBehavior>();
             AmmoCount = startAmmo;
             Disguise = startDisguise;
             bulletCount.SetText(AmmoCount.ToString());
@@ -67,15 +69,20 @@ namespace NPC.Scripts.Characters
         }
 
         private void Update()
-        { 
+        {
             disguiseBar.SetValueWithoutNotify(Disguise / Max);
             _t += Time.deltaTime / disguiseDuration;
             Disguise = Mathf.Lerp(startDisguise, Min, _t);
             bulletCount.SetText(AmmoCount.ToString());
             
-            if (!_moving && synchronisedPlayerPosition.MoveDirection != Vector2.zero)
+//            if (synchronisedPlayerBehavior == null) 
+//            {
+//                return;
+//            }
+            
+            if (!_moving && synchronisedPlayerBehavior.MoveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(synchronisedPlayerPosition.MoveDirection.x, synchronisedPlayerPosition.MoveDirection.y), timeToMove));
+                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(synchronisedPlayerBehavior.MoveDirection.x, synchronisedPlayerBehavior.MoveDirection.y), timeToMove));
             }
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
@@ -108,9 +115,9 @@ namespace NPC.Scripts.Characters
                 yield return null;
             }
 
-            if (synchronisedPlayerPosition.MoveDirection != Vector2.zero)
+            if (synchronisedPlayerBehavior.MoveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(synchronisedPlayerPosition.MoveDirection.x, synchronisedPlayerPosition.MoveDirection.y), this.timeToMove));
+                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(synchronisedPlayerBehavior.MoveDirection.x, synchronisedPlayerBehavior.MoveDirection.y), this.timeToMove));
             }
             else
             {
@@ -232,12 +239,12 @@ namespace NPC.Scripts.Characters
                 if (moveDirection == Vector2.up || moveDirection == Vector2.down ||
                     moveDirection == Vector2.left || moveDirection == Vector2.right)
                 {
-                    synchronisedPlayerPosition.MoveDirection = moveDirection;
+                    synchronisedPlayerBehavior.MoveDirection = moveDirection;
                 }
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
             {
-                synchronisedPlayerPosition.MoveDirection = Vector2.zero;
+                synchronisedPlayerBehavior.MoveDirection = Vector2.zero;
             }
         }
 
