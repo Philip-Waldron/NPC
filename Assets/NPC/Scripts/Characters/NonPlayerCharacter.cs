@@ -16,12 +16,10 @@ namespace NPC.Scripts.Characters
         }
         
         [Header("Detection")]
-        [SerializeField, Range(0f, 20f)]
-        private float _detectionRadius = 5f;
-        [SerializeField, Range(0f, 15f)]
-        private float _detectionFrequency = 5f;
-        [SerializeField]
-        private List<string> _alerts = new List<string>();
+        [SerializeField, Range(0f, 20f)] private float _detectionRadius = 5f;
+        [SerializeField, Range(0f, 15f)] private float _detectionFrequency = 5f;
+        [SerializeField, Range(0f, 100f)] private float _talkativeness = 25f;
+        [SerializeField] private List<string> _alerts = new List<string>();
         
         [SerializeField]
         private LayerMask _playerMask;
@@ -42,8 +40,19 @@ namespace NPC.Scripts.Characters
         private void Start()
         {
             InvokeRepeating(nameof(DetectPlayersAttempt), _detectionFrequency, _detectionFrequency);
+            InvokeRepeating(nameof(RandomSpeech), 10f, 10f);
         }
 
+        private void RandomSpeech()
+        {
+            float chance = Random.Range(0, 100);
+            
+            if (chance < _talkativeness)
+            {
+                Emote(Random.Range(0, emotes.Count), 3f);
+            }
+        }
+        
         private void DetectPlayersAttempt()
         {
             Collider2D[] playerColliders = Physics2D.OverlapCircleAll(transform.position, _detectionRadius, _playerMask);

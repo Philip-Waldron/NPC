@@ -13,8 +13,7 @@ namespace NPC.Scripts.Characters
         [Header("Scan")]
         [SerializeField] protected SpriteRenderer revealedSprite;
         
-        [Header("Speech Bubble")]
-        [SerializeField, Space(10)] protected GameObject speechBubble;
+        [Header("Speech Bubble")] [SerializeField, Space(10)] protected GameObject speechBubble;
         [SerializeField] protected TextMeshPro speechTextMesh;
         [SerializeField] protected Image emoteImage;
         [SerializeField] protected List<Sprite> emotes = new List<Sprite>();

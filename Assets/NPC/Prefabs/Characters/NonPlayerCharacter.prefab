@@ -29,9 +29,10 @@ MonoBehaviour:
   animator: {fileID: 1981132466786172452}
   _detectionRadius: 2
   _detectionFrequency: 5
+  _talkativeness: 25
   _alerts:
-  - '!?'
-  - Huh?
+  - Whoa!
+  - Hey!
   - '!!'
   _playerMask:
     serializedVersion: 2
