@@ -7,15 +7,10 @@ namespace NPC.Scripts.Items
 {
     public class Sapper : Item
     {
-        [SerializeField]
-        private float sapperEffectRadius = 3f;
-        [SerializeField]
-        private float sapperStrength = 35f;
-        [SerializeField]
-        private GameObject particleEffect;
-
-        [SerializeField]
-        private LayerMask _playerMask;
+        [SerializeField] private float sapperEffectRadius = 3f;
+        [SerializeField, Range(0, 1)] private float sapperStrength = .5f;
+        [SerializeField] private GameObject particleEffect;
+        [SerializeField] private LayerMask _playerMask;
 
         public override bool Pickup(Character character)
         {
@@ -30,12 +25,11 @@ namespace NPC.Scripts.Items
         
         public override void Use(Character character)
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x,
-                Mouse.current.position.ReadValue().y));
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
             StartCoroutine(ParticleEffect(mousePosition));
             
             Collider2D[] playerColliders = Physics2D.OverlapCircleAll(transform.position, sapperEffectRadius, _playerMask);
-            foreach (var playerCollider in playerColliders)
+            foreach (Collider2D playerCollider in playerColliders)
             {
                 Player player = playerCollider.GetComponent<Player>();
                 if (Vector2.Distance(player.transform.position, mousePosition) <= sapperEffectRadius)

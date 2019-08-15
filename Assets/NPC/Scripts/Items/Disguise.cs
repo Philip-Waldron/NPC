@@ -5,8 +5,7 @@ namespace NPC.Scripts.Items
 {
     public class Disguise : Item
     {
-        [SerializeField, Range(1, 10)]
-        private float disguiseBuff = 2f;
+        [SerializeField, Range(1, 100)] private float disguiseBuff = 20f;
         
         public override bool Pickup(Character character)
         {
@@ -15,14 +14,13 @@ namespace NPC.Scripts.Items
                 Use(character);
                 return true;
             }
-            
             return false;
         }
 
         public override void Use(Character character)
         {
             Player player = (Player)character;
-            player.AdjustDisguise(true, disguiseBuff);
+            player.AdjustDisguise(false, disguiseBuff);
         }
     }
 }

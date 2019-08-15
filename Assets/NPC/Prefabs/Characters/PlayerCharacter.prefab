@@ -502,11 +502,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: dc44eaa98ca355244abbdfec703f5b3d, type: 3}
   - {fileID: 21300000, guid: e98b61a838b0c5345996d46d0be033dc, type: 3}
   - {fileID: 21300000, guid: b146bed5476ae804585d34b0a4e58c82, type: 3}
-  _audioSource: {fileID: 4834669567712932016}
+  audioSource: {fileID: 4834669567712932016}
   audioClips:
   - {fileID: 8300000, guid: 3a49720b59736604aa029408885ebbd8, type: 3}
   - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
   - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
+  animator: {fileID: 6722259844949719633}
   AmmoCount: 3
   _bulletChargeSprite: {fileID: 4807289715813367792, guid: e40d8b1837c88644086a43ff6d1b4a21,
     type: 3}
@@ -969,9 +970,15 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8565614246252515112}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &4834669567712932016 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 3875099665963925400, guid: 9caec9a4f2a35f9438883c2a774657c1,
+--- !u!224 &8260411124101954675 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 323640014445491035, guid: 9caec9a4f2a35f9438883c2a774657c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 8565614246252515112}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6722259844949719633 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3140538845157766521, guid: 9caec9a4f2a35f9438883c2a774657c1,
     type: 3}
   m_PrefabInstance: {fileID: 8565614246252515112}
   m_PrefabAsset: {fileID: 0}
@@ -981,15 +988,15 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8565614246252515112}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8091573288568294809 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 474047629950386865, guid: 9caec9a4f2a35f9438883c2a774657c1,
+--- !u!82 &4834669567712932016 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3875099665963925400, guid: 9caec9a4f2a35f9438883c2a774657c1,
     type: 3}
   m_PrefabInstance: {fileID: 8565614246252515112}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &8260411124101954675 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 323640014445491035, guid: 9caec9a4f2a35f9438883c2a774657c1,
+--- !u!4 &8091573288568294809 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 474047629950386865, guid: 9caec9a4f2a35f9438883c2a774657c1,
     type: 3}
   m_PrefabInstance: {fileID: 8565614246252515112}
   m_PrefabAsset: {fileID: 0}

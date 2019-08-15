@@ -8,12 +8,9 @@ namespace NPC.Scripts.Items
 {
     public class Scanner : Item
     {
-        [SerializeField]
-        private float scanLineDuration = 3f;
-        [SerializeField]
-        private float revealDuration = 10f;
-        [SerializeField]
-        private GameObject particleEffect;
+        [SerializeField] private float scanLineDuration = 3f;
+        [SerializeField] private float revealDuration = 10f;
+        [SerializeField] private GameObject particleEffect;
 
         public override bool Pickup(Character character)
         {
@@ -30,16 +27,22 @@ namespace NPC.Scripts.Items
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
             Vector3 position = character.transform.position;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y), Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
             Collider2D thisCollider = character.GetComponent<Collider2D>();
-            StartCoroutine(ParticleEffect(character.transform.position, mousePosition));
+            
+            StartCoroutine(ParticleEffect(position, mousePosition));
+            
+            RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y), Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
+            
             foreach (RaycastHit2D hit in hits)
             {
+                Debug.Log(hit.collider.name + " - 1");
                 if (hit.collider != null && hit.collider != thisCollider)
                 {
                     Character hitCharacter = hit.transform.GetComponent<Character>();
+                    Debug.Log(hitCharacter.name + " - 2");
                     if (hitCharacter != null)
                     {
+                        Debug.Log(hitCharacter.name + " - 3");
                         hitCharacter.Scan(revealDuration);
                     }
                     else

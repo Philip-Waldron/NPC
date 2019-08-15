@@ -21,7 +21,7 @@ namespace NPC.Scripts.Items
 
         public override void Use(Character character)
         {
-            var player = (Player)character;
+            Player player = (Player)character;
             player.AmmoCount += ammoCount;
             player.AdjustAmmo();
         }

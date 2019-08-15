@@ -88,6 +88,8 @@ namespace NPC.Scripts.Characters
             _disguiseIntegrity = Mathf.Lerp(_startDisguise, 0, _elapsedTime);
             
             // Move.
+            animationMoveDirection = _moveDirection;
+            
             if (!_moving && _moveDirection != Vector2.zero)
             {
                 StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));

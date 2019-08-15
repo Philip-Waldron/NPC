@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -10,28 +11,35 @@ namespace NPC.Scripts.Characters
     public abstract class Character : MonoBehaviour, IDamageable, IScannable, IEmote<int, float>, ISpeak<string, float, int>
     {
         [Header("Scan")]
-        [SerializeField]
-        protected SpriteRenderer revealedSprite;
+        [SerializeField] protected SpriteRenderer revealedSprite;
         
         [Header("Speech Bubble")]
-        [SerializeField]
-        protected GameObject speechBubble;
-        [SerializeField]
-        protected TextMeshPro speechTextMesh;
-        [SerializeField]
-        protected Image emoteImage;
-        [SerializeField]
-        protected List<Sprite> emotes = new List<Sprite>();
+        [SerializeField, Space(10)] protected GameObject speechBubble;
+        [SerializeField] protected TextMeshPro speechTextMesh;
+        [SerializeField] protected Image emoteImage;
+        [SerializeField] protected List<Sprite> emotes = new List<Sprite>();
         
         private readonly Color _enabledColor = new Color(1, 1, 1, 1);
         private readonly Color _disabledColor = new Color(1, 1, 1, 0);
         private Coroutine _speechBubbleCoroutine;
         
         [Header("Audio")]
-        [SerializeField]
-        private AudioSource _audioSource;
-        [SerializeField]
-        protected List<AudioClip> audioClips = new List<AudioClip>();
+        [SerializeField, Space(10)] private AudioSource audioSource;
+        [SerializeField] protected List<AudioClip> audioClips = new List<AudioClip>();
+
+        [Header("Animation")] 
+        [SerializeField, Space(10)] private Animator animator;
+        protected Vector2 animationMoveDirection;
+        private static readonly int Horizontal = Animator.StringToHash("Horizontal");
+        private static readonly int Vertical = Animator.StringToHash("Vertical");
+        private static readonly int Speed = Animator.StringToHash("Speed");
+
+        private void LateUpdate()
+        {
+            animator.SetFloat(Horizontal, animationMoveDirection.x);
+            animator.SetFloat(Vertical, animationMoveDirection.y);
+            animator.SetFloat(Speed, animationMoveDirection.sqrMagnitude);
+        }
 
         public void Emote(int emoteIndex, float duration)
         {
@@ -55,10 +63,10 @@ namespace NPC.Scripts.Characters
 
         public void SpeakAudio(int audioClipIndex)
         {
-            if (!_audioSource.isPlaying)
+            if (!audioSource.isPlaying)
             {
-                _audioSource.clip = audioClips[audioClipIndex];
-                _audioSource.Play();
+                audioSource.clip = audioClips[audioClipIndex];
+                audioSource.Play();
             }
         }
         
