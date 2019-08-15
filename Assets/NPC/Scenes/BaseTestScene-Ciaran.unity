@@ -330,7 +330,7 @@ PrefabInstance:
     - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: _disguiseDuration
-      value: 10
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}

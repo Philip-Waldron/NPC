@@ -87,8 +87,6 @@ namespace NPC.Scripts.Characters
             _disguiseIntegrity = Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
             
             // Move.
-            animationMoveDirection = _moveDirection;
-            
             if (!_moving && _moveDirection != Vector2.zero)
             {
                 StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
@@ -121,6 +119,7 @@ namespace NPC.Scripts.Characters
                     moveDirection == Vector2.left || moveDirection == Vector2.right)
                 {
                     _moveDirection = moveDirection;
+                    animationMoveDirection = _moveDirection;
                 }
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
@@ -273,6 +272,7 @@ namespace NPC.Scripts.Characters
         {
             _moving = true;
             Vector3 currentPos = targetTransform.position;
+            
             float currentTime = 0f;
             while(currentTime < 1)
             {
@@ -284,10 +284,12 @@ namespace NPC.Scripts.Characters
 
             if (_moveDirection != Vector2.zero)
             {
+                animationSpeed = 1;
                 StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this._timeToMove));
             }
             else
             {
+                animationSpeed = 0;
                 _moving = false;
             }
         }

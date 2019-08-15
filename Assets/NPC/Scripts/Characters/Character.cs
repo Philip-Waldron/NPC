@@ -28,7 +28,8 @@ namespace NPC.Scripts.Characters
 
         [Header("Animation")] 
         [SerializeField, Space(10)] private Animator animator;
-        protected Vector2 animationMoveDirection;
+        protected Vector2 animationMoveDirection = Vector2.zero;
+        protected float animationSpeed;
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
         private static readonly int Vertical = Animator.StringToHash("Vertical");
         private static readonly int Speed = Animator.StringToHash("Speed");
@@ -37,7 +38,7 @@ namespace NPC.Scripts.Characters
         {
             animator.SetFloat(Horizontal, animationMoveDirection.x);
             animator.SetFloat(Vertical, animationMoveDirection.y);
-            animator.SetFloat(Speed, animationMoveDirection.sqrMagnitude);
+            animator.SetFloat(Speed, animationSpeed);
         }
 
         public void Emote(int emoteIndex, float duration)
