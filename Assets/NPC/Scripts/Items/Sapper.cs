@@ -48,7 +48,7 @@ namespace NPC.Scripts.Items
             particlesShape.radius = sapperEffectRadius;
             particleEffect.transform.position = position;
             yield return new WaitForSeconds(particles.main.duration);
-            Destroy(particleEffect);
+            //Destroy(particleEffect);
         }
     }
 }

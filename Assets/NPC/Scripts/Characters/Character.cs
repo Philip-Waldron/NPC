@@ -35,7 +35,8 @@ namespace NPC.Scripts.Characters
         private static readonly int Speed = Animator.StringToHash("Speed");
         
         [Header("Animation")] 
-        [SerializeField, Space(10)] private GameObject deathParticleEffect;
+        [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
+        [SerializeField] private GameObject deathSplatterParticleEffect;
 
         private void LateUpdate()
         {
@@ -73,9 +74,12 @@ namespace NPC.Scripts.Characters
             }
         }
         
-        public void Damage()
+        public void Damage(Vector3 target)
         {
-            Instantiate(deathParticleEffect, transform);
+            Instantiate(deathPuddleParticleEffect, transform);
+            GameObject splatter = Instantiate(deathSplatterParticleEffect, transform);
+            splatter.transform.position = transform.position;
+            splatter.transform.right = target;
             Scan(Mathf.Infinity);
             Emote(Random.Range(2, 3), 3f);
             SpeakAudio(Random.Range(0, audioClips.Count));

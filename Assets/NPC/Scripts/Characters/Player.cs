@@ -94,7 +94,11 @@ namespace NPC.Scripts.Characters
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
             {
-                _bulletLine.SetPositions(new Vector3[] { transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y)) });
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
+                Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
+                Vector3 position = transform.position;
+                
+                _bulletLine.SetPositions(new Vector3[] { position, mousePositionNormalised });
                 _chargingFor += Time.deltaTime;
 
                 if (_chargingFor >= _bulletChargeTime && !_chargeReady)
@@ -171,9 +175,12 @@ namespace NPC.Scripts.Characters
         
             _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.1f, 3, Color.red, Color.cyan, true));
 
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
+            Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
             Vector3 position = transform.position;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y), Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
+            Vector3 direction = mousePositionNormalised - position;
+            //Vector2 direction = mousePosition - new Vector2(position.x, position.y);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
             
             bool hitPlayer = false;
             foreach (RaycastHit2D hit in hits)
@@ -183,7 +190,7 @@ namespace NPC.Scripts.Characters
                     IDamageable target = hit.transform.GetComponent<IDamageable>();
                     if (target != null)
                     {
-                        target.Damage();
+                        target.Damage(direction);
                         if (target is Player)
                         {
                             hitPlayer = true;
@@ -210,7 +217,7 @@ namespace NPC.Scripts.Characters
                 foreach (Collider2D itemCollider in itemColliders)
                 {
                     Item item = itemCollider.GetComponent<Item>();
-                    if (item != null)
+                    if (item != null && !item.Accessed)
                     {
                         item.PickupItem(this);
                         break;

@@ -1,8 +1,10 @@
-﻿namespace NPC.Scripts
+﻿using UnityEngine;
+
+namespace NPC.Scripts
 {
     public interface IDamageable
     {
-        void Damage();
+        void Damage(Vector3 target);
     }
     
     public interface IScannable

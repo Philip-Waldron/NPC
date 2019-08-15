@@ -11,6 +11,8 @@ namespace NPC.Scripts.Items
         [SerializeField, Range(0f, 30f)] public float pickupDuration = 5f;
         [SerializeField, Space(10)] protected Slider pickupBar;
         [SerializeField] protected GameObject downloadParticleEffect;
+
+        public bool Accessed { get; private set; }
         
         protected Sprite itemSprite;
         private const float SliderMax = 100f;
@@ -69,6 +71,7 @@ namespace NPC.Scripts.Items
         {
             yield return new WaitForSeconds(pickupDuration);
             Pickup(player);
+            Accessed = true;
             Instantiate(downloadParticleEffect, transform);
         }
     }

@@ -57,7 +57,7 @@ namespace NPC.Scripts.Items
             particleEffect.transform.position = position;
             particleEffect.transform.LookAt(target);
             yield return new WaitForSeconds(particles.main.duration);
-            Destroy(particleEffect);
+            //Destroy(particleEffect);
         }
     }
 }

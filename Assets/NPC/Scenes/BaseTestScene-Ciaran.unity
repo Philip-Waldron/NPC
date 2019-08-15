@@ -145,7 +145,7 @@ PrefabInstance:
     - target: {fileID: 3926907724607441388, guid: 525913c4cc1f91d49abc5d575c0272d1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 3926907724607441388, guid: 525913c4cc1f91d49abc5d575c0272d1,
         type: 3}
@@ -285,7 +285,7 @@ PrefabInstance:
     - target: {fileID: 8091573288568294809, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 8091573288568294809, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
@@ -351,6 +351,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5334132416590080997, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: orthographic size
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8eed74d086271842abf3db6d9d73c47, type: 3}
@@ -65137,6 +65142,11 @@ PrefabInstance:
       propertyPath: pickupDuration
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 707844049537979542, guid: 4b95c3ffdf850b5468f59e0100ffd381,
+        type: 3}
+      propertyPath: sapperEffectRadius
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b95c3ffdf850b5468f59e0100ffd381, type: 3}
 --- !u!1001 &1230264868
@@ -65164,7 +65174,7 @@ PrefabInstance:
     - target: {fileID: 7753008695771339774, guid: 7ae89d6a01b5de5439149a98e3bbdc26,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 7753008695771339774, guid: 7ae89d6a01b5de5439149a98e3bbdc26,
         type: 3}

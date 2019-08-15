@@ -50,8 +50,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 77ac6bc220f71c542ad37d894079d3e7, type: 2}
+  - {fileID: 2100000, guid: 77ac6bc220f71c542ad37d894079d3e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -178,7 +178,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -722,11 +722,11 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 17
+    type: 10
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.1
+    radiusThickness: 1
     donutRadius: 0.1
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -928,7 +928,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 30
+      scalar: 500
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1034,7 +1034,7 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -1047,15 +1047,24 @@ ParticleSystem:
           time: 0
           value: 0
           inSlope: 0
-          outSlope: 1
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.5
+          value: 1
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 1
-          inSlope: 1
+          value: 0
+          inSlope: 0
           outSlope: 0
           tangentMode: 0
           weightedMode: 0
@@ -2689,7 +2698,7 @@ ParticleSystem:
     strength:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.05
+      scalar: 0.1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -2855,7 +2864,7 @@ ParticleSystem:
     scrollSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3941,7 +3950,7 @@ ParticleSystem:
     maxLights: 20
   TrailModule:
     enabled: 1
-    mode: 1
+    mode: 0
     ratio: 1
     lifetime:
       serializedVersion: 2
