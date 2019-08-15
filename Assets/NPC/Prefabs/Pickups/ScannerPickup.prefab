@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDuration: 5
   pickupBar: {fileID: 8176674014426914265}
+  downloadParticleEffect: {fileID: 7245982541705081319, guid: 288f0bcfb9d8b9043a5c4b5f762424e8,
+    type: 3}
   scanLineDuration: 3
   revealDuration: 10
   particleEffect: {fileID: 1018188143152966057, guid: 065ce00efc378de47adb5e9a04311254,

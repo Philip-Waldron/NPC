@@ -8,10 +8,10 @@ namespace NPC.Scripts.Items
 {
     public abstract class Item : MonoBehaviour
     {
-        [SerializeField, Range(0f, 30f)]
-        public float pickupDuration = 5f;
-        [SerializeField, Space(10)]
-        protected Slider pickupBar;
+        [SerializeField, Range(0f, 30f)] public float pickupDuration = 5f;
+        [SerializeField, Space(10)] protected Slider pickupBar;
+        [SerializeField] protected GameObject downloadParticleEffect;
+        
         protected Sprite itemSprite;
         private const float SliderMax = 100f;
         private const float SliderMin = 0f;
@@ -69,6 +69,7 @@ namespace NPC.Scripts.Items
         {
             yield return new WaitForSeconds(pickupDuration);
             Pickup(player);
+            Instantiate(downloadParticleEffect, transform);
         }
     }
 }

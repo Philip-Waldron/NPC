@@ -8,6 +8,7 @@ namespace NPC.Scripts.Items
     public class Sapper : Item
     {
         [SerializeField] private float sapperEffectRadius = 3f;
+        [SerializeField] private float sapperEffectDuration = 3f;
         [SerializeField, Range(0, 1)] private float sapperStrength = .5f;
         [SerializeField] private GameObject particleEffect;
         [SerializeField] private LayerMask _playerMask;
@@ -43,7 +44,8 @@ namespace NPC.Scripts.Items
         {
             particleEffect = Instantiate(particleEffect);
             ParticleSystem particles = particleEffect.GetComponent<ParticleSystem>();
-            particles.Play();
+            ParticleSystem.ShapeModule particlesShape = particles.shape;
+            particlesShape.radius = sapperEffectRadius;
             particleEffect.transform.position = position;
             yield return new WaitForSeconds(particles.main.duration);
             Destroy(particleEffect);

@@ -27,6 +27,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
   - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
   animator: {fileID: 1981132466786172452}
+  deathParticleEffect: {fileID: 7245982541705081319, guid: 4581732006de6994fa982b55c427ce04,
+    type: 3}
   _detectionRadius: 2
   _detectionFrequency: 5
   _talkativeness: 25

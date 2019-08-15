@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDuration: 5
   pickupBar: {fileID: 4778918661288381157}
+  downloadParticleEffect: {fileID: 7245982541705081319, guid: 288f0bcfb9d8b9043a5c4b5f762424e8,
+    type: 3}
   ammoCount: 1
 --- !u!1001 &6940893844763617393
 PrefabInstance:
@@ -103,22 +105,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
+    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
+    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
+    - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
+    - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

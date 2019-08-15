@@ -54,7 +54,6 @@ namespace NPC.Scripts.Items
         {
             particleEffect = Instantiate(particleEffect);
             ParticleSystem particles = particleEffect.GetComponent<ParticleSystem>();
-            particles.Play();
             particleEffect.transform.position = position;
             particleEffect.transform.LookAt(target);
             yield return new WaitForSeconds(particles.main.duration);

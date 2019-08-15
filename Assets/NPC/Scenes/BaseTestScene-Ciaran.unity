@@ -337,6 +337,11 @@ PrefabInstance:
       propertyPath: _disguiseIntegrity
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: AmmoCount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5291657032341317854, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -65122,6 +65127,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6902362261753769285, guid: 4b95c3ffdf850b5468f59e0100ffd381,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 707844049537979542, guid: 4b95c3ffdf850b5468f59e0100ffd381,
         type: 3}
       propertyPath: pickupDuration
@@ -65295,6 +65305,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5442029343661857271, guid: cc6a90aa15fc20148a2c285fbe096701,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 1403690286379088069, guid: cc6a90aa15fc20148a2c285fbe096701,
         type: 3}
       propertyPath: disguiseBuff
@@ -65444,6 +65459,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6167351103458688291, guid: 2e6c28327d832c44885f3a7bb17fc202,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6045228974804667108, guid: 2e6c28327d832c44885f3a7bb17fc202,
         type: 3}
       propertyPath: pickupDuration
@@ -65532,6 +65552,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403237899782957599, guid: 30ed6ac06f9796041a4ff5bcfd634cdd,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 2666079934805678677, guid: 30ed6ac06f9796041a4ff5bcfd634cdd,
         type: 3}
