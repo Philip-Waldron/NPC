@@ -22,12 +22,10 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(.5f, 3f)] private float bulletChargeTime;
         [SerializeField, Space(10f), Range(.1f, 3f)] public float pickupRange;
         [SerializeField] private SpriteRenderer inventorySlot;
-        [SerializeField, Space(20)] private NetworkPosition networkPosition;
+        [SerializeField, Space(20)] private SynchronisedPlayerPosition synchronisedPlayerPosition;
 
         private readonly List<BasePickup> _inventory = new List<BasePickup>();
-        
-        private Vector2 _moveDirection;
-        
+
         private bool _moving;
         private bool _bulletCharging;
         private bool _chargeReady;
@@ -43,7 +41,7 @@ namespace NPC.Scripts.Characters
         private int AmmoCount { get; set; }
         public float Disguise { get; private set; }
 
-        public void IsNotPlayer()
+        public void DisablePlayerElements()
         {
             Destroy(transform.GetComponent<PlayerInput>());
             disguiseBar.gameObject.SetActive(false);
@@ -53,7 +51,6 @@ namespace NPC.Scripts.Characters
         private void Start()
         {
             PlayerManager.players.Add(this);
-            PlayerManager.networkPosition.Add(GetComponent<NetworkPosition>());
             AmmoCount = startAmmo;
             Disguise = startDisguise;
             bulletCount.SetText(AmmoCount.ToString());
@@ -76,9 +73,9 @@ namespace NPC.Scripts.Characters
             Disguise = Mathf.Lerp(startDisguise, Min, _t);
             bulletCount.SetText(AmmoCount.ToString());
             
-            if (!_moving && networkPosition.MoveDirection != Vector2.zero)
+            if (!_moving && synchronisedPlayerPosition.MoveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), timeToMove));
+                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(synchronisedPlayerPosition.MoveDirection.x, synchronisedPlayerPosition.MoveDirection.y), timeToMove));
             }
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
@@ -111,9 +108,9 @@ namespace NPC.Scripts.Characters
                 yield return null;
             }
 
-            if (_moveDirection != Vector2.zero)
+            if (synchronisedPlayerPosition.MoveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this.timeToMove));
+                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(synchronisedPlayerPosition.MoveDirection.x, synchronisedPlayerPosition.MoveDirection.y), this.timeToMove));
             }
             else
             {
@@ -235,14 +232,12 @@ namespace NPC.Scripts.Characters
                 if (moveDirection == Vector2.up || moveDirection == Vector2.down ||
                     moveDirection == Vector2.left || moveDirection == Vector2.right)
                 {
-                    _moveDirection = moveDirection;
+                    synchronisedPlayerPosition.MoveDirection = moveDirection;
                 }
-                
-                networkPosition.UpdatePosition(moveDirection);
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
             {
-                _moveDirection = Vector2.zero;
+                synchronisedPlayerPosition.MoveDirection = Vector2.zero;
             }
         }
 
