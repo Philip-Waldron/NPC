@@ -21,13 +21,14 @@ namespace Pathfinding {
 		private bool _randomizeAllPenalties;
 		[SerializeField]
 		private bool _randomizeAdjacentPenalties;
+		
 		/// <summary>How much penalty (weight) to apply to nodes</summary>
-		public int penalty = 100000;
+		public int penalty = 10000;
 		/// <summary>Max number of nodes to skip in a row</summary>
 		public int randomStep = 10;
 		/// <summary>A random object</summary>
 		readonly System.Random rnd = new System.Random();
-		bool destroyed;
+		private bool _destroyed;
 
 		public override void Apply (Path p)
 		{
@@ -41,12 +42,12 @@ namespace Pathfinding {
 
 		protected void OnDestroy()
 		{
-			destroyed = true;
+			_destroyed = true;
 		}
 
 		void ApplyNow (Path path)
 		{
-			if (destroyed)
+			if (_destroyed)
 			{
 				return;
 			}
@@ -81,10 +82,10 @@ namespace Pathfinding {
 							});
 						}
 					}
+					
+					path.BlockUntilCalculated();
 				}
 			}
-		
-			//path.BlockUntilCalculated();
 		}
 	}
 }

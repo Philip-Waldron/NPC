@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NPC.Scripts.Characters;
-using NPC.Scripts.Items;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -10,30 +8,52 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     [Serializable]
-    private struct SpawnZone
+    public struct Zone
     {
         public Tile Tile;
         public int ItemsInZone;
-        public bool PlayerCanSpawn;
-        public bool NpcsCanSpawn;
+        public bool CharacterCanSpawn;
+        public bool PathingTarget;
     }
+
+    [Header("Player")]
+    public GameObject playerPrefab;
     
-    public List<Player> players = new List<Player>();
-    public List<NonPlayerCharacter> NonPlayerCharacters = new List<NonPlayerCharacter>();
-    public List<Item> items = new List<Item>();
+    [Header("Other Players")]
+    [SerializeField]
+    private int _otherPlayerCount;
+    public GameObject otherPlayerPrefab;
     
-    [Header("Spawn Manager")]
+    [Header("Non Player Characters")]
+    [SerializeField]
+    private int _npcCount;
+    public GameObject NonPlayerCharacterPrefab;
+
+    [Header("Zone Manager")]
     [SerializeField]
     private Tilemap _tilemap;
     [SerializeField]
-    private SpawnZone[] SpawnZones;
+    private Zone[] Zones;
     
-    private List<KeyValuePair<SpawnZone, Vector3>> _validSpawnPositions = new List<KeyValuePair<SpawnZone, Vector3>>();
+    public List<KeyValuePair<Zone, Vector3>> _validSpawnPositions = new List<KeyValuePair<Zone, Vector3>>();
+    public List<KeyValuePair<Zone, Vector3>> _validMovePositions = new List<KeyValuePair<Zone, Vector3>>();
     
     private void Start()
     {
         _tilemap.CompressBounds();
         FindValidPositions();
+        
+        for(int i = 0; i < _npcCount; i++)
+        {
+            Spawn(NonPlayerCharacterPrefab);
+        }
+        
+        for(int i = 0; i < _otherPlayerCount; i++)
+        {
+            Spawn(otherPlayerPrefab);
+        }
+        
+        // Spawn(playerPrefab);
     }
 
     public void FindValidPositions()
@@ -46,11 +66,20 @@ public class GameManager : MonoBehaviour
                 continue;
             }
             
-            if (SpawnZones.Select(x => x.Tile).Contains(tile))
+            if (Zones.Select(x => x.Tile).Contains(tile))
             {
-                SpawnZone spawnZone = SpawnZones.First(x => x.Tile == tile);
-                _validSpawnPositions.Add(
-                    new KeyValuePair<SpawnZone, Vector3>(spawnZone, position + _tilemap.cellSize / 2));
+                Zone zone = Zones.First(x => x.Tile == tile);
+                if (zone.CharacterCanSpawn)
+                {
+                    _validSpawnPositions.Add(
+                        new KeyValuePair<Zone, Vector3>(zone, position + _tilemap.cellSize / 2));
+                }
+
+                if (zone.PathingTarget)
+                {
+                    _validMovePositions.Add(
+                        new KeyValuePair<Zone, Vector3>(zone, position + _tilemap.cellSize / 2));
+                }
             }
         }
     }
