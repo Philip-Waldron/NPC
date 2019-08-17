@@ -16,7 +16,10 @@ MonoBehaviour:
   pickupBar: {fileID: 5192344692380260995}
   downloadParticleEffect: {fileID: 7245982541705081319, guid: 288f0bcfb9d8b9043a5c4b5f762424e8,
     type: 3}
+  downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
+    type: 3}
   sapperEffectRadius: 3
+  sapperEffectDuration: 3
   sapperStrength: 0.5
   particleEffect: {fileID: 4948150618654322501, guid: 10d629decb1b48a44bb008003e4e3511,
     type: 3}

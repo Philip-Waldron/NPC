@@ -19,8 +19,22 @@ namespace NPC.Scripts.Items
 
         public override void Use(Character character)
         {
+            switch (Trapped)
+            {
+                case true:
+                    UseWhenTrapped(character);
+                    break;
+                default:
+                    Player player = (Player)character;
+                    player.AdjustDisguise(disguiseBuff);
+                    break;
+            }
+        }
+
+        public override void UseWhenTrapped(Character character)
+        {
             Player player = (Player)character;
-            player.AdjustDisguise(disguiseBuff);
+            player.AdjustDisguise(-disguiseBuff);
         }
     }
 }

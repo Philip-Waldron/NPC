@@ -103,6 +103,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: OtherPlayerCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 2938262385119334345, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4476910686212561646, guid: b8eed74d086271842abf3db6d9d73c47, type: 3}
     - {fileID: 7441704399672570980, guid: b8eed74d086271842abf3db6d9d73c47, type: 3}

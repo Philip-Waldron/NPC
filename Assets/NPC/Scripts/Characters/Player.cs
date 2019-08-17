@@ -11,14 +11,10 @@ namespace NPC.Scripts.Characters
     public class Player : Character
     {
         [Header("Ammo")]
-        [SerializeField, Range(1, 3)]
-        public int AmmoCount = 1;
-        [SerializeField]
-        private GameObject _bulletChargeSprite;
-        [SerializeField]
-        private Transform _bulletCharges;
-        [SerializeField, Range(0f, 3f)]
-        private float _bulletChargeTime = 1;
+        [SerializeField, Range(1, 3)] public int AmmoCount = 1;
+        [SerializeField] private GameObject _bulletChargeSprite;
+        [SerializeField] private Transform _bulletCharges;
+        [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
 
         private int _startBulletChargeFrame;
         private float _chargingFor;
@@ -31,11 +27,10 @@ namespace NPC.Scripts.Characters
         [Header("Items")]
         [SerializeField, Space(10f), Range(.1f, 3f)]
         public float pickupRange;
-        [SerializeField]
-        public LayerMask itemMask;
-        [SerializeField]
-        private SpriteRenderer _inventorySlot;
+        [SerializeField] public LayerMask itemMask;
+        [SerializeField] private SpriteRenderer _inventorySlot;
         
+        public bool trapItem { get; set; }
         private readonly List<Item> _inventory = new List<Item>();
 
         [Header("Disguise")]
@@ -45,17 +40,14 @@ namespace NPC.Scripts.Characters
         public float DisguiseIntegrity => _disguiseIntegrity;
         private float timeScalar;
 
-        [SerializeField]
-        private float _disguiseDuration = 300f;
-        [SerializeField]
-        private Slider _disguiseBar;
+        [SerializeField] private float _disguiseDuration = 300f;
+        [SerializeField] private Slider _disguiseBar;
 
         [SerializeField] private float _elapsedTime;
         private float _startDisguise;
 
         [Header("Movement")]
-        [SerializeField, Range(.1f, 1f)]
-        private float _timeToMove;
+        [SerializeField, Range(.1f, 1f)] private float _timeToMove;
 
         private Vector2 _moveDirection;
         private bool _moving;
@@ -179,7 +171,6 @@ namespace NPC.Scripts.Characters
             Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
             Vector3 position = transform.position;
             Vector3 direction = mousePositionNormalised - position;
-            //Vector2 direction = mousePosition - new Vector2(position.x, position.y);
             RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
             
             bool hitPlayer = false;
@@ -188,7 +179,7 @@ namespace NPC.Scripts.Characters
                 if (hit.collider != null && hit.collider != _thisCollider2D)
                 {
                     IDamageable target = hit.transform.GetComponent<IDamageable>();
-                    if (target != null)
+                    if (target != null) 
                     {
                         target.Damage(direction);
                         if (target is Player)
@@ -213,13 +204,23 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
-                Collider2D[] itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask);
+                IOrderedEnumerable<Collider2D> itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask).OrderBy(collider2D1 => typeof(ColliderDistance2D));
                 foreach (Collider2D itemCollider in itemColliders)
                 {
                     Item item = itemCollider.GetComponent<Item>();
                     if (item != null && !item.Accessed)
                     {
-                        item.PickupItem(this);
+                        switch (trapItem)
+                        {
+                            case true:
+                                item.Trapped = true;
+                                trapItem = false;
+                                ClearEquipment();
+                                break;
+                            default:
+                                item.PickupItem(this);
+                                break;
+                        }
                         break;
                     }
                 }
@@ -238,10 +239,14 @@ namespace NPC.Scripts.Characters
                 if (_inventory.Count > 0)
                 {
                     _inventory[0].Use(this);
-                    _inventory.Clear();
-                    _inventorySlot.sprite = null;
+                    ClearEquipment();
                 }
             }
+        }
+        private void ClearEquipment()
+        {
+            _inventory.Clear();
+            _inventorySlot.sprite = null;
         }
         public void AdjustDisguise(float adjustment, bool scalar = false)
         {
@@ -260,7 +265,7 @@ namespace NPC.Scripts.Characters
             _disguiseIntegrity = _disguiseIntegrity > MaxDisguiseIntegrity ? MaxDisguiseIntegrity : _disguiseIntegrity;
             _disguiseIntegrity = _disguiseIntegrity < MinDisguiseIntegrity ? MinDisguiseIntegrity : _disguiseIntegrity;
             
-            _elapsedTime =Mathf.InverseLerp(MaxDisguiseIntegrity, MinDisguiseIntegrity, _disguiseIntegrity);
+            _elapsedTime = Mathf.InverseLerp(MaxDisguiseIntegrity, MinDisguiseIntegrity, _disguiseIntegrity);
         }
         public void AdjustAmmo()
         {
@@ -270,6 +275,9 @@ namespace NPC.Scripts.Characters
                 Destroy(charge.gameObject);
             }
             // add as many new bullets as there is ammo
+
+            AmmoCount = AmmoCount < 0 ? 0 : AmmoCount;
+            
             for (int i = 0; i < AmmoCount; i++)
             {
                 Instantiate(_bulletChargeSprite, _bulletCharges);

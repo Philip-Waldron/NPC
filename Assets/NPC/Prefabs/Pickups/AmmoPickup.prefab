@@ -16,6 +16,8 @@ MonoBehaviour:
   pickupBar: {fileID: 4778918661288381157}
   downloadParticleEffect: {fileID: 7245982541705081319, guid: 288f0bcfb9d8b9043a5c4b5f762424e8,
     type: 3}
+  downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
+    type: 3}
   ammoCount: 1
 --- !u!1001 &6940893844763617393
 PrefabInstance:

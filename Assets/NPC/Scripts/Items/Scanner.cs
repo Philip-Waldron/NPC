@@ -25,39 +25,51 @@ namespace NPC.Scripts.Items
         
         public override void Use(Character character)
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
-            Vector3 position = character.transform.position;
-            Collider2D thisCollider = character.GetComponent<Collider2D>();
-            
-            StartCoroutine(ParticleEffect(position, mousePosition));
-            
-            RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y), Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
-            
-            foreach (RaycastHit2D hit in hits)
+            switch (Trapped)
             {
-                if (hit.collider != null && hit.collider != thisCollider)
-                {
-                    Character hitCharacter = hit.transform.GetComponent<Character>();
-                    if (hitCharacter != null)
+                case true:
+                    UseWhenTrapped(character);
+                    break;
+                default:
+                    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y));
+                    Vector3 position = character.transform.position;
+                    Collider2D thisCollider = character.GetComponent<Collider2D>();
+            
+                    ParticleEffect(position, mousePosition);
+            
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(position, mousePosition - new Vector2(position.x, position.y), Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
+            
+                    foreach (RaycastHit2D hit in hits)
                     {
-                        hitCharacter.Scan(revealDuration);
+                        if (hit.collider != null && hit.collider != thisCollider)
+                        {
+                            Character hitCharacter = hit.transform.GetComponent<Character>();
+                            if (hitCharacter != null)
+                            {
+                                hitCharacter.Scan(revealDuration);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
                     }
-                    else
-                    {
-                        break;
-                    }
-                }
+                    break;
             }
         }
 
-        private IEnumerator ParticleEffect(Vector2 position, Vector2 target)
+        public override void UseWhenTrapped(Character character)
+        {
+            Player player = (Player) character;
+            player.Scan(revealDuration);
+        }
+
+        private void ParticleEffect(Vector2 position, Vector2 target)
         {
             particleEffect = Instantiate(particleEffect);
             ParticleSystem particles = particleEffect.GetComponent<ParticleSystem>();
             particleEffect.transform.position = position;
             particleEffect.transform.LookAt(target);
-            yield return new WaitForSeconds(particles.main.duration);
-            //Destroy(particleEffect);
         }
     }
 }

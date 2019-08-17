@@ -1,16 +1,12 @@
 ﻿using NPC.Scripts.Characters;
-using UnityEngine;
 
 namespace NPC.Scripts.Items
 {
-    public class Ammo : Item
+    public class Trap : Item
     {
-        [SerializeField, Range(1, 10), Space(10)]
-        private int ammoCount = 1;
-        
         public override bool Pickup(Character character)
         {
-            if (character is Player)
+            if (character is Player player)
             {
                 Use(character);
                 return true;
@@ -21,25 +17,22 @@ namespace NPC.Scripts.Items
 
         public override void Use(Character character)
         {
-            Player player = (Player)character;
-
             switch (Trapped)
             {
                 case true:
                     UseWhenTrapped(character);
                     break;
                 default:
-                    player.AmmoCount += ammoCount;
-                    player.AdjustAmmo();
+                    Player player = (Player)character;
+                    player.AddInventoryItem(this, itemSprite);
+                    player.trapItem = true;
                     break;
             }
         }
-
+        
         public override void UseWhenTrapped(Character character)
         {
-            Player player = (Player)character;
-            player.AmmoCount -= ammoCount;
-            player.AdjustAmmo();
+            
         }
     }
 }
