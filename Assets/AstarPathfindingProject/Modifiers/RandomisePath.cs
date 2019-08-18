@@ -1,33 +1,37 @@
 using UnityEngine;
 
-namespace Pathfinding {
-	[AddComponentMenu("Pathfinding/Modifiers/Alternative Path")]
-	[System.Serializable]
+namespace Pathfinding
+{
 	/// <summary>
-	/// Randomise path a bit.
+	/// Randomise path a bit. Based on Alternative Path
 	/// </summary>
+	[AddComponentMenu("Pathfinding/Modifiers/Randomise Path")]
+	[System.Serializable]
 	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_alternative_path.php")]
-	public class RandomPath : MonoModifier {
+	public class RandomisePath : MonoModifier
+	{
 	#if UNITY_EDITOR
 		[UnityEditor.MenuItem("CONTEXT/Seeker/Add Random Path Modifier")]
-		public static void AddComp (UnityEditor.MenuCommand command) {
-			(command.context as Component).gameObject.AddComponent(typeof(RandomPath));
+		public static void AddComp (UnityEditor.MenuCommand command)
+		{
+			(command.context as Component).gameObject.AddComponent(typeof(RandomisePath));
 		}
 	#endif
 		
-		public override int Order { get { return 10; } }
-		
+		[SerializeField]
+		private bool _RecalculatePathAfterRandomise;
 		[SerializeField]
 		private bool _randomizeAllPenalties;
 		[SerializeField]
 		private bool _randomizeAdjacentPenalties;
 		
-		/// <summary>How much penalty (weight) to apply to nodes</summary>
+		// How much penalty (weight) to apply to nodes.
 		public int penalty = 10000;
-		/// <summary>Max number of nodes to skip in a row</summary>
+		// Max number of nodes to skip in a row.
 		public int randomStep = 10;
-		/// <summary>A random object</summary>
-		readonly System.Random rnd = new System.Random();
+		
+		public override int Order { get { return 10; } }
+		private readonly System.Random _random = new System.Random();
 		private bool _destroyed;
 
 		public override void Apply (Path p)
@@ -40,12 +44,7 @@ namespace Pathfinding {
 			ApplyNow(p);
 		}
 
-		protected void OnDestroy()
-		{
-			_destroyed = true;
-		}
-
-		void ApplyNow (Path path)
+		private void ApplyNow (Path path)
 		{
 			if (_destroyed)
 			{
@@ -70,8 +69,8 @@ namespace Pathfinding {
 				}
 				else
 				{
-					int rndStart = rnd.Next(randomStep);
-					for (int i = rndStart; i < path.path.Count; i += rnd.Next(1, randomStep))
+					int rndStart = _random.Next(randomStep);
+					for (int i = rndStart; i < path.path.Count; i += _random.Next(1, randomStep))
 					{
 						path.path[i].Penalty += (uint)penalty;
 						if (_randomizeAdjacentPenalties)
@@ -82,10 +81,18 @@ namespace Pathfinding {
 							});
 						}
 					}
-					
+				}
+
+				if (_RecalculatePathAfterRandomise)
+				{
 					path.BlockUntilCalculated();
 				}
 			}
+		}
+		
+		protected void OnDestroy()
+		{
+			_destroyed = true;
 		}
 	}
 }

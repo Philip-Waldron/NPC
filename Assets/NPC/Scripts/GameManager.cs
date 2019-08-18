@@ -30,17 +30,17 @@ public class GameManager : MonoBehaviour
     public GameObject NonPlayerCharacterPrefab;
 
     [Header("Zone Manager")]
-    [SerializeField]
-    private Tilemap _tilemap;
+    public Tilemap Tilemap;
     [SerializeField]
     private Zone[] Zones;
     
-    public List<KeyValuePair<Zone, Vector3>> _validSpawnPositions = new List<KeyValuePair<Zone, Vector3>>();
-    public List<KeyValuePair<Zone, Vector3>> _validMovePositions = new List<KeyValuePair<Zone, Vector3>>();
+    public List<KeyValuePair<Zone, Vector3>> ValidSpawnPositions = new List<KeyValuePair<Zone, Vector3>>();
+    public List<KeyValuePair<Zone, Vector3>> ValidMovePositions = new List<KeyValuePair<Zone, Vector3>>();
+    public Dictionary<Tile, List<Vector3>> Rooms = new Dictionary<Tile, List<Vector3>>();
     
-    private void Start()
+    private void Awake()
     {
-        _tilemap.CompressBounds();
+        Tilemap.CompressBounds();
         FindValidPositions();
         
         for(int i = 0; i < _npcCount; i++)
@@ -58,9 +58,9 @@ public class GameManager : MonoBehaviour
 
     public void FindValidPositions()
     {
-        foreach (Vector3Int position in _tilemap.cellBounds.allPositionsWithin)
+        foreach (Vector3Int position in Tilemap.cellBounds.allPositionsWithin)
         {
-            TileBase tile = _tilemap.GetTile(position);
+            TileBase tile = Tilemap.GetTile(position);
             if (tile == null)
             {
                 continue;
@@ -71,14 +71,22 @@ public class GameManager : MonoBehaviour
                 Zone zone = Zones.First(x => x.Tile == tile);
                 if (zone.CharacterCanSpawn)
                 {
-                    _validSpawnPositions.Add(
-                        new KeyValuePair<Zone, Vector3>(zone, position + _tilemap.cellSize / 2));
+                    ValidSpawnPositions.Add(
+                        new KeyValuePair<Zone, Vector3>(zone, position + Tilemap.cellSize / 2));
                 }
 
                 if (zone.PathingTarget)
                 {
-                    _validMovePositions.Add(
-                        new KeyValuePair<Zone, Vector3>(zone, position + _tilemap.cellSize / 2));
+                    ValidMovePositions.Add(
+                        new KeyValuePair<Zone, Vector3>(zone, position + Tilemap.cellSize / 2));
+                    if (!Rooms.ContainsKey(zone.Tile))
+                    {
+                        Rooms.Add(zone.Tile, new List<Vector3> { position + Tilemap.cellSize / 2 });
+                    }
+                    else
+                    {
+                        Rooms[zone.Tile].Add(position + Tilemap.cellSize / 2);
+                    }
                 }
             }
         }
@@ -86,11 +94,11 @@ public class GameManager : MonoBehaviour
 
     public void Spawn(GameObject gameObjectToSpawn)
     {
-        if (_validSpawnPositions.Count > 0)
+        if (ValidSpawnPositions.Count > 0)
         {
-            int index = Random.Range(0, _validSpawnPositions.Count);
-            Instantiate(gameObjectToSpawn, _validSpawnPositions[index].Value, Quaternion.identity, null);
-            _validSpawnPositions.RemoveAt(index);
+            int index = Random.Range(0, ValidSpawnPositions.Count);
+            Instantiate(gameObjectToSpawn, ValidSpawnPositions[index].Value, Quaternion.identity, null);
+            ValidSpawnPositions.RemoveAt(index);
         }
         else
         {

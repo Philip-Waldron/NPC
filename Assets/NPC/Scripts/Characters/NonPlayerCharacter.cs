@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using Pathfinding;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 namespace NPC.Scripts.Characters
 {
     public class NonPlayerCharacter : Character
     {
-        private enum ENpcState
-        {
-            WalkRandom,
-            Wait,
-            WalkDirection,
-            WalkLocation
-        }
+        private GameManager _gameManager;
+        
         [Header("Detection")]
         [SerializeField, Range(0f, 20f)]
         private float _detectionRadius = 5f;
@@ -22,46 +18,139 @@ namespace NPC.Scripts.Characters
         private float _detectionFrequency = 5f;
         [SerializeField]
         private List<string> _alerts = new List<string>();
-
         [SerializeField]
         private LayerMask _playerMask;
-
         [SerializeField]
         private AnimationCurve _detectionChanceCurve;
 
         [Header("Pathfinding")]
         [SerializeField]
-        private Vector2 waitTimeRange;
+        private Vector2 _waitTimeRange = new Vector2(1, 5);
+
         [SerializeField]
-        private Vector2 walkRandomTimeRange;
+        private Vector2Int _walkCloseNodeRange = new Vector2Int(1, 4);
+        [SerializeField]
+        private Vector2 _walkFarDistanceRange = new Vector2(5, 25);
         [SerializeField, Range(.1f, 1f)]
         private float _timeToMove;
+
+        // A* Pathfinding
         private Seeker _seeker;
         private Path _path;
         private int _currentWaypoint;
-        private GameManager gameManager;
+        
+        [Header("Pathfinding Chances")]
+        [SerializeField]
+        private float _waitChance = 40;
+        [SerializeField]
+        private float _walkToCloseChance = 20;
+        [SerializeField]
+        private float _walkToFarChance = 10;
+        [SerializeField]
+        private float _walkToRandomChance = 10;
+        [SerializeField]
+        private float _walkInRoomChance = 15;
+        [SerializeField]
+        private float _walkToItemChance = 5;
+        
+        private float _totalChance;
 
         [Header("Emote")]
         [SerializeField, Range(0f, 100f)]
         private float _talkativeness = 25f;
+        
         private float _emoteDuration = 2f;
         private float _alertDuration = 2f;
 
         private void Start()
         {
-            gameManager = FindObjectOfType<GameManager>();
+            _gameManager = FindObjectOfType<GameManager>();
             _seeker = GetComponent<Seeker>();
             InvokeRepeating(nameof(DetectPlayersAttempt), _detectionFrequency, _detectionFrequency);
             InvokeRepeating(nameof(RandomSpeech), 10f, 10f);
-            WalkToRandomPoint();
+
+            _totalChance = _waitChance + _walkToCloseChance +
+                           _walkToFarChance + _walkToRandomChance +
+                           _walkInRoomChance + _walkToItemChance;
+
+            RollState();
+        }
+
+        private void RollState()
+        {
+            float roll = Random.Range(1, _totalChance);
+            // Wait.
+            if (roll < _waitChance)
+            {
+                float waitTime = Random.Range(_waitTimeRange.x, _waitTimeRange.y);
+                StartCoroutine(Wait(waitTime));
+            }
+            // Walk to close node.
+            else if (roll < _waitChance + _walkToCloseChance)
+            {
+                List<Vector3> validPositions = new List<Vector3>();
+                int nodeRange = Random.Range(_walkCloseNodeRange.x, _walkCloseNodeRange.y + 1);
+                List<GraphNode> nodesToCheck = new List<GraphNode>() { AstarPath.active.GetNearest(transform.position, NNConstraint.Default).node };
+                List<GraphNode> newNodesToCheck = new List<GraphNode>();
+                
+                for (int i = 0; i < nodeRange; i++)
+                {
+                    foreach (var node in nodesToCheck)
+                    {
+                        node.GetConnections(otherNode =>
+                        {
+                            newNodesToCheck.Add(otherNode);
+                            validPositions.Add((Vector3)otherNode.position);
+                        });
+                    }
+
+                    nodesToCheck = newNodesToCheck;
+                    newNodesToCheck.Clear();
+                }
+
+                Vector3 targetPosition = validPositions[Random.Range(0, validPositions.Count)];
+                WalkToPosition(targetPosition);
+            }
+            // Walk to far position.
+            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance)
+            {
+                float radius = Random.Range(_walkFarDistanceRange.x, _walkFarDistanceRange.y);
+                Vector3 point = Random.insideUnitSphere * radius;
+                
+                point += transform.position;
+                WalkToPosition(point);
+            }
+            // Walk to random position.
+            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance)
+            {
+                Vector3 targetPosition = _gameManager.ValidMovePositions[Random.Range(0, _gameManager.ValidMovePositions.Count - 1)].Value;
+                WalkToPosition(targetPosition);
+            }
+            // Walk in room.
+            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance)
+            {
+                Vector3Int tilePosition = _gameManager.Tilemap.WorldToCell(transform.position);
+                Tile tile = (Tile)_gameManager.Tilemap.GetTile(tilePosition);
+                List<Vector3> roomTiles = _gameManager.Rooms[tile];
+                Vector3 targetPosition = _gameManager.Rooms[tile][Random.Range(0, roomTiles.Count)];
+                WalkToPosition(targetPosition);
+            }
+            // Walk to item. TODO: implement.
+            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance + _walkToItemChance)
+            {
+                float waitTime = Random.Range(_waitTimeRange.x, _waitTimeRange.y);
+                StartCoroutine(Wait(waitTime));
+            }
         }
 
         private void RandomSpeech()
         {
-            if (isDead) return;
+            if (isDead)
+            {
+                return;
+            }
 
             float chance = Random.Range(0, 100);
-            
             if (chance < _talkativeness)
             {
                 Emote(Random.Range(0, emotes.Count), 3f);
@@ -76,9 +165,9 @@ namespace NPC.Scripts.Characters
             foreach (Collider2D playerCollider in playerColliders)
             {
                 Player player = playerCollider.GetComponent<Player>();
-                int _detectionChance = Mathf.RoundToInt(_detectionChanceCurve.Evaluate(player.DisguiseIntegrity));
+                int detectionChance = Mathf.RoundToInt(_detectionChanceCurve.Evaluate(player.DisguiseIntegrity));
 
-                if (_detectionChance != 0 && IsAlerted(_detectionChance))
+                if (detectionChance != 0 && IsAlerted(detectionChance))
                 {
                     break;
                 }
@@ -97,20 +186,15 @@ namespace NPC.Scripts.Characters
             return true;
         }
 
-        private void Move()
+        private void WalkToPosition(Vector3 targetPosition)
         {
-
+            _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
         }
 
-        private void WalkToRandomPoint()
+        private void OnPathComplete(Path path)
         {
-            Vector3 movePosition = gameManager._validMovePositions[Random.Range(0, gameManager._validMovePositions.Count - 1)].Value;
-            _seeker.StartPath(transform.position, movePosition, OnPathComplete);
-        }
-
-        public void OnPathComplete(Path path)
-        {
-            if (!path.error) {
+            if (!path.error)
+            {
                 _path = path;
                 _currentWaypoint = 0;
                 StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
@@ -137,6 +221,16 @@ namespace NPC.Scripts.Characters
                 _currentWaypoint++;
                 StartCoroutine(MoveToPosition(targetTransform, _path.vectorPath[_currentWaypoint], _timeToMove));
             }
+            else
+            {
+                RollState();
+            }
+        }
+        
+        private IEnumerator Wait(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            RollState();
         }
     }
 }
