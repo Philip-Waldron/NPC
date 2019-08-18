@@ -13,7 +13,8 @@ namespace NPC.Scripts.Characters
         [Header("Scan")]
         [SerializeField] protected SpriteRenderer revealedSprite;
         
-        [Header("Speech Bubble")] [SerializeField, Space(10)] protected GameObject speechBubble;
+        [Header("Speech Bubble")] 
+        [SerializeField, Space(10)] protected GameObject speechBubble;
         [SerializeField] protected TextMeshPro speechTextMesh;
         [SerializeField] protected Image emoteImage;
         [SerializeField] protected List<Sprite> emotes = new List<Sprite>();
@@ -28,16 +29,18 @@ namespace NPC.Scripts.Characters
 
         [Header("Animation")] 
         [SerializeField, Space(10)] private Animator animator;
+        [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
+        [SerializeField] private GameObject deathSplatterParticleEffect;
+        [SerializeField] private GameObject bulletHole;
+        
         protected Vector2 animationMoveDirection = Vector2.zero;
         protected float animationSpeed;
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
         private static readonly int Vertical = Animator.StringToHash("Vertical");
         private static readonly int Speed = Animator.StringToHash("Speed");
         private static readonly int Dead = Animator.StringToHash("Dead");
-        
-        [Header("Animation")] 
-        [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
-        [SerializeField] private GameObject deathSplatterParticleEffect;
+
+        protected bool isDead;
 
         private void LateUpdate()
         {
@@ -75,10 +78,13 @@ namespace NPC.Scripts.Characters
             }
         }
         
-        public void Damage(Vector3 target)
+        public void Damage(Vector3 target, Vector2 hitPoint)
         {
+            isDead = true;
             Instantiate(deathPuddleParticleEffect, transform);
             GameObject splatter = Instantiate(deathSplatterParticleEffect, transform);
+            GameObject bulletHole = Instantiate(this.bulletHole, transform);
+            bulletHole.transform.position = hitPoint;
             splatter.transform.position = transform.position;
             splatter.transform.right = target;
             animator.SetBool(Dead, true);

@@ -31,13 +31,15 @@ MonoBehaviour:
     type: 3}
   deathSplatterParticleEffect: {fileID: 7245982541705081319, guid: 96a24f7f7c231694eba60aa3cb27fca6,
     type: 3}
+  bulletHole: {fileID: 7245982541705081319, guid: 92ad4855a7596da41bd33724bc84ceaf,
+    type: 3}
   _detectionRadius: 2
   _detectionFrequency: 5
   _talkativeness: 25
   _alerts:
   - Whoa!
   - Hey!
-  - '!!'
+  - UwU
   _playerMask:
     serializedVersion: 2
     m_Bits: 256

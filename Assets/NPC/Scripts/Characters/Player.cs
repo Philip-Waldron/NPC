@@ -182,7 +182,7 @@ namespace NPC.Scripts.Characters
                     IDamageable target = hit.transform.GetComponent<IDamageable>();
                     if (target != null) 
                     {
-                        target.Damage(direction);
+                        target.Damage(direction, hit.point);
                         if (target is Player)
                         {
                             hitPlayer = true;
@@ -218,8 +218,6 @@ namespace NPC.Scripts.Characters
                     {
                         minDistance = Vector2.Distance(item.transform.position, transform.position);
                         selectedItem = item;
-
-                        Debug.Log(selectedItem.name);
                     }
                 }
 

@@ -512,6 +512,8 @@ MonoBehaviour:
     type: 3}
   deathSplatterParticleEffect: {fileID: 7245982541705081319, guid: 96a24f7f7c231694eba60aa3cb27fca6,
     type: 3}
+  bulletHole: {fileID: 7245982541705081319, guid: 92ad4855a7596da41bd33724bc84ceaf,
+    type: 3}
   AmmoCount: 1
   _bulletChargeSprite: {fileID: 4807289715813367792, guid: e40d8b1837c88644086a43ff6d1b4a21,
     type: 3}
@@ -892,11 +894,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
         type: 0}
-    - target: {fileID: 3875099665963925382, guid: 9caec9a4f2a35f9438883c2a774657c1,
-        type: 3}
-      propertyPath: VelocityModule.z.scalar
-      value: -10
-      objectReference: {fileID: 0}
     - target: {fileID: 474047629950386865, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -961,6 +958,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875099665963925382, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: VelocityModule.z.scalar
+      value: -10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9caec9a4f2a35f9438883c2a774657c1, type: 3}

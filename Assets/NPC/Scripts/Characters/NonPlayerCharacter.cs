@@ -45,6 +45,8 @@ namespace NPC.Scripts.Characters
 
         private void RandomSpeech()
         {
+            if (isDead) return;
+
             float chance = Random.Range(0, 100);
             
             if (chance < _talkativeness)
@@ -55,6 +57,8 @@ namespace NPC.Scripts.Characters
         
         private void DetectPlayersAttempt()
         {
+            if (isDead) return;
+            
             Collider2D[] playerColliders = Physics2D.OverlapCircleAll(transform.position, _detectionRadius, _playerMask);
             foreach (Collider2D playerCollider in playerColliders)
             {

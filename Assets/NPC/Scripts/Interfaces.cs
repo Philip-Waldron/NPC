@@ -4,7 +4,7 @@ namespace NPC.Scripts
 {
     public interface IDamageable
     {
-        void Damage(Vector3 target);
+        void Damage(Vector3 target, Vector2 hitPoint);
     }
     
     public interface IScannable
