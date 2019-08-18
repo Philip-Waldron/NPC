@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace NPC.Scripts.Networking
 {
-    public class NetworkParameters : PlayerBehavior
+    public class NetworkCharacterParameters : PlayerBehavior
     {
         public Vector2 MoveDirection
         {
@@ -28,7 +28,7 @@ namespace NPC.Scripts.Networking
         {
             if (!networkObject.IsOwner)
             {
-                gameObject.transform.position = networkObject.position;
+                gameObject.transform.position = networkObject.gridPosition;
             }
         }
 
@@ -38,7 +38,7 @@ namespace NPC.Scripts.Networking
             
             if (networkObject.IsOwner)
             {
-                networkObject.position = position;
+                networkObject.gridPosition = position;
             }
         }
         

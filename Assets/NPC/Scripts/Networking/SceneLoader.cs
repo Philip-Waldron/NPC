@@ -1,18 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using BeardedManStudios.Forge.Networking;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+namespace NPC.Scripts.Networking
 {
-    // Start is called before the first frame update
-    void Start()
+    public class SceneLoader
     {
-        
-    }
+        private NetWorker _netWorker;
+        public void ServerLoaded(NetWorker netWorker)
+        {
+            _netWorker = netWorker;
+            SceneManager.sceneLoaded += SceneLoaded;
+            SceneManager.LoadScene("Networking_Scene");
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void SceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            bool foundComponent = false;
+            foreach (var gameObject in scene.GetRootGameObjects())
+            {
+                GameManager gameManager = gameObject.GetComponent<GameManager>();
+                if (gameObject != null)
+                {
+                    _netWorker.playerAccepted += gameManager.OnPlayerAccepted;
+                    foundComponent = true;
+                    break;
+                }
+            }
+            
+            if (!foundComponent)
+                Debug.LogWarning("Could not find Game Manager component in scene! Networking will not function!!!!");
+        }
     }
 }

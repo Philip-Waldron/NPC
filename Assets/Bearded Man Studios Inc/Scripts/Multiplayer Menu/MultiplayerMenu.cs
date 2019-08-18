@@ -3,6 +3,7 @@ using BeardedManStudios.Forge.Networking.Unity;
 using BeardedManStudios.Forge.Networking.Lobby;
 using BeardedManStudios.SimpleJSON;
 using System.Collections.Generic;
+using NPC.Scripts.Networking;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class MultiplayerMenu : MonoBehaviour
 {
 	public InputField ipAddress = null;
 	public InputField portNumber = null;
-	public bool DontChangeSceneOnConnect = false;
+	public bool DontChangeSceneOnConnect = true;
 	public string masterServerHost = string.Empty;
 	public ushort masterServerPort = 15940;
 	public string natServerHost = string.Empty;
@@ -218,7 +219,12 @@ public class MultiplayerMenu : MonoBehaviour
 			if (!DontChangeSceneOnConnect)
 				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 			else
+			{
 				NetworkObject.Flush(networker); //Called because we are already in the correct scene!
+				
+				SceneLoader sceneLoader = new SceneLoader();
+				sceneLoader.ServerLoaded(server);
+			}
 		}
 	}
 

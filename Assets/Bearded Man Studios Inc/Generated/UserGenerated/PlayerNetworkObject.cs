@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0]")]
+	[GeneratedInterpol("{\"inter\":[0,0.15]")]
 	public partial class PlayerNetworkObject : NetworkObject
 	{
-		public const int IDENTITY = 6;
+		public const int IDENTITY = 7;
 
 		private byte[] _dirtyFields = new byte[1];
 
@@ -46,6 +46,37 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (moveDirectionChanged != null) moveDirectionChanged(_moveDirection, timestep);
 			if (fieldAltered != null) fieldAltered("moveDirection", _moveDirection, timestep);
 		}
+		[ForgeGeneratedField]
+		private Vector2 _gridPosition;
+		public event FieldEvent<Vector2> gridPositionChanged;
+		public InterpolateVector2 gridPositionInterpolation = new InterpolateVector2() { LerpT = 0.15f, Enabled = true };
+		public Vector2 gridPosition
+		{
+			get { return _gridPosition; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_gridPosition == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x2;
+				_gridPosition = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetgridPositionDirty()
+		{
+			_dirtyFields[0] |= 0x2;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_gridPosition(ulong timestep)
+		{
+			if (gridPositionChanged != null) gridPositionChanged(_gridPosition, timestep);
+			if (fieldAltered != null) fieldAltered("gridPosition", _gridPosition, timestep);
+		}
 
 		protected override void OwnershipChanged()
 		{
@@ -56,6 +87,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		public void SnapInterpolations()
 		{
 			moveDirectionInterpolation.current = moveDirectionInterpolation.target;
+			gridPositionInterpolation.current = gridPositionInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -63,6 +95,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		protected override BMSByte WritePayload(BMSByte data)
 		{
 			UnityObjectMapper.Instance.MapBytes(data, _moveDirection);
+			UnityObjectMapper.Instance.MapBytes(data, _gridPosition);
 
 			return data;
 		}
@@ -73,6 +106,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			moveDirectionInterpolation.current = _moveDirection;
 			moveDirectionInterpolation.target = _moveDirection;
 			RunChange_moveDirection(timestep);
+			_gridPosition = UnityObjectMapper.Instance.Map<Vector2>(payload);
+			gridPositionInterpolation.current = _gridPosition;
+			gridPositionInterpolation.target = _gridPosition;
+			RunChange_gridPosition(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -82,6 +119,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 			if ((0x1 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _moveDirection);
+			if ((0x2 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _gridPosition);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -111,6 +150,19 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					RunChange_moveDirection(timestep);
 				}
 			}
+			if ((0x2 & readDirtyFlags[0]) != 0)
+			{
+				if (gridPositionInterpolation.Enabled)
+				{
+					gridPositionInterpolation.target = UnityObjectMapper.Instance.Map<Vector2>(data);
+					gridPositionInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_gridPosition = UnityObjectMapper.Instance.Map<Vector2>(data);
+					RunChange_gridPosition(timestep);
+				}
+			}
 		}
 
 		public override void InterpolateUpdate()
@@ -122,6 +174,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			{
 				_moveDirection = (Vector2)moveDirectionInterpolation.Interpolate();
 				//RunChange_moveDirection(moveDirectionInterpolation.Timestep);
+			}
+			if (gridPositionInterpolation.Enabled && !gridPositionInterpolation.current.UnityNear(gridPositionInterpolation.target, 0.0015f))
+			{
+				_gridPosition = (Vector2)gridPositionInterpolation.Interpolate();
+				//RunChange_gridPosition(gridPositionInterpolation.Timestep);
 			}
 		}
 
