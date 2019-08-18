@@ -173,7 +173,7 @@ namespace NPC.Scripts.Characters
             Vector3 position = transform.position;
             Vector3 direction = mousePositionNormalised - position;
             RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
-            
+
             bool hitPlayer = false;
             foreach (RaycastHit2D hit in hits)
             {
@@ -213,14 +213,12 @@ namespace NPC.Scripts.Characters
                 foreach (Collider2D itemCollider in itemColliders)
                 {
                     Item item = itemCollider.GetComponent<Item>();
-                    
-                    Debug.Log(item.name + ": " + Vector2.Distance(item.transform.position, transform.position) + " < " + minDistance);
-                    
+
                     if (item != null && !item.Accessed && Vector2.Distance(item.transform.position, transform.position) < minDistance)
                     {
                         minDistance = Vector2.Distance(item.transform.position, transform.position);
                         selectedItem = item;
-                        
+
                         Debug.Log(selectedItem.name);
                     }
                 }

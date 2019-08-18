@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace NPC.Scripts.Items
 {
-    public abstract class Item : MonoBehaviour
+    public abstract class Item : MonoBehaviour, IDamageable
     {
         [SerializeField, Range(0f, 30f)] public float pickupDuration = 5f;
         [SerializeField, Space(10)] protected Slider pickupBar;
@@ -39,6 +39,8 @@ namespace NPC.Scripts.Items
 
         private void Update()
         {
+            if (Accessed) return;
+            
             pickupBar.SetValueWithoutNotify(_p / SliderMax);
             switch (PickupValid)
             {
@@ -95,6 +97,12 @@ namespace NPC.Scripts.Items
                     Instantiate(downloadParticleEffect, transform);
                     break;
             }
+        }
+
+        public void Damage(Vector3 target)
+        {
+            pickupBar.SetValueWithoutNotify(SliderMin);
+            Accessed = true;
         }
     }
 }
