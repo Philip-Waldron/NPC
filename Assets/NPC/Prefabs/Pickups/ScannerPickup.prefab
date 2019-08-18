@@ -21,6 +21,7 @@ MonoBehaviour:
     type: 3}
   downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
     type: 3}
+  itemRarity: 1
   scanLineDuration: 3
   revealDuration: 10
   particleEffect: {fileID: 1018188143152966057, guid: 065ce00efc378de47adb5e9a04311254,
@@ -57,6 +58,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 320986668726085502, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 0.375
       objectReference: {fileID: 0}
     - target: {fileID: 2032267457349828954, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
