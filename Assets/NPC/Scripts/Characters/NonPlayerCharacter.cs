@@ -125,6 +125,11 @@ namespace NPC.Scripts.Characters
         private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
         {
             Vector3 currentPos = targetTransform.position;
+
+            Vector2 movePosition = MovePosition(currentPos, position);
+            animationMoveDirection = movePosition;
+            animationSpeed = movePosition == Vector2.zero ? 0f : 1f;
+            
             float currentTime = 0f;
             while(currentTime < 1)
             {
@@ -138,6 +143,15 @@ namespace NPC.Scripts.Characters
                 _currentWaypoint++;
                 StartCoroutine(MoveToPosition(targetTransform, _path.vectorPath[_currentWaypoint], _timeToMove));
             }
+            else
+            {
+                animationSpeed = 0f;
+            }
+        }
+
+        private static Vector2 MovePosition(Vector3 currentPos, Vector3 position)
+        {
+            return (position - currentPos).normalized;
         }
 
         private void StopMovement()
