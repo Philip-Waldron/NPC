@@ -23,13 +23,15 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(.5f, 3f)] private float bulletChargeTime;
         [SerializeField, Space(10f), Range(.1f, 3f)] public float pickupRange;
         [SerializeField] private SpriteRenderer inventorySlot;
-        [SerializeField, Space(20)] private SynchronisedPlayerBehavior synchronisedPlayerBehavior;
+        [SerializeField, Space(20)] private IMovementQueue movementQueue;
 
         private readonly List<BasePickup> _inventory = new List<BasePickup>();
 
         private bool _moving;
         private bool _bulletCharging;
         private bool _chargeReady;
+        
+        private Vector2 _moveDirection;
         
         private int _startBulletChargeFrame;
         private float _chargingFor;
@@ -52,7 +54,7 @@ namespace NPC.Scripts.Characters
         private void Start()
         {
             PlayerManager.players.Add(this);
-            synchronisedPlayerBehavior = gameObject.GetComponent<SynchronisedPlayerBehavior>();
+            movementQueue = gameObject.GetComponent<IMovementQueue>();
             AmmoCount = startAmmo;
             Disguise = startDisguise;
             bulletCount.SetText(AmmoCount.ToString());
@@ -75,14 +77,10 @@ namespace NPC.Scripts.Characters
             Disguise = Mathf.Lerp(startDisguise, Min, _t);
             bulletCount.SetText(AmmoCount.ToString());
             
-//            if (synchronisedPlayerBehavior == null) 
-//            {
-//                return;
-//            }
             
-            if (!_moving && synchronisedPlayerBehavior.MoveDirection != Vector2.zero)
+            if (!_moving && movementQueue.nextMovement != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(synchronisedPlayerBehavior.MoveDirection.x, synchronisedPlayerBehavior.MoveDirection.y), timeToMove));
+                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(movementQueue.nextMovement.x, movementQueue.nextMovement.y), timeToMove));
             }
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
@@ -114,10 +112,13 @@ namespace NPC.Scripts.Characters
                 targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
                 yield return null;
             }
+            
+            movementQueue.MoveComplete();
 
-            if (synchronisedPlayerBehavior.MoveDirection != Vector2.zero)
+            if (_moveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(synchronisedPlayerBehavior.MoveDirection.x, synchronisedPlayerBehavior.MoveDirection.y), this.timeToMove));
+                movementQueue.BroadcastMove(_moveDirection);
+                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this.timeToMove));
             }
             else
             {
@@ -236,15 +237,21 @@ namespace NPC.Scripts.Characters
             {
                 Vector2 moveDirection = context.ReadValue<Vector2>();
 
-                if (moveDirection == Vector2.up || moveDirection == Vector2.down ||
-                    moveDirection == Vector2.left || moveDirection == Vector2.right)
+                if ((moveDirection == Vector2.up || moveDirection == Vector2.down ||
+                    moveDirection == Vector2.left || moveDirection == Vector2.right))
                 {
-                    synchronisedPlayerBehavior.MoveDirection = moveDirection;
+                    _moveDirection = moveDirection;
+                    
+                    if (!_moving)
+                    {
+                        movementQueue.BroadcastMove(moveDirection);
+                    }
                 }
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
             {
-                synchronisedPlayerBehavior.MoveDirection = Vector2.zero;
+                _moveDirection = Vector2.zero;
+                movementQueue.BroadcastMove(Vector2.zero);
             }
         }
 

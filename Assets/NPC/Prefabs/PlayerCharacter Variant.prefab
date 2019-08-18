@@ -265,18 +265,6 @@ MonoBehaviour:
   m_DefaultActionMap: bc17f7d1-57a0-4c9e-956f-39baed694873
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4936721767484796950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3401289235728265823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6093c76b4a64094fac1afc008cbc1c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7371148554405414928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,7 +301,18 @@ MonoBehaviour:
   bulletChargeTime: 1
   pickupRange: 2
   inventorySlot: {fileID: 6173594050144270177}
-  synchronisedPlayerBehavior: {fileID: 0}
+--- !u!114 &7253389175378970524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401289235728265823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db568370acb81734c8d87555b51f277e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9139884647232058137
 GameObject:
   m_ObjectHideFlags: 0
