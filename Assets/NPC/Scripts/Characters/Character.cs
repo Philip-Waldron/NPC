@@ -33,6 +33,7 @@ namespace NPC.Scripts.Characters
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
         private static readonly int Vertical = Animator.StringToHash("Vertical");
         private static readonly int Speed = Animator.StringToHash("Speed");
+        private static readonly int Dead = Animator.StringToHash("Dead");
         
         [Header("Animation")] 
         [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
@@ -80,6 +81,7 @@ namespace NPC.Scripts.Characters
             GameObject splatter = Instantiate(deathSplatterParticleEffect, transform);
             splatter.transform.position = transform.position;
             splatter.transform.right = target;
+            animator.SetBool(Dead, true);
             Scan(Mathf.Infinity);
             Emote(Random.Range(2, 3), 3f);
             SpeakAudio(Random.Range(0, audioClips.Count));
