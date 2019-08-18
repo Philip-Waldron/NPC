@@ -303,7 +303,8 @@ namespace NPC.Scripts.Characters
             {
                 currentTime += Time.deltaTime / timeToMove;
                 targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
-                _bulletLine.SetPositions(new Vector3[] { transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y)) });
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
+                _bulletLine.SetPositions(new Vector3[] { transform.position, mousePosition });
                 yield return null;
             }
 
