@@ -146,7 +146,7 @@ namespace NPC.Scripts.Characters
 
         private void RandomSpeech()
         {
-            if (isDead)
+            if (IsDead)
             {
                 return;
             }
