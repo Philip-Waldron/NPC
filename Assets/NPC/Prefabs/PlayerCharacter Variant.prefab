@@ -301,7 +301,8 @@ MonoBehaviour:
   bulletChargeTime: 1
   pickupRange: 2
   inventorySlot: {fileID: 6173594050144270177}
---- !u!114 &7253389175378970524
+  networkedPosition: {fileID: 0}
+--- !u!114 &6733810873914664822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,7 +311,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3401289235728265823}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db568370acb81734c8d87555b51f277e, type: 3}
+  m_Script: {fileID: 11500000, guid: 899495747d7a41bf857b2bc4172b7b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9139884647232058137

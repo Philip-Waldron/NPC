@@ -23,7 +23,7 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(.5f, 3f)] private float bulletChargeTime;
         [SerializeField, Space(10f), Range(.1f, 3f)] public float pickupRange;
         [SerializeField] private SpriteRenderer inventorySlot;
-        [SerializeField, Space(20)] private IMovementQueue movementQueue;
+        public NetworkedPosition networkedPosition;
 
         private readonly List<BasePickup> _inventory = new List<BasePickup>();
 
@@ -54,7 +54,7 @@ namespace NPC.Scripts.Characters
         private void Start()
         {
             PlayerManager.players.Add(this);
-            movementQueue = gameObject.GetComponent<IMovementQueue>();
+            networkedPosition = gameObject.GetComponent<NetworkedPosition>();
             AmmoCount = startAmmo;
             Disguise = startDisguise;
             bulletCount.SetText(AmmoCount.ToString());
@@ -78,9 +78,9 @@ namespace NPC.Scripts.Characters
             bulletCount.SetText(AmmoCount.ToString());
             
             
-            if (!_moving && movementQueue.nextMovement != Vector2.zero)
+            if (!_moving && _moveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(movementQueue.nextMovement.x, movementQueue.nextMovement.y), timeToMove));
+                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), timeToMove));
             }
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
@@ -110,14 +110,12 @@ namespace NPC.Scripts.Characters
             {
                 currentTime += Time.deltaTime / timeToMove;
                 targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
+                networkedPosition.Position = transform.position;
                 yield return null;
             }
-            
-            movementQueue.MoveComplete();
 
             if (_moveDirection != Vector2.zero)
             {
-                movementQueue.BroadcastMove(_moveDirection);
                 StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this.timeToMove));
             }
             else
@@ -241,17 +239,11 @@ namespace NPC.Scripts.Characters
                     moveDirection == Vector2.left || moveDirection == Vector2.right))
                 {
                     _moveDirection = moveDirection;
-                    
-                    if (!_moving)
-                    {
-                        movementQueue.BroadcastMove(moveDirection);
-                    }
                 }
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
             {
                 _moveDirection = Vector2.zero;
-                movementQueue.BroadcastMove(Vector2.zero);
             }
         }
 
