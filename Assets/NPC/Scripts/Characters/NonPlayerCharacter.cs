@@ -66,8 +66,11 @@ namespace NPC.Scripts.Characters
         {
             _gameManager = FindObjectOfType<GameManager>();
             _seeker = GetComponent<Seeker>();
-            InvokeRepeating(nameof(DetectPlayersAttempt), _detectionFrequency, _detectionFrequency);
-            InvokeRepeating(nameof(RandomSpeech), 10f, 10f);
+            
+            Vector2 frequency = new Vector2(Random.Range((_detectionFrequency - _detectionFrequency * .75f), _detectionFrequency), Random.Range(_detectionFrequency, _detectionFrequency + _detectionFrequency * .75f));
+
+            InvokeRepeating(nameof(DetectPlayersAttempt), frequency.x, frequency.x);
+            InvokeRepeating(nameof(RandomSpeech), frequency.y, frequency.y);
             onDeath.AddListener(StopMovement);
 
             _totalChance = _waitChance + _walkToCloseChance +
@@ -232,11 +235,6 @@ namespace NPC.Scripts.Characters
                 animationSpeed = 0f;
                 RollState();
             }
-        }
-
-        private static Vector2 MovePosition(Vector3 currentPos, Vector3 position)
-        {
-            return (position - currentPos).normalized;
         }
 
         private void StopMovement()

@@ -129,5 +129,10 @@ namespace NPC.Scripts.Characters
             speechTextMesh.SetText("");
             speechBubble.SetActive(false);
         }
+        
+        protected static Vector2 MovePosition(Vector3 currentPos, Vector3 position)
+        {
+            return (position - currentPos).normalized;
+        }
     }
 }

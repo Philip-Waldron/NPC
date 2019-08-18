@@ -131,11 +131,10 @@ namespace NPC.Scripts.Characters
             {
                 Vector2 moveDirection = context.ReadValue<Vector2>();
 
-                if (moveDirection == Vector2.up || moveDirection == Vector2.down ||
-                    moveDirection == Vector2.left || moveDirection == Vector2.right)
+                if (moveDirection == Vector2.up || moveDirection == Vector2.down || moveDirection == Vector2.left || moveDirection == Vector2.right)
                 {
                     _moveDirection = moveDirection;
-                    animationMoveDirection = _moveDirection;
+                    //animationMoveDirection = _moveDirection;
                 }
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
@@ -337,10 +336,11 @@ namespace NPC.Scripts.Characters
                 _moving = false;
                 yield break;
             }
-
+            
             _moving = true;
             Vector3 currentPos = targetTransform.position;
-
+            animationMoveDirection = MovePosition(currentPos, position);
+            
             float currentTime = 0f;
             while(currentTime < 1)
             {
