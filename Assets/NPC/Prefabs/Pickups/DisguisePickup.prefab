@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDuration: 5
   pickupBar: {fileID: 6647608604690443825}
+  pickupBarImage: {fileID: 7253908005601128289}
+  pickupBarSprite: {fileID: 21300000, guid: 4ed888557ebb44e48ac37fe3cae212a5, type: 3}
+  trapBarSprite: {fileID: 21300000, guid: 0f5c59c43d5af0a4db9f20ed74cb277f, type: 3}
   downloadParticleEffect: {fileID: 7245982541705081319, guid: 288f0bcfb9d8b9043a5c4b5f762424e8,
     type: 3}
   downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
@@ -120,5 +123,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7253908005601128289 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1939680577289462724, guid: 7c58c7da86937344a9d52e779bb3810d,
+    type: 3}
+  m_PrefabInstance: {fileID: 9097323820777704613}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

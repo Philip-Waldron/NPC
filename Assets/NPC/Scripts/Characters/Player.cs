@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NPC.Scripts.Items;
@@ -204,25 +205,38 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
-                IOrderedEnumerable<Collider2D> itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask).OrderBy(collider2D1 => typeof(ColliderDistance2D));
+                Array itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask);
+                
+                float minDistance = pickupRange;
+                Item selectedItem = null;
+
                 foreach (Collider2D itemCollider in itemColliders)
                 {
                     Item item = itemCollider.GetComponent<Item>();
-                    if (item != null && !item.Accessed)
+                    
+                    Debug.Log(item.name + ": " + Vector2.Distance(item.transform.position, transform.position) + " < " + minDistance);
+                    
+                    if (item != null && !item.Accessed && Vector2.Distance(item.transform.position, transform.position) < minDistance)
                     {
-                        switch (trapItem)
-                        {
-                            case true:
-                                item.Trapped = true;
-                                trapItem = false;
-                                ClearEquipment();
-                                break;
-                            default:
-                                item.PickupItem(this);
-                                break;
-                        }
-                        break;
+                        minDistance = Vector2.Distance(item.transform.position, transform.position);
+                        selectedItem = item;
+                        
+                        Debug.Log(selectedItem.name);
                     }
+                }
+
+                if (selectedItem == null) return;
+                
+                switch (trapItem)
+                {
+                    case true:
+                        selectedItem.SetTrap();
+                        trapItem = false;
+                        ClearEquipment();
+                        break;
+                    default:
+                        selectedItem.PickupItem(this);
+                        break;
                 }
             }
         }

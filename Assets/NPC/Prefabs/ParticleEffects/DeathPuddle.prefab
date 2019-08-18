@@ -103,7 +103,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76132615751093298}
   serializedVersion: 6
-  lengthInSec: 0.5
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -726,7 +726,7 @@ ParticleSystem:
     angle: 1
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.7
+    radiusThickness: 1
     donutRadius: 0.3
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -809,7 +809,7 @@ ParticleSystem:
     sphericalDirectionAmount: 1
     randomPositionAmount: 0
     radius:
-      value: 0.7
+      value: 0.5
       mode: 0
       spread: 0
       speed:
@@ -928,7 +928,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 50
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1306,7 +1306,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.0017453292
+      scalar: 0
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -2133,7 +2133,7 @@ ParticleSystem:
         m_RotationOrder: 4
     inWorldSpace: 1
   InheritVelocityModule:
-    enabled: 0
+    enabled: 1
     m_Mode: 0
     m_Curve:
       serializedVersion: 2
@@ -2846,7 +2846,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     separateAxes: 0
-    frequency: 0.5
+    frequency: 1
     damping: 1
     octaves: 1
     octaveMultiplier: 0.5
@@ -4856,7 +4856,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4913578151388250706}
   serializedVersion: 6
-  lengthInSec: 0.5
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -5479,7 +5479,7 @@ ParticleSystem:
     angle: 1
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.7
+    radiusThickness: 1
     donutRadius: 0.3
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -5562,7 +5562,7 @@ ParticleSystem:
     sphericalDirectionAmount: 1
     randomPositionAmount: 0
     radius:
-      value: 0.7
+      value: 0.5
       mode: 0
       spread: 0
       speed:
@@ -5681,7 +5681,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 50
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -6059,7 +6059,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.0017453292
+      scalar: 0
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -6886,7 +6886,7 @@ ParticleSystem:
         m_RotationOrder: 4
     inWorldSpace: 1
   InheritVelocityModule:
-    enabled: 0
+    enabled: 1
     m_Mode: 0
     m_Curve:
       serializedVersion: 2
@@ -7599,7 +7599,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     separateAxes: 0
-    frequency: 0.5
+    frequency: 1
     damping: 1
     octaves: 1
     octaveMultiplier: 0.5
@@ -9609,7 +9609,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5763196237809258577}
   serializedVersion: 6
-  lengthInSec: 0.5
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -10232,7 +10232,7 @@ ParticleSystem:
     angle: 1
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.7
+    radiusThickness: 1
     donutRadius: 0.3
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -10315,7 +10315,7 @@ ParticleSystem:
     sphericalDirectionAmount: 1
     randomPositionAmount: 0
     radius:
-      value: 0.7
+      value: 0.5
       mode: 0
       spread: 0
       speed:
@@ -10434,7 +10434,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 50
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -10812,7 +10812,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.0017453292
+      scalar: 0
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -11639,7 +11639,7 @@ ParticleSystem:
         m_RotationOrder: 4
     inWorldSpace: 1
   InheritVelocityModule:
-    enabled: 0
+    enabled: 1
     m_Mode: 0
     m_Curve:
       serializedVersion: 2
@@ -12352,7 +12352,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     separateAxes: 0
-    frequency: 0.5
+    frequency: 1
     damping: 1
     octaves: 1
     octaveMultiplier: 0.5

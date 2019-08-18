@@ -10,7 +10,10 @@ namespace NPC.Scripts.Items
     {
         [SerializeField, Range(0f, 30f)] public float pickupDuration = 5f;
         [SerializeField, Space(10)] protected Slider pickupBar;
-        [SerializeField] protected GameObject downloadParticleEffect;
+        [SerializeField] protected Image pickupBarImage;
+        [SerializeField] protected Sprite pickupBarSprite;
+        [SerializeField] protected Sprite trapBarSprite;
+        [SerializeField, Space(10)] protected GameObject downloadParticleEffect;
         [SerializeField] protected GameObject downloadTrapParticleEffect;
 
         public bool Accessed { get; private set; }
@@ -26,6 +29,7 @@ namespace NPC.Scripts.Items
         private void Awake()
         {
             itemSprite = GetComponent<SpriteRenderer>().sprite;
+            pickupBarImage.sprite = pickupBarSprite;
         }
         public abstract bool Pickup(Character character);
         
@@ -69,6 +73,12 @@ namespace NPC.Scripts.Items
             PickupValid = true;
             accessingPlayer = player;
             StartCoroutine(PickupDelay(player));
+        }
+
+        public void SetTrap()
+        {
+            Trapped = true;
+            pickupBarImage.sprite = trapBarSprite;
         }
 
         private IEnumerator PickupDelay(Player player)
