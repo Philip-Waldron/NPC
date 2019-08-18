@@ -1384,7 +1384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ipAddress: {fileID: 1926933003}
   portNumber: {fileID: 845038659}
-  DontChangeSceneOnConnect: 0
+  DontChangeSceneOnConnect: 1
   masterServerHost: 
   masterServerPort: 15940
   natServerHost: 
