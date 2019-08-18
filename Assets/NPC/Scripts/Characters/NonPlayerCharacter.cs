@@ -54,6 +54,7 @@ namespace NPC.Scripts.Characters
             InvokeRepeating(nameof(DetectPlayersAttempt), _detectionFrequency, _detectionFrequency);
             InvokeRepeating(nameof(RandomSpeech), 10f, 10f);
             WalkToRandomPoint();
+            onDeath.AddListener(StopMovement);
         }
 
         private void RandomSpeech()
@@ -137,6 +138,11 @@ namespace NPC.Scripts.Characters
                 _currentWaypoint++;
                 StartCoroutine(MoveToPosition(targetTransform, _path.vectorPath[_currentWaypoint], _timeToMove));
             }
+        }
+
+        private void StopMovement()
+        {
+            StopAllCoroutines();
         }
     }
 }

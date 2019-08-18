@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -32,6 +33,8 @@ namespace NPC.Scripts.Characters
         [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
         [SerializeField] private GameObject deathSplatterParticleEffect;
         [SerializeField] private GameObject bulletHole;
+
+        [HideInInspector] public UnityEvent onDeath;
         
         protected Vector2 animationMoveDirection = Vector2.zero;
         protected float animationSpeed;
@@ -80,6 +83,7 @@ namespace NPC.Scripts.Characters
         
         public void Damage(Vector3 target, Vector2 hitPoint)
         {
+            onDeath.Invoke();
             isDead = true;
             Instantiate(deathPuddleParticleEffect, transform);
             GameObject splatter = Instantiate(deathSplatterParticleEffect, transform);
