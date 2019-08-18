@@ -60,6 +60,10 @@ namespace NPC.Scripts.Characters
         [Header("Emote")]
         private float _emoteDuration = 2f;
         
+        [Header("Other Player Character"), Tooltip("List of GameObjects to be disabled when Other Player")]
+        [SerializeField] private List<GameObject> otherPlayerObjects = new List<GameObject>();
+        [SerializeField] private PlayerInput playerInput;
+        
         private void Start()
         {
             AdjustAmmo();
@@ -69,6 +73,16 @@ namespace NPC.Scripts.Characters
             SetupLineRenderer();
             SetupParticleSystem();
         }
+
+        public void MakeOtherPlayerCharacter()
+        {
+            playerInput.enabled = false;
+            foreach (GameObject otherPlayerObject in otherPlayerObjects)
+            {
+                otherPlayerObject.SetActive(false);
+            }
+        }
+        
         private void SetupLineRenderer()
         {
             _bulletLine = gameObject.AddComponent<LineRenderer>();
