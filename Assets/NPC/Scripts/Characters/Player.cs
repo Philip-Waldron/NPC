@@ -205,11 +205,11 @@ namespace NPC.Scripts.Characters
                     IDamageable target = hit.transform.GetComponent<IDamageable>();
                     if (target != null) 
                     {
-                        target.Damage(direction, hit.point);
-                        if (target is Player)
+                        if (target is Player && !hit.collider.GetComponent<Player>().IsDead)
                         {
                             hitPlayer = true;
                         }
+                        target.Damage(direction, hit.point);
                     }
                     else
                     {
