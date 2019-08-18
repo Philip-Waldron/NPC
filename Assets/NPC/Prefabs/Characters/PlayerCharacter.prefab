@@ -514,6 +514,11 @@ MonoBehaviour:
     type: 3}
   bulletHole: {fileID: 7245982541705081319, guid: 92ad4855a7596da41bd33724bc84ceaf,
     type: 3}
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   AmmoCount: 1
   _bulletChargeSprite: {fileID: 4807289715813367792, guid: e40d8b1837c88644086a43ff6d1b4a21,
     type: 3}
@@ -531,6 +536,9 @@ MonoBehaviour:
   _disguiseBar: {fileID: 515758332961612954}
   _elapsedTime: 0
   _timeToMove: 0.2
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &2554529943227952478
 MonoBehaviour:
   m_ObjectHideFlags: 0

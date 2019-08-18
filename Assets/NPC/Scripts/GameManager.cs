@@ -30,10 +30,8 @@ public class GameManager : MonoBehaviour
     public GameObject NonPlayerCharacterPrefab;
 
     [Header("Zone Manager")]
-    [SerializeField]
-    private Tilemap _tilemap;
-    [SerializeField]
-    private Zone[] Zones;
+    [SerializeField] public Tilemap _tilemap;
+    [SerializeField] private Zone[] Zones;
     
     public List<KeyValuePair<Zone, Vector3>> _validSpawnPositions = new List<KeyValuePair<Zone, Vector3>>();
     public List<KeyValuePair<Zone, Vector3>> _validMovePositions = new List<KeyValuePair<Zone, Vector3>>();

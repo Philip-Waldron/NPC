@@ -49,6 +49,7 @@ namespace NPC.Scripts.Characters
 
         [Header("Movement")]
         [SerializeField, Range(.1f, 1f)] private float _timeToMove;
+        [SerializeField] private LayerMask obstacleLayer;
 
         private Vector2 _moveDirection;
         private bool _moving;
@@ -295,9 +296,17 @@ namespace NPC.Scripts.Characters
         }
         private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
         {
+            bool valid = ValidMove(targetTransform.position);
+            if (!valid)
+            {
+                animationSpeed = 0;
+                _moving = false;
+                yield break;
+            }
+
             _moving = true;
             Vector3 currentPos = targetTransform.position;
-            
+
             float currentTime = 0f;
             while(currentTime < 1)
             {
@@ -311,7 +320,7 @@ namespace NPC.Scripts.Characters
             if (_moveDirection != Vector2.zero)
             {
                 animationSpeed = 1;
-                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), this._timeToMove));
+                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
             }
             else
             {
@@ -319,6 +328,13 @@ namespace NPC.Scripts.Characters
                 _moving = false;
             }
         }
+
+        private bool ValidMove(Vector3 position)
+        {
+            bool valid = !Physics2D.Raycast(position, _moveDirection, _moveDirection.magnitude, obstacleLayer);
+            return valid;
+        }
+        
         private IEnumerator FlashLineRenderer(float flashTime, int flashCount, Color flashColor, Color baseColor, bool disableLineRenderer = false)
         {
             int count = 0;

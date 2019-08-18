@@ -68030,6 +68030,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8413109758330679113, guid: fc3ea58be1c4f324eb66a2251b4bf606,
+        type: 3}
+      propertyPath: m_TagString
+      value: GameController
+      objectReference: {fileID: 0}
     - target: {fileID: 8413109758330679115, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -68093,7 +68098,7 @@ PrefabInstance:
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: _npcCount
-      value: 100
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc3ea58be1c4f324eb66a2251b4bf606, type: 3}
