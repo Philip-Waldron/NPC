@@ -13,6 +13,8 @@ namespace NPC.Scripts.Characters
     {
         [Header("Ammo")]
         [SerializeField, Range(1, 3)] public int AmmoCount = 1;
+        [SerializeField, Range(1f, 10f)] public float _shootRange;
+        [SerializeField] private GameObject _laserParticleEffect;
         [SerializeField] private GameObject _bulletChargeSprite;
         [SerializeField] private Transform _bulletCharges;
         [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
@@ -24,6 +26,7 @@ namespace NPC.Scripts.Characters
         private LineRenderer _bulletLine;
         private Coroutine _lineRendererAnimation;
         private Collider2D _thisCollider2D;
+        private readonly List<ParticleSystem> _laserParticleSystem = new List<ParticleSystem>();
         
         [Header("Items")]
         [SerializeField, Space(10f), Range(.1f, 3f)]
@@ -64,14 +67,28 @@ namespace NPC.Scripts.Characters
             _startDisguise = _disguiseIntegrity;
             timeScalar = _disguiseDuration / MaxDisguiseIntegrity;
             SetupLineRenderer();
+            SetupParticleSystem();
         }
         private void SetupLineRenderer()
         {
             _bulletLine = gameObject.AddComponent<LineRenderer>();
             _bulletLine.positionCount = 2;
-            _bulletLine.startWidth = 0.05f;
+            _bulletLine.startWidth = 0.025f;
             _bulletLine.material = new Material(Shader.Find("Unlit/Color")) { color = Color.cyan };
             _bulletLine.alignment = LineAlignment.TransformZ;
+        }
+
+        private void SetupParticleSystem()
+        {
+            _laserParticleEffect = Instantiate(_laserParticleEffect, transform);
+            foreach (Transform child in _laserParticleEffect.transform)
+            {
+                ParticleSystem particle = child.GetComponent<ParticleSystem>();
+                if (particle != null)
+                {
+                    _laserParticleSystem.Add(particle);
+                }
+            }
         }
         private void Update()
         {
@@ -88,11 +105,8 @@ namespace NPC.Scripts.Characters
 
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
             {
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
-                Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
-                Vector3 position = transform.position;
+                DrawLineRenderer();
                 
-                _bulletLine.SetPositions(new Vector3[] { position, mousePositionNormalised });
                 _chargingFor += Time.deltaTime;
 
                 if (_chargingFor >= _bulletChargeTime && !_chargeReady)
@@ -104,6 +118,10 @@ namespace NPC.Scripts.Characters
                 
                     _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.2f, 1, Color.white, Color.cyan));
                     _chargeReady = true;
+                    foreach (ParticleSystem particle in _laserParticleSystem)
+                    {
+                        particle.Play();
+                    }
                 }
             }
         }
@@ -135,7 +153,7 @@ namespace NPC.Scripts.Characters
                     _bulletLine.material.color = Color.cyan;
                 }
 
-                _bulletLine.SetPositions(new Vector3[] { transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y)) });
+                DrawLineRenderer();
                 _bulletLine.enabled = true;
                 _bulletCharging = true;
                 _startBulletChargeFrame = Time.frameCount;
@@ -153,7 +171,7 @@ namespace NPC.Scripts.Characters
                 {
                     _bulletLine.enabled = false;
                 }
-
+                
                 _bulletCharging = false;
                 _chargeReady = false;
                 _chargingFor = 0;
@@ -166,6 +184,10 @@ namespace NPC.Scripts.Characters
                 StopCoroutine(_lineRendererAnimation);
                 _bulletLine.material.color = Color.cyan;
             }
+            foreach (ParticleSystem particle in _laserParticleSystem)
+            {
+                particle.Stop();
+            }
         
             _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.1f, 3, Color.red, Color.cyan, true));
 
@@ -173,7 +195,7 @@ namespace NPC.Scripts.Characters
             Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
             Vector3 position = transform.position;
             Vector3 direction = mousePositionNormalised - position;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, Vector2.Distance(mousePosition, position)).OrderBy(h => h.distance).ToArray();
+            RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, _shootRange).OrderBy(h => h.distance).ToArray();
 
             bool hitPlayer = false;
             foreach (RaycastHit2D hit in hits)
@@ -201,6 +223,18 @@ namespace NPC.Scripts.Characters
                 AmmoCount--;
                 AdjustAmmo();
             }
+        }
+        private void DrawLineRenderer()
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
+            Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
+            Vector3 position = transform.position;
+
+            Vector3 direction = (mousePositionNormalised - position).normalized * _shootRange;
+            Vector3 endPoint = position + direction;
+
+            _laserParticleEffect.transform.right = direction;
+            _bulletLine.SetPositions(new Vector3[] { position, endPoint });
         }
         public void Interact(InputAction.CallbackContext context)
         {
@@ -312,8 +346,7 @@ namespace NPC.Scripts.Characters
             {
                 currentTime += Time.deltaTime / timeToMove;
                 targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
-                _bulletLine.SetPositions(new Vector3[] { transform.position, mousePosition });
+                DrawLineRenderer();
                 yield return null;
             }
 

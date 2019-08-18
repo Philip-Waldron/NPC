@@ -233,21 +233,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
-        type: 3}
-      propertyPath: _disguiseDuration
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
-        type: 3}
-      propertyPath: _disguiseIntegrity
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
-        type: 3}
-      propertyPath: AmmoCount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5291657032341317854, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -68098,7 +68083,12 @@ PrefabInstance:
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: _npcCount
-      value: 5
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
+        type: 3}
+      propertyPath: _otherPlayerCount
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc3ea58be1c4f324eb66a2251b4bf606, type: 3}
