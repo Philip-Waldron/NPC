@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Unity;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -90,6 +92,12 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
+    {
+        var playerScript = NetworkManager.Instance.InstantiatePlayer();
+        playerScript.networkObject.AssignOwnership(player);
     }
 
     public void Spawn(GameObject gameObjectToSpawn)
