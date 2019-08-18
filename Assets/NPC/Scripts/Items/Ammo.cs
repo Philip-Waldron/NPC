@@ -5,7 +5,8 @@ namespace NPC.Scripts.Items
 {
     public class Ammo : Item
     {
-        [SerializeField, Range(1, 10), Space(10)]
+        [Header("Ammo")]
+        [SerializeField, Range(1, 10)]
         private int ammoCount = 1;
         
         public override bool Pickup(Character character)
