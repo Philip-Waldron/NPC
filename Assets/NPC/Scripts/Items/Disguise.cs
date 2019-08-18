@@ -5,6 +5,7 @@ namespace NPC.Scripts.Items
 {
     public class Disguise : Item
     {
+        [Header("Disguise")]
         [SerializeField, Range(1, 100)] private float disguiseBuff = 20f;
         
         public override bool Pickup(Character character)

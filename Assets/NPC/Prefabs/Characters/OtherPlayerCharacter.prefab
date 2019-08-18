@@ -78,6 +78,16 @@ PrefabInstance:
       propertyPath: itemMask.m_Bits
       value: 1024
       objectReference: {fileID: 0}
+    - target: {fileID: 5291657032341317854, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291657032341317854, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3559188853383001002, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -98,6 +108,31 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8178181114743947702, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8652572116894795596, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8652572116894795596, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8652572116894795596, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8804198101171841996, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2938262385119334345, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: m_Name
@@ -107,6 +142,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2651586330853848326, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4476910686212561646, guid: b8eed74d086271842abf3db6d9d73c47, type: 3}

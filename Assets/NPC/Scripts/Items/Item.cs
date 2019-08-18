@@ -8,14 +8,31 @@ namespace NPC.Scripts.Items
 {
     public abstract class Item : MonoBehaviour, IDamageable
     {
-        [SerializeField, Range(0f, 30f)] public float pickupDuration = 5f;
-        [SerializeField, Space(10)] protected Slider pickupBar;
-        [SerializeField] protected Image pickupBarImage;
-        [SerializeField] protected Sprite pickupBarSprite;
-        [SerializeField] protected Sprite trapBarSprite;
-        [SerializeField, Space(10)] protected GameObject downloadParticleEffect;
-        [SerializeField] protected GameObject downloadTrapParticleEffect;
-
+        [Header("Pickup")]
+        [SerializeField, Range(0f, 30f)] 
+        public float pickupDuration = 5f;
+        [Header("References")]
+        [SerializeField, Space(10)] 
+        protected Slider pickupBar;
+        [SerializeField] 
+        protected Image pickupBarImage;
+        [SerializeField] 
+        protected Sprite pickupBarSprite;
+        [SerializeField] 
+        protected Sprite trapBarSprite;
+        [SerializeField, Space(10)]
+        protected GameObject downloadParticleEffect;
+        [SerializeField]
+        protected GameObject downloadTrapParticleEffect;
+        [Header("Item Characteristics")]
+        [SerializeField] private ItemRarity itemRarity;
+        public enum ItemRarity
+        {
+            Common,
+            Uncommon,
+            Rare,
+            UltraRare
+        }
         public bool Accessed { get; private set; }
         public bool Trapped { get; set; }
         

@@ -8,9 +8,10 @@ namespace NPC.Scripts.Items
 {
     public class Scanner : Item
     {
+        [Header("Scanner")]
         [SerializeField] private float scanLineDuration = 3f;
         [SerializeField] private float revealDuration = 10f;
-        [SerializeField] private GameObject particleEffect;
+        [SerializeField, Space(10)] private GameObject particleEffect;
 
         public override bool Pickup(Character character)
         {

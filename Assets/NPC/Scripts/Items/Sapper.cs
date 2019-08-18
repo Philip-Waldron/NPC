@@ -7,10 +7,11 @@ namespace NPC.Scripts.Items
 {
     public class Sapper : Item
     {
+        [Header("Sapper")]
         [SerializeField] private float sapperEffectRadius = 3f;
         [SerializeField] private float sapperEffectDuration = 3f;
         [SerializeField, Range(0, 1)] private float sapperStrength = .5f;
-        [SerializeField] private GameObject particleEffect;
+        [SerializeField, Space(10)] private GameObject particleEffect;
         [SerializeField] private LayerMask _playerMask;
 
         public override bool Pickup(Character character)

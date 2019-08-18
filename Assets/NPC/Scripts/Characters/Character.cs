@@ -43,7 +43,7 @@ namespace NPC.Scripts.Characters
         private static readonly int Speed = Animator.StringToHash("Speed");
         private static readonly int Dead = Animator.StringToHash("Dead");
 
-        protected bool isDead;
+        public bool IsDead { get; set; }
 
         private void LateUpdate()
         {
@@ -84,7 +84,7 @@ namespace NPC.Scripts.Characters
         public void Damage(Vector3 target, Vector2 hitPoint)
         {
             onDeath.Invoke();
-            isDead = true;
+            IsDead = true;
             Instantiate(deathPuddleParticleEffect, transform);
             GameObject splatter = Instantiate(deathSplatterParticleEffect, transform);
             GameObject bulletHole = Instantiate(this.bulletHole, transform);
@@ -128,6 +128,11 @@ namespace NPC.Scripts.Characters
             yield return new WaitForSeconds(duration);
             speechTextMesh.SetText("");
             speechBubble.SetActive(false);
+        }
+        
+        protected static Vector2 MovePosition(Vector3 currentPos, Vector3 position)
+        {
+            return (position - currentPos).normalized;
         }
     }
 }
