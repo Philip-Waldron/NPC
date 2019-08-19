@@ -25,13 +25,13 @@ namespace NPC.Scripts.Items
         [SerializeField]
         protected GameObject downloadTrapParticleEffect;
         [Header("Item Characteristics")]
-        [SerializeField] private ItemRarity itemRarity;
+        public ItemRarity Rarity;
         public enum ItemRarity
         {
-            Common,
-            Uncommon,
-            Rare,
-            UltraRare
+            Common = 60,
+            Uncommon = 25,
+            Rare = 10,
+            UltraRare = 5
         }
         public bool Accessed { get; private set; }
         public bool Trapped { get; set; }

@@ -52,88 +52,116 @@ MonoBehaviour:
   _npcCount: 100
   NonPlayerCharacterPrefab: {fileID: 3926907724607441394, guid: 525913c4cc1f91d49abc5d575c0272d1,
     type: 3}
-  _tilemap: {fileID: 0}
+  Items:
+  - {fileID: 6917399882403489544, guid: 2e6c28327d832c44885f3a7bb17fc202, type: 3}
+  - {fileID: 4750355835825030108, guid: cc6a90aa15fc20148a2c285fbe096701, type: 3}
+  - {fileID: 6170848774988805998, guid: 4b95c3ffdf850b5468f59e0100ffd381, type: 3}
+  - {fileID: 7842114992730812468, guid: 30ed6ac06f9796041a4ff5bcfd634cdd, type: 3}
+  - {fileID: 8535408051630531515, guid: df3756c962fdefb44bf88dd72e4a337f, type: 3}
+  Tilemap: {fileID: 0}
   Zones:
   - Tile: {fileID: 11400000, guid: 4d734a13928f1f549b58764db4fc4b4a, type: 2}
-    ItemsInZone: 0
+    ItemsInZone: 1
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: bb836822c553a7d47ae8f019ec8311ee, type: 2}
-    ItemsInZone: 0
+    ItemsInZone: 2
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: c32fd507653e7a84ea412359764e1e07, type: 2}
-    ItemsInZone: 0
+    ItemsInZone: 3
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 52bffdb8b2088cb4b8e4e7553b2af989, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 0d49c893a2e199c43a4cd6e3d0b69d4c, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: d3cfc5faff6caa640a49c50b8dbcecdd, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: c48d7fe78e211444ba25d0cf822b708a, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: ec9cbf0face873341998596c510da24e, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: b14c9f0ac84ab924db91206868c39874, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 06911e37de9fc80448678fbca7773973, type: 2}
-    ItemsInZone: 0
+    ItemsInZone: 1
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: bc938c1666550004fb629cdc5120112b, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 8f81b1ff9a4d8c44994e25db48716e0c, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 656e0b11b43f4234da8a72c96f9bde2f, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: f88da980a284ab748bef345f6c9232e9, type: 2}
-    ItemsInZone: 0
+    ItemsInZone: 2
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 0700e4c80df468d4fad62945a402335d, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 92b7e285d8c400f40b77c938fe5ac71d, type: 2}
-    ItemsInZone: 0
+    ItemsInZone: 3
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: d34aaf35d41be2b41a8e0e8ef843a09a, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 0f6f50144df434647bc1c35d83420157, type: 2}
-    ItemsInZone: 0
+    ItemsInZone: 4
     CharacterCanSpawn: 1
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 61e00ff4fc0abe7408d0943dc469ade2, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 0
     PathingTarget: 1
+    TilePositions: []
   - Tile: {fileID: 11400000, guid: 4c3cee4fbc4add74fa5591ec3e0feeca, type: 2}
     ItemsInZone: 0
     CharacterCanSpawn: 0
     PathingTarget: 0
+    TilePositions: []
+  ValidSpawnPositions: []
+  ValidMovePositions: []
 --- !u!1 &8413109758872095282
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +188,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8413109758872095282}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -27.384743, y: -1.5384164, z: 35.533646}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8413109758330679115}

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Pathfinding;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -26,7 +27,6 @@ namespace NPC.Scripts.Characters
         [Header("Pathfinding")]
         [SerializeField]
         private Vector2 _waitTimeRange = new Vector2(1, 5);
-
         [SerializeField]
         private Vector2Int _walkCloseNodeRange = new Vector2Int(1, 4);
         [SerializeField]
@@ -82,7 +82,7 @@ namespace NPC.Scripts.Characters
 
         private void RollState()
         {
-            float roll = Random.Range(1, _totalChance);
+            float roll = Random.Range(0, _totalChance);
             // Wait.
             if (roll < _waitChance)
             {
@@ -127,7 +127,7 @@ namespace NPC.Scripts.Characters
             // Walk to random position.
             else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance)
             {
-                Vector3 targetPosition = _gameManager.ValidMovePositions[Random.Range(0, _gameManager.ValidMovePositions.Count - 1)].Value;
+                Vector3 targetPosition = _gameManager.ValidMovePositions[Random.Range(0, _gameManager.ValidMovePositions.Count - 1)];
                 WalkToPosition(targetPosition);
             }
             // Walk in room.
@@ -135,12 +135,12 @@ namespace NPC.Scripts.Characters
             {
                 Vector3Int tilePosition = _gameManager.Tilemap.WorldToCell(transform.position);
                 Tile tile = (Tile)_gameManager.Tilemap.GetTile(tilePosition);
-                List<Vector3> roomTiles = _gameManager.Rooms[tile];
-                Vector3 targetPosition = _gameManager.Rooms[tile][Random.Range(0, roomTiles.Count)];
+                List<Vector3> roomTiles = _gameManager.Zones.First(x => x.Tile == tile).TilePositions;
+                Vector3 targetPosition = roomTiles[Random.Range(0, roomTiles.Count)];
                 WalkToPosition(targetPosition);
             }
             // Walk to item. TODO: implement.
-            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance + _walkToItemChance)
+            else // if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance + _walkToItemChance)
             {
                 float waitTime = Random.Range(_waitTimeRange.x, _waitTimeRange.y);
                 StartCoroutine(Wait(waitTime));

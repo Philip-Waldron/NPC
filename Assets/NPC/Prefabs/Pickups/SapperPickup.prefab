@@ -21,7 +21,7 @@ MonoBehaviour:
     type: 3}
   downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
     type: 3}
-  itemRarity: 1
+  Rarity: 25
   sapperEffectRadius: 3
   sapperEffectDuration: 3
   sapperStrength: 0.5
