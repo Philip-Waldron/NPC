@@ -10,7 +10,7 @@ namespace NPC.Scripts.Networking
         public void ServerLoaded(NetWorker netWorker)
         {
             _netWorker = netWorker;
-            SceneManager.sceneLoaded += SceneLoaded;
+//            SceneManager.sceneLoaded += SceneLoaded;
             SceneManager.LoadScene("Networking_Scene");
         }
 

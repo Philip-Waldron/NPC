@@ -346,7 +346,7 @@ namespace NPC.Scripts.Characters
                 Instantiate(_bulletChargeSprite, _bulletCharges);
             }
         }
-        private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
+        public IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
         {
             bool valid = ValidMove(targetTransform.position);
             if (!valid)

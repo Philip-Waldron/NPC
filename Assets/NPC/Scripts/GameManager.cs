@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
             Spawn(otherPlayerPrefab);
         }
         
+        SpawnPlayer();
+        
         // Spawn(playerPrefab);
     }
 
@@ -139,15 +141,16 @@ public class GameManager : MonoBehaviour
     
     public void SpawnPlayer()
     {
-        var position = RetrieveRandomValidPosition();
-        NetworkManager.Instance.InstantiatePlayer(0);
+        Vector3 position = RetrieveRandomValidPosition();
+        NetworkManager.Instance.InstantiatePlayer(0, position);
     }
 
     public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
     {
         MainThreadManager.Run(() =>
         {
-            var playerScript = NetworkManager.Instance.InstantiatePlayer(0);
+            Vector3 position = new Vector3(0.5f, 0.5f, 0);
+            var playerScript = NetworkManager.Instance.InstantiatePlayer(0, position);
             playerScript.networkObject.AssignOwnership(player);
         });
     }

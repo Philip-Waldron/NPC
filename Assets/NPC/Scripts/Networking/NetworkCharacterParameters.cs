@@ -24,19 +24,18 @@ namespace NPC.Scripts.Networking
         private Vector2 _moveDirection;
         private Vector2 _gridPosition;
 
+        private Player _playerScript;
+
         private void Start()
         {
-            if (!networkObject.IsOwner)
-            {
-                gameObject.GetComponent<Player>().MakeOtherPlayerCharacter();
-            }
+            _playerScript = gameObject.GetComponent<Player>();
         }
 
         private void Update()
         {
-            if (!networkObject.IsOwner)
+            if (!networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
             {
-                gameObject.transform.position = networkObject.gridPosition;
+                StartCoroutine(_playerScript.MoveToPosition(gameObject.transform, networkObject.gridPosition, 0.3f));
             }
         }
 

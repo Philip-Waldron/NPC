@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0,0.15]")]
+	[GeneratedInterpol("{\"inter\":[0,0]")]
 	public partial class PlayerNetworkObject : NetworkObject
 	{
 		public const int IDENTITY = 7;
@@ -49,7 +49,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		[ForgeGeneratedField]
 		private Vector2 _gridPosition;
 		public event FieldEvent<Vector2> gridPositionChanged;
-		public InterpolateVector2 gridPositionInterpolation = new InterpolateVector2() { LerpT = 0.15f, Enabled = true };
+		public InterpolateVector2 gridPositionInterpolation = new InterpolateVector2() { LerpT = 0f, Enabled = false };
 		public Vector2 gridPosition
 		{
 			get { return _gridPosition; }
