@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Items;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -132,6 +134,36 @@ public class GameManager : MonoBehaviour
                     zone.TilePositions.Add(pathingTarget);
                 }
             }
+        }
+    }
+    
+    public void SpawnPlayer()
+    {
+        var position = RetrieveRandomValidPosition();
+        NetworkManager.Instance.InstantiatePlayer(0);
+    }
+
+    public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
+    {
+        MainThreadManager.Run(() =>
+        {
+            var playerScript = NetworkManager.Instance.InstantiatePlayer(0);
+            playerScript.networkObject.AssignOwnership(player);
+        });
+    }
+    
+    public Vector3 RetrieveRandomValidPosition()
+    {
+        if (ValidSpawnPositions.Count > 0)
+        {
+            int index = Random.Range(0, ValidSpawnPositions.Count);
+            ValidSpawnPositions.RemoveAt(index);
+            return ValidSpawnPositions[index];
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to spawn an object with no remaining spawn positions!");
+            return Vector3.zero;
         }
     }
 
