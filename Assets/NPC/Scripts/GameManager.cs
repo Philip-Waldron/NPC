@@ -176,7 +176,7 @@ namespace NPC.Scripts
             else
             {
                 Debug.LogWarning("Attempted to spawn an object with no remaining spawn positions!");
-                return Vector3.zero;
+                return new Vector3(0.5f, 0.5f, 0);
             }
         }
         /// <summary>
