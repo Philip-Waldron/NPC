@@ -207,6 +207,31 @@ PrefabInstance:
       propertyPath: orthographic size
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3559188853383001002, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3559188853383001002, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3559188853383001002, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3559188853383001002, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 613188337665355895, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8eed74d086271842abf3db6d9d73c47, type: 3}
 --- !u!1001 &1153667754
@@ -797,6 +822,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2658168806306073319, guid: a296fbbd984561d41bbcbca1e7acf241,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a296fbbd984561d41bbcbca1e7acf241, type: 3}
 --- !u!1001 &5323066471758508603
@@ -963,12 +993,12 @@ PrefabInstance:
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: _npcCount
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: _otherPlayerCount
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
