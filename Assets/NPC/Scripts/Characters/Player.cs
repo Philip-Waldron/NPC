@@ -240,6 +240,9 @@ namespace NPC.Scripts.Characters
             {
                 AmmoCount--;
                 AdjustAmmo();
+            }
+            else
+            {
                 AdjustDisguise(MaxDisguiseIntegrity);
             }
         }
