@@ -24,6 +24,14 @@ namespace NPC.Scripts.Networking
         private Vector2 _moveDirection;
         private Vector2 _gridPosition;
 
+        private void Start()
+        {
+            if (!networkObject.IsOwner)
+            {
+                gameObject.GetComponent<Player>().MakeOtherPlayerCharacter();
+            }
+        }
+
         private void Update()
         {
             if (!networkObject.IsOwner)

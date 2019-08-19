@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NPC.Scripts.Items;
+using NPC.Scripts.Networking;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -63,9 +64,13 @@ namespace NPC.Scripts.Characters
         [Header("Other Player Character"), Tooltip("List of GameObjects to be disabled when Other Player")]
         [SerializeField] private List<GameObject> otherPlayerObjects = new List<GameObject>();
         [SerializeField] private PlayerInput playerInput;
+
+        public NetworkCharacterParameters networkedParameters;
         
         private void Start()
         {
+            networkedParameters = gameObject.GetComponent<NetworkCharacterParameters>();
+            
             AdjustAmmo();
             _thisCollider2D = transform.GetComponent<Collider2D>();
             _startDisguise = _disguiseIntegrity;
@@ -354,6 +359,8 @@ namespace NPC.Scripts.Characters
             _moving = true;
             Vector3 currentPos = targetTransform.position;
             animationMoveDirection = MovePosition(currentPos, position);
+            
+            networkedParameters.GridPosition = position;
             
             float currentTime = 0f;
             while(currentTime < 1)

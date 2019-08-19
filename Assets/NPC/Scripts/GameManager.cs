@@ -101,9 +101,11 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
     {
-        var position = RetrieveRandomValidPosition();
-        var playerScript = NetworkManager.Instance.InstantiatePlayer(0);
-        playerScript.networkObject.AssignOwnership(player);
+        MainThreadManager.Run(() =>
+        {
+            var playerScript = NetworkManager.Instance.InstantiatePlayer(0);
+            playerScript.networkObject.AssignOwnership(player);
+        });
     }
 
     public Vector3 RetrieveRandomValidPosition()
