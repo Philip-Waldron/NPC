@@ -63,11 +63,11 @@
                 },
                 {
                     "name": "Interact",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "ba62ce30-bb59-48fc-88d7-1406ed20b630",
-                    "expectedControlType": "",
+                    "expectedControlType": "Double",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": ""
                 },
                 {
                     "name": "UseItem",
@@ -269,10 +269,10 @@
                 {
                     "name": "",
                     "id": "03b426bd-6c59-4223-81c1-5ec5e297f208",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false

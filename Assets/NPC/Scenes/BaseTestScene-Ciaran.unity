@@ -190,7 +190,7 @@ PrefabInstance:
     - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: pickupRange
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
@@ -449,12 +449,12 @@ PrefabInstance:
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: _npcCount
-      value: 100
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: _otherPlayerCount
-      value: 100
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}

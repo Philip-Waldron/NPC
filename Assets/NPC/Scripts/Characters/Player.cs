@@ -34,6 +34,8 @@ namespace NPC.Scripts.Characters
         public float pickupRange;
         [SerializeField] public LayerMask itemMask;
         [SerializeField] private SpriteRenderer _inventorySlot;
+        private bool _validItemPickup;
+        public bool HoldingPickupButton { get; set; }
         
         public bool trapItem { get; set; }
         private readonly List<Item> _inventory = new List<Item>();
@@ -261,7 +263,18 @@ namespace NPC.Scripts.Characters
         }
         public void Interact(InputAction.CallbackContext context)
         {
-            if (context.action.triggered && !IsDead)
+            // Button States
+            if (context.started)
+            {
+                HoldingPickupButton = true;
+            }
+            if (context.canceled)
+            {
+                HoldingPickupButton = false;
+            }
+            
+            // Interactions
+            if (context.started && !IsDead)
             {
                 Array itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask);
                 

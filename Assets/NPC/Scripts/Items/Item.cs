@@ -79,12 +79,13 @@ namespace NPC.Scripts.Items
 
         private bool VerifyPickup(Player player)
         {
-            bool valid = Vector2.Distance(player.transform.position, transform.position) <= player.pickupRange;
+            bool valid = Vector2.Distance(player.transform.position, transform.position) <= player.pickupRange && 
+                         player.HoldingPickupButton;
+
+            Debug.Log((Vector2.Distance(player.transform.position, transform.position) <= player.pickupRange) + ", " + player.HoldingPickupButton);
             if (!valid) // makes sure you have to stay within range for the whole countdown
             {
                 StopAllCoroutines();
-                Debug.Log("Stop the thing!");
-                //StopCoroutine(PickupDelay(player));
             }
             return valid;
         }

@@ -3,9 +3,16 @@ guid: 4dbbc2b09a8c54e4eb5aec63d470312e
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - playerPrefab: {fileID: 8091573288568294791, guid: b8eed74d086271842abf3db6d9d73c47,
+      type: 3}
+  - otherPlayerPrefab: {fileID: 7753008695771339744, guid: 7ae89d6a01b5de5439149a98e3bbdc26,
+      type: 3}
+  - NonPlayerCharacterPrefab: {fileID: 3926907724607441394, guid: 525913c4cc1f91d49abc5d575c0272d1,
+      type: 3}
+  - Tilemap: {instanceID: 0}
   executionOrder: 0
-  icon: {instanceID: 0}
+  icon: {fileID: 2800000, guid: 9c48b68fc96c6ea4aa1ffd9cdf03bde1, type: 3}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

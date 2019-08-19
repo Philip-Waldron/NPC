@@ -207,7 +207,16 @@ namespace NPC.Scripts
             {
                 int index = Random.Range(0, ValidSpawnPositions.Count);
                 GameObject spawnedPlayer = Instantiate(gameObjectToSpawn, ValidSpawnPositions[index], Quaternion.identity, null);
-                spawnedPlayer.GetComponent<Character>().animator.runtimeAnimatorController = AnimatorControllers[Random.Range(0, AnimatorControllers.Count)];
+                Character character = spawnedPlayer.GetComponent<Character>();
+                character.animator.runtimeAnimatorController = AnimatorControllers[Random.Range(0, AnimatorControllers.Count)];
+                
+                /*
+                if (character is Player)
+                {
+                    spawnedPlayer.GetComponent<Player>().MakeOtherPlayerCharacter();
+                }
+                */
+                
                 ValidSpawnPositions.RemoveAt(index);
             }
             else
