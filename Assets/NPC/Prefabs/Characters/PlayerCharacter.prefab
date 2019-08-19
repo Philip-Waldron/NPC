@@ -560,7 +560,7 @@ MonoBehaviour:
   - {fileID: 8804198101171841996}
   - {fileID: 2938262385119334345}
   playerInput: {fileID: 2554529943227952478}
-  networkedParameters: {fileID: 0}
+  networkedParameters: {fileID: -5754414700506599093}
 --- !u!114 &2554529943227952478
 MonoBehaviour:
   m_ObjectHideFlags: 0

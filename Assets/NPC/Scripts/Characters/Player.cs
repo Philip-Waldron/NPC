@@ -240,6 +240,7 @@ namespace NPC.Scripts.Characters
             {
                 AmmoCount--;
                 AdjustAmmo();
+                AdjustDisguise(MaxDisguiseIntegrity);
             }
         }
         private void DrawLineRenderer()
@@ -311,6 +312,11 @@ namespace NPC.Scripts.Characters
             _inventory.Clear();
             _inventorySlot.sprite = null;
         }
+        /// <summary>
+        /// Adjust the disguise of the Player
+        /// </summary>
+        /// <param name="adjustment"> The change in disguise, if this is a scalar value, this should be between 1 and 0 </param>
+        /// <param name="scalar"></param>
         public void AdjustDisguise(float adjustment, bool scalar = false)
         {
             float adjustedDisguiseIntegrity = _disguiseIntegrity;
