@@ -114,7 +114,7 @@ namespace NPC.Scripts.Characters
             // Update Disguise.
             _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / MaxDisguiseIntegrity);
             _elapsedTime += Time.deltaTime / _disguiseDuration;
-            _disguiseIntegrity = Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
+            _disguiseIntegrity = IsDead? 0f : Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
             
             // Move.
             if (!_moving && _moveDirection != Vector2.zero)
@@ -146,7 +146,7 @@ namespace NPC.Scripts.Characters
         }
         public void Move(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            if (context.performed && !IsDead)
             {
                 Vector2 moveDirection = context.ReadValue<Vector2>();
 
@@ -163,7 +163,7 @@ namespace NPC.Scripts.Characters
         }
         public void ShootCharge(InputAction.CallbackContext context)
         {
-            if (context.performed && AmmoCount > 0)
+            if (context.performed && AmmoCount > 0 && !IsDead)
             {
                 if (_lineRendererAnimation != null)
                 {
@@ -256,7 +256,7 @@ namespace NPC.Scripts.Characters
         }
         public void Interact(InputAction.CallbackContext context)
         {
-            if (context.action.triggered)
+            if (context.action.triggered && !IsDead)
             {
                 Array itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask);
                 
@@ -297,7 +297,7 @@ namespace NPC.Scripts.Characters
         }
         public void UseEquipmentItem(InputAction.CallbackContext context)
         {
-            if (context.action.triggered)
+            if (context.action.triggered && !IsDead)
             {
                 if (_inventory.Count > 0)
                 {

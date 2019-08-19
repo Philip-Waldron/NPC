@@ -58,6 +58,9 @@ MonoBehaviour:
   - {fileID: 6170848774988805998, guid: 4b95c3ffdf850b5468f59e0100ffd381, type: 3}
   - {fileID: 7842114992730812468, guid: 30ed6ac06f9796041a4ff5bcfd634cdd, type: 3}
   - {fileID: 8535408051630531515, guid: df3756c962fdefb44bf88dd72e4a337f, type: 3}
+  AnimatorControllers:
+  - {fileID: 9100000, guid: e78f2c95805d78c4f9c8161f7916e2f3, type: 2}
+  - {fileID: 9100000, guid: 8e448d5c3d994a6409450a6927812719, type: 2}
   Tilemap: {fileID: 0}
   Zones:
   - Tile: {fileID: 11400000, guid: 4d734a13928f1f549b58764db4fc4b4a, type: 2}
