@@ -114,7 +114,7 @@ namespace NPC.Scripts.Characters
             // Update Disguise.
             _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / MaxDisguiseIntegrity);
             _elapsedTime += Time.deltaTime / _disguiseDuration;
-            _disguiseIntegrity = Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
+            _disguiseIntegrity = IsDead? 0f : Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
             
             // Move.
             if (!_moving && _moveDirection != Vector2.zero)
@@ -146,7 +146,7 @@ namespace NPC.Scripts.Characters
         }
         public void Move(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            if (context.performed && !IsDead)
             {
                 Vector2 moveDirection = context.ReadValue<Vector2>();
 
@@ -163,7 +163,7 @@ namespace NPC.Scripts.Characters
         }
         public void ShootCharge(InputAction.CallbackContext context)
         {
-            if (context.performed && AmmoCount > 0)
+            if (context.performed && AmmoCount > 0 && !IsDead)
             {
                 if (_lineRendererAnimation != null)
                 {
@@ -241,6 +241,10 @@ namespace NPC.Scripts.Characters
                 AmmoCount--;
                 AdjustAmmo();
             }
+            else
+            {
+                AdjustDisguise(MaxDisguiseIntegrity);
+            }
         }
         private void DrawLineRenderer()
         {
@@ -256,7 +260,7 @@ namespace NPC.Scripts.Characters
         }
         public void Interact(InputAction.CallbackContext context)
         {
-            if (context.action.triggered)
+            if (context.action.triggered && !IsDead)
             {
                 Array itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask);
                 
@@ -297,7 +301,7 @@ namespace NPC.Scripts.Characters
         }
         public void UseEquipmentItem(InputAction.CallbackContext context)
         {
-            if (context.action.triggered)
+            if (context.action.triggered && !IsDead)
             {
                 if (_inventory.Count > 0)
                 {
@@ -311,6 +315,11 @@ namespace NPC.Scripts.Characters
             _inventory.Clear();
             _inventorySlot.sprite = null;
         }
+        /// <summary>
+        /// Adjust the disguise of the Player
+        /// </summary>
+        /// <param name="adjustment"> The change in disguise, if this is a scalar value, this should be between 1 and 0 </param>
+        /// <param name="scalar"></param>
         public void AdjustDisguise(float adjustment, bool scalar = false)
         {
             float adjustedDisguiseIntegrity = _disguiseIntegrity;

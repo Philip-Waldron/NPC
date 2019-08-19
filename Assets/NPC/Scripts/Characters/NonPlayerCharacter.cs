@@ -82,6 +82,11 @@ namespace NPC.Scripts.Characters
 
         private void RollState()
         {
+            if (IsDead)
+            {
+                return;
+            }
+            
             float roll = Random.Range(0, _totalChance);
             // Wait.
             if (roll < _waitChance)

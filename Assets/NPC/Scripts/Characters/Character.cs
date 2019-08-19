@@ -29,7 +29,7 @@ namespace NPC.Scripts.Characters
         [SerializeField] protected List<AudioClip> audioClips = new List<AudioClip>();
 
         [Header("Animation")] 
-        [SerializeField, Space(10)] private Animator animator;
+        [SerializeField, Space(10)] public Animator animator;
         [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
         [SerializeField] private GameObject deathSplatterParticleEffect;
         [SerializeField] private GameObject bulletHole;
