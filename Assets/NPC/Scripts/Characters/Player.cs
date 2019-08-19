@@ -370,7 +370,10 @@ namespace NPC.Scripts.Characters
             Vector3 currentPos = targetTransform.position;
             animationMoveDirection = MovePosition(currentPos, position);
             
-            networkedParameters.GridPosition = position;
+            if (networkedParameters != null)
+            {
+                networkedParameters.GridPosition = position;
+            }
             
             float currentTime = 0f;
             while(currentTime < 1)

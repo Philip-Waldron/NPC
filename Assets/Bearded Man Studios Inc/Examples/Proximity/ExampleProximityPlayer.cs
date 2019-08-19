@@ -33,7 +33,7 @@ public class ExampleProximityPlayer : ExampleProximityPlayerBehavior
 		matRef = GetComponent<Renderer>().material;
 	}
 
-	protected override void NetworkStart()
+	public override void NetworkStart()
 	{
 		base.NetworkStart();
 

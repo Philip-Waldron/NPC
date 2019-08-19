@@ -8,6 +8,7 @@ using NPC.Scripts.Characters;
 using NPC.Scripts.Items;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -98,8 +99,9 @@ namespace NPC.Scripts
             {
                 Spawn(otherPlayerPrefab, true);
             }
-        
-            SpawnPlayer();
+            
+            if (SceneManager.GetActiveScene().name == "Networking_Scene")
+                SpawnPlayer();
         
             // Spawn(playerPrefab);
         }

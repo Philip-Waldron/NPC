@@ -31,8 +31,20 @@ namespace NPC.Scripts.Networking
             _playerScript = gameObject.GetComponent<Player>();
         }
 
+        public override void NetworkStart()
+        {
+            base.NetworkStart();
+            if (!networkObject.IsOwner)
+            {
+                _playerScript.MakeOtherPlayerCharacter();
+            }
+        }
+
         private void Update()
         {
+            if (networkObject == null)
+                return;
+            
             if (!networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
             {
                 StartCoroutine(_playerScript.MoveToPosition(gameObject.transform, networkObject.gridPosition, 0.3f));
@@ -41,6 +53,9 @@ namespace NPC.Scripts.Networking
 
         public void UpdatePosition(Vector2 position)
         {
+            if (networkObject == null)
+                return;
+            
             _gridPosition = position;
             
             if (networkObject.IsOwner)
