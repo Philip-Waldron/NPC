@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Unity;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -37,7 +39,6 @@ public class GameManager : MonoBehaviour
     public List<KeyValuePair<Zone, Vector3>> ValidSpawnPositions = new List<KeyValuePair<Zone, Vector3>>();
     public List<KeyValuePair<Zone, Vector3>> ValidMovePositions = new List<KeyValuePair<Zone, Vector3>>();
     public Dictionary<Tile, List<Vector3>> Rooms = new Dictionary<Tile, List<Vector3>>();
-    
     private void Awake()
     {
         Tilemap.CompressBounds();
@@ -89,6 +90,36 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    
+    public void SpawnPlayer()
+    {
+        var position = RetrieveRandomValidPosition();
+        NetworkManager.Instance.InstantiatePlayer(0);
+    }
+
+    public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
+    {
+        MainThreadManager.Run(() =>
+        {
+            var playerScript = NetworkManager.Instance.InstantiatePlayer(0);
+            playerScript.networkObject.AssignOwnership(player);
+        });
+    }
+
+    public Vector3 RetrieveRandomValidPosition()
+    {
+        if (ValidSpawnPositions.Count > 0)
+        {
+            int index = Random.Range(0, ValidSpawnPositions.Count);
+            ValidSpawnPositions.RemoveAt(index);
+            return ValidSpawnPositions[index].Value;
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to spawn an object with no remaining spawn positions!");
+            return Vector3.zero;
         }
     }
 
