@@ -122,6 +122,8 @@ namespace NPC.Scripts.Characters
                 StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
             }
 
+            animationSpeed = _moveDirection.sqrMagnitude;
+            
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
             {
                 DrawLineRenderer();
@@ -153,7 +155,6 @@ namespace NPC.Scripts.Characters
                 if (moveDirection == Vector2.up || moveDirection == Vector2.down || moveDirection == Vector2.left || moveDirection == Vector2.right)
                 {
                     _moveDirection = moveDirection;
-                    //animationMoveDirection = _moveDirection;
                 }
             }
             else if (context.ReadValue<Vector2>() == Vector2.zero)
@@ -382,12 +383,10 @@ namespace NPC.Scripts.Characters
 
             if (_moveDirection != Vector2.zero)
             {
-                animationSpeed = 1;
                 StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
             }
             else
             {
-                animationSpeed = 0;
                 _moving = false;
             }
         }

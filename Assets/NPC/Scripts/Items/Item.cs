@@ -35,7 +35,7 @@ namespace NPC.Scripts.Items
         }
         public bool Accessed { get; private set; }
         public bool Trapped { get; set; }
-        
+
         protected Sprite itemSprite;
         private const float SliderMax = 100f;
         private const float SliderMin = 0f;
@@ -82,7 +82,9 @@ namespace NPC.Scripts.Items
             bool valid = Vector2.Distance(player.transform.position, transform.position) <= player.pickupRange;
             if (!valid) // makes sure you have to stay within range for the whole countdown
             {
-                StopCoroutine(PickupDelay(player));
+                StopAllCoroutines();
+                Debug.Log("Stop the thing!");
+                //StopCoroutine(PickupDelay(player));
             }
             return valid;
         }
@@ -103,6 +105,10 @@ namespace NPC.Scripts.Items
         private IEnumerator PickupDelay(Player player)
         {
             yield return new WaitForSeconds(pickupDuration);
+            if (!PickupValid)
+            {
+                yield break;
+            }
             Pickup(player);
             Accessed = true;
             switch (Trapped)

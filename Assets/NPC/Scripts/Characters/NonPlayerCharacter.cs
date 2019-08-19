@@ -16,7 +16,7 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(0f, 20f)]
         private float _detectionRadius = 5f;
         [SerializeField, Range(0f, 15f)]
-        private float _detectionFrequency = 5f;
+        private Vector2 _detectionFrequency;
         [SerializeField]
         private List<string> _alerts = new List<string>();
         [SerializeField]
@@ -57,7 +57,8 @@ namespace NPC.Scripts.Characters
 
         [Header("Emote")]
         [SerializeField, Range(0f, 100f)]
-        private float _talkativeness = 25f;
+        private Vector2 _talkativenessRange;
+        private float _talkativeness;
         
         private float _emoteDuration = 2f;
         private float _alertDuration = 2f;
@@ -66,11 +67,10 @@ namespace NPC.Scripts.Characters
         {
             _gameManager = FindObjectOfType<GameManager>();
             _seeker = GetComponent<Seeker>();
-            
-            Vector2 frequency = new Vector2(Random.Range((_detectionFrequency - _detectionFrequency * .75f), _detectionFrequency), Random.Range(_detectionFrequency, _detectionFrequency + _detectionFrequency * .75f));
-
-            InvokeRepeating(nameof(DetectPlayersAttempt), frequency.x, frequency.x);
-            InvokeRepeating(nameof(RandomSpeech), frequency.y, frequency.y);
+            float detectionFrequency = Random.Range(_detectionFrequency.x, _detectionFrequency.y);
+            InvokeRepeating(nameof(DetectPlayersAttempt), detectionFrequency, detectionFrequency);
+            _talkativeness = Random.Range(_talkativenessRange.x, _talkativenessRange.y);
+            InvokeRepeating(nameof(RandomSpeech), _talkativeness, _talkativeness);
             onDeath.AddListener(StopMovement);
 
             _totalChance = _waitChance + _walkToCloseChance +

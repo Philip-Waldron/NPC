@@ -49,7 +49,7 @@ namespace NPC.Scripts.Characters
         {
             animator.SetFloat(Horizontal, animationMoveDirection.x);
             animator.SetFloat(Vertical, animationMoveDirection.y);
-            animator.SetFloat(Speed, animationSpeed);
+            animator.SetFloat(Speed, animationSpeed /*animationMoveDirection.sqrMagnitude*/);
         }
 
         public void Emote(int emoteIndex, float duration)
