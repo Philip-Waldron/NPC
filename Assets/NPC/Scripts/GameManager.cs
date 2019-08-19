@@ -52,7 +52,7 @@ namespace NPC.Scripts
         public Tilemap Tilemap;
         public Zone[] Zones;
 
-        public List<Vector3> ValidSpawnPositions = new List< Vector3>();
+        public List<Vector3> ValidSpawnPositions = new List<Vector3>();
         public List<Vector3> ValidMovePositions = new List<Vector3>();
 
         private void Awake()
@@ -63,45 +63,45 @@ namespace NPC.Scripts
 
             foreach (Zone zone in Zones)
             {
-                if (zone.TilePositions.Count == 0)
-                {
-                    continue;
-                }
-            
-                for (int i = 0; i < zone.ItemsInZone; i++)
+                Vector3[] tileSpawnPositions = zone.TilePositions.Intersect(ValidSpawnPositions).ToArray();
+                for (int i = 0; i < zone.ItemsInZone && tileSpawnPositions.Any(); i++)
                 {
                     int roll = Random.Range(0, _rarityTotal);
                     if (roll < (int) Item.ItemRarity.Common)
                     {
-                        SpawnItem(zone, Item.ItemRarity.Common);
+                        SpawnItem(tileSpawnPositions, Item.ItemRarity.Common, zone);
                     }
                     else if (roll < (int) Item.ItemRarity.Common + (int) Item.ItemRarity.Uncommon)
                     {
-                        SpawnItem(zone, Item.ItemRarity.Uncommon);
+                        SpawnItem(tileSpawnPositions, Item.ItemRarity.Uncommon, zone);
                     }
-                    else if (roll < (int) Item.ItemRarity.Common + (int) Item.ItemRarity.Uncommon  + (int) Item.ItemRarity.Rare)
+                    else if (roll < (int) Item.ItemRarity.Common + (int) Item.ItemRarity.Uncommon +
+                             (int) Item.ItemRarity.Rare)
                     {
-                        SpawnItem(zone, Item.ItemRarity.Rare);
+                        SpawnItem(tileSpawnPositions, Item.ItemRarity.Rare, zone);
                     }
-                    else  if (roll < (int) Item.ItemRarity.Common + (int) Item.ItemRarity.Uncommon  + (int) Item.ItemRarity.Uncommon + (int) Item.ItemRarity.UltraRare)
+                    else if (roll < (int) Item.ItemRarity.Common + (int) Item.ItemRarity.Uncommon +
+                             (int) Item.ItemRarity.Uncommon + (int) Item.ItemRarity.UltraRare)
                     {
-                        SpawnItem(zone, Item.ItemRarity.UltraRare);
+                        SpawnItem(tileSpawnPositions, Item.ItemRarity.UltraRare, zone);
                     }
                 }
             }
         
             for(int i = 0; i < _npcCount; i++)
             {
-                Spawn(NonPlayerCharacterPrefab, true);
+                SpawnCharacter(NonPlayerCharacterPrefab);
             }
         
             for(int i = 0; i < _otherPlayerCount; i++)
             {
-                Spawn(otherPlayerPrefab, true);
+                SpawnCharacter(otherPlayerPrefab);
             }
-            
+
             if (SceneManager.GetActiveScene().name == "Networking_Scene")
+            {
                 SpawnPlayer();
+            }
         
             // Spawn(playerPrefab);
         }
@@ -134,16 +134,20 @@ namespace NPC.Scripts
                 if (Zones.Select(x => x.Tile).Contains(tile))
                 {
                     Zone zone = Zones.First(x => x.Tile == tile);
+                    Vector3 tilePosition = position + Tilemap.cellSize / 2;
                     if (zone.CharacterCanSpawn)
                     {
-                        ValidSpawnPositions.Add(position + Tilemap.cellSize / 2);
+                        ValidSpawnPositions.Add(tilePosition);
                     }
 
                     if (zone.PathingTarget)
                     {
-                        Vector3 pathingTarget = position + Tilemap.cellSize / 2;
-                        ValidMovePositions.Add(pathingTarget);
-                        zone.TilePositions.Add(pathingTarget);
+                        ValidMovePositions.Add(tilePosition);
+                    }
+
+                    if (zone.CharacterCanSpawn || zone.PathingTarget)
+                    {
+                        zone.TilePositions.Add(tilePosition);
                     }
                 }
             }
@@ -179,31 +183,14 @@ namespace NPC.Scripts
                 return new Vector3(0.5f, 0.5f, 0);
             }
         }
+        
         /// <summary>
-        /// Use this to spawn any GameObject that doesn't need anything fed to it
+        /// Spawn a Character prefab in a random valid spawn position.
         /// </summary>
         /// <param name="gameObjectToSpawn"></param>
-        public void Spawn(GameObject gameObjectToSpawn)
+        public void SpawnCharacter(GameObject gameObjectToSpawn)
         {
             if (ValidSpawnPositions.Count > 0)
-            {
-                int index = Random.Range(0, ValidSpawnPositions.Count);
-                Instantiate(gameObjectToSpawn, ValidSpawnPositions[index], Quaternion.identity, null);
-                ValidSpawnPositions.RemoveAt(index);
-            }
-            else
-            {
-                Debug.LogWarning("Attempted to spawn an object with no remaining spawn positions!");
-            }
-        }
-        /// <summary>
-        /// Use this to spawn Player Prefabs
-        /// </summary>
-        /// <param name="gameObjectToSpawn"></param>
-        /// <param name="player"></param>
-        public void Spawn(GameObject gameObjectToSpawn, bool player)
-        {
-            if (ValidSpawnPositions.Count > 0 && player)
             {
                 int index = Random.Range(0, ValidSpawnPositions.Count);
                 GameObject spawnedPlayer = Instantiate(gameObjectToSpawn, ValidSpawnPositions[index], Quaternion.identity, null);
@@ -215,28 +202,34 @@ namespace NPC.Scripts
                 Debug.LogWarning("Attempted to spawn an object with no remaining spawn positions!");
             }
         }
+
         /// <summary>
-        /// Use this to spawn Items
+        /// Spawn an item in a random valid spawn position.
         /// </summary>
-        /// <param name="gameObjectToSpawn"></param>
-        /// <param name="position"></param>
-        public void Spawn(GameObject gameObjectToSpawn, Vector3 position)
+        /// <param name="validPositions"></param>
+        /// <param name="itemRarity"></param>
+        /// <param name="zone"></param>
+        private void SpawnItem(Vector3[] validPositions, Item.ItemRarity itemRarity, Zone zone)
         {
             if (ValidSpawnPositions.Count > 0)
             {
+                List<GameObject> items = _itemRarities[itemRarity].FindAll(x => x.GetComponent<Item>().Rarity == itemRarity);
+                if (!items.Any())
+                {
+                    Debug.LogWarning("Tried to spawn an item of rarity '" + itemRarity + "' but there are none!");
+                    return;
+                }
+                
+                GameObject gameObjectToSpawn = items[Random.Range(0, items.Count)];
+                Vector3 position = validPositions[Random.Range(1, validPositions.Count())];
+
                 Instantiate(gameObjectToSpawn, position, Quaternion.identity, null);
                 ValidSpawnPositions.Remove(position);
             }
             else
             {
-                Debug.LogWarning("Attempted to spawn an object with no remaining spawn positions!");
+                Debug.LogWarning("Attempted to spawn an item with no remaining spawn positions in room " + zone.Tile.name + "!");
             }
-        }
-    
-        private void SpawnItem(Zone zone, Item.ItemRarity itemRarity)
-        {
-            List<GameObject> items = _itemRarities[itemRarity].FindAll(x => x.GetComponent<Item>().Rarity == itemRarity);
-            Spawn(items[Random.Range(0, items.Count)], zone.TilePositions[Random.Range(1, zone.TilePositions.Count)]);
         }
     }
 }
