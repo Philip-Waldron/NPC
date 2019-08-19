@@ -18,7 +18,7 @@ public class NetCam : NetworkCameraBehavior
 	/// </summary>
 	private static NetCam playerCamera = null;
 
-	protected override void NetworkStart()
+	public override void NetworkStart()
 	{
 		base.NetworkStart();
 

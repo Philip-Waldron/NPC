@@ -5,6 +5,7 @@ using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Items;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -90,9 +91,12 @@ public class GameManager : MonoBehaviour
         {
             Spawn(otherPlayerPrefab);
         }
-        
-        SpawnPlayer();
-        
+
+        if (SceneManager.GetActiveScene().name == "Networking_Scene")
+        {
+            SpawnPlayer();
+        }
+
         // Spawn(playerPrefab);
     }
 

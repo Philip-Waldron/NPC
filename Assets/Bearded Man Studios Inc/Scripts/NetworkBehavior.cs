@@ -20,7 +20,7 @@ namespace BeardedManStudios.Forge.Networking.Unity
 
 		public event NetworkBehaviorEvent networkStarted;
 
-		protected virtual void NetworkStart()
+		public virtual void NetworkStart()
 		{
 			CompleteRegistration();
 
