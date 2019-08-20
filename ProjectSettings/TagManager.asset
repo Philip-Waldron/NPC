@@ -45,12 +45,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: PreForeground
+    uniqueID: 3650303629
+    locked: 0
   - name: Foreground
     uniqueID: 2164136947
+    locked: 0
+  - name: UnderCharacter
+    uniqueID: 3362052905
     locked: 0
   - name: Character
     uniqueID: 152665507
     locked: 0
+  - name: OverCharacter
+    uniqueID: 2461484993
+    locked: 0
   - name: CharacterUI
     uniqueID: 1137483109
+    locked: 0
+  - name: OverUI
+    uniqueID: 3169016855
     locked: 0

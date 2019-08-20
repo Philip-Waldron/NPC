@@ -20,6 +20,7 @@ namespace NPC.Scripts.Characters
         [SerializeField] private GameObject _bulletChargeSprite;
         [SerializeField] private Transform _bulletCharges;
         [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
+        [SerializeField] private string _bulletSortLayer = "UnderCharacter";
 
         private int _startBulletChargeFrame;
         private float _chargingFor;
@@ -80,6 +81,8 @@ namespace NPC.Scripts.Characters
             timeScalar = _disguiseDuration / MaxDisguiseIntegrity;
             SetupLineRenderer();
             SetupParticleSystem();
+            
+            SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
         }
 
         public void MakeOtherPlayerCharacter()
@@ -96,8 +99,10 @@ namespace NPC.Scripts.Characters
             _bulletLine = gameObject.AddComponent<LineRenderer>();
             _bulletLine.positionCount = 2;
             _bulletLine.startWidth = 0.025f;
-            _bulletLine.material = new Material(Shader.Find("Unlit/Color")) { color = Color.cyan };
+            _bulletLine.material = new Material(Shader.Find("Sprites/Default")) { color = Color.cyan };
             _bulletLine.alignment = LineAlignment.TransformZ;
+            _bulletLine.enabled = false;
+            _bulletLine.sortingLayerName = _bulletSortLayer;
         }
 
         private void SetupParticleSystem()
@@ -397,6 +402,8 @@ namespace NPC.Scripts.Characters
                 DrawLineRenderer();
                 yield return null;
             }
+            
+            SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
 
             if (_moveDirection != Vector2.zero)
             {
