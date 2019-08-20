@@ -11,6 +11,9 @@ namespace NPC.Scripts.Characters
 {
     public abstract class Character : MonoBehaviour, IDamageable, IScannable, IEmote<int, float>, ISpeak<string, float, int>
     {
+        // Character.
+        protected SpriteRenderer SpriteRenderer;
+        
         [Header("Scan")]
         [SerializeField] protected SpriteRenderer revealedSprite;
         
@@ -36,6 +39,7 @@ namespace NPC.Scripts.Characters
 
         [HideInInspector] public UnityEvent onDeath;
         
+        // Animation.
         protected Vector2 animationMoveDirection = Vector2.zero;
         protected float animationSpeed;
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
@@ -44,6 +48,11 @@ namespace NPC.Scripts.Characters
         private static readonly int Dead = Animator.StringToHash("Dead");
 
         public bool IsDead { get; set; }
+
+        private void Awake()
+        {
+            SpriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
         private void LateUpdate()
         {

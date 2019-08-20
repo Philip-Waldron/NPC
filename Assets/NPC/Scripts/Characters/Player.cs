@@ -80,6 +80,8 @@ namespace NPC.Scripts.Characters
             timeScalar = _disguiseDuration / MaxDisguiseIntegrity;
             SetupLineRenderer();
             SetupParticleSystem();
+            
+            SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
         }
 
         public void MakeOtherPlayerCharacter()
@@ -399,6 +401,8 @@ namespace NPC.Scripts.Characters
                 DrawLineRenderer();
                 yield return null;
             }
+            
+            SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
 
             if (_moveDirection != Vector2.zero)
             {
