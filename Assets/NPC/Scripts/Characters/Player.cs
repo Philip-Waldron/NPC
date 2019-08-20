@@ -13,6 +13,7 @@ namespace NPC.Scripts.Characters
     public class Player : Character
     {
         [Header("Ammo")]
+        [SerializeField] private bool _useAmmo = true;
         [SerializeField, Range(1, 3)] public int AmmoCount = 1;
         [SerializeField, Range(1f, 10f)] public float _shootRange;
         [SerializeField] private GameObject _laserParticleEffect;
@@ -239,8 +240,8 @@ namespace NPC.Scripts.Characters
                 }
             }
 
-            if (!hitPlayer)
-            {
+            if (!hitPlayer && _useAmmo)
+            {    
                 AmmoCount--;
                 AdjustAmmo();
             }

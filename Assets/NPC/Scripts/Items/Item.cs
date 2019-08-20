@@ -81,8 +81,7 @@ namespace NPC.Scripts.Items
         {
             bool valid = Vector2.Distance(player.transform.position, transform.position) <= player.pickupRange && 
                          player.HoldingPickupButton;
-
-            Debug.Log((Vector2.Distance(player.transform.position, transform.position) <= player.pickupRange) + ", " + player.HoldingPickupButton);
+            
             if (!valid) // makes sure you have to stay within range for the whole countdown
             {
                 StopAllCoroutines();
