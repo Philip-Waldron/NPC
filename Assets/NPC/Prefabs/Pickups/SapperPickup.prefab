@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3815fb401536dbc40ba2b17df30b82cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDuration: 5
+  pickupDuration: 7
   pickupBar: {fileID: 5192344692380260995}
   pickupBarImage: {fileID: 8134886135855127507}
   pickupBarSprite: {fileID: 21300000, guid: 4ed888557ebb44e48ac37fe3cae212a5, type: 3}
