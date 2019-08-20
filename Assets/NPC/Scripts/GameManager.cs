@@ -6,7 +6,6 @@ using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Characters;
 using NPC.Scripts.Items;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -46,7 +45,7 @@ namespace NPC.Scripts
         private int _rarityTotal;
 
         [Header("Player Animations")]
-        public List<AnimatorController> AnimatorControllers = new List<AnimatorController>();
+        public List<RuntimeAnimatorController> AnimatorControllers = new List<RuntimeAnimatorController>();
     
         [Header("Zone Manager")]
         public Tilemap Tilemap;
