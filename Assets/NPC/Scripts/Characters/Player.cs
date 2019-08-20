@@ -60,7 +60,7 @@ namespace NPC.Scripts.Characters
         private float _startDisguise;
 
         [Header("Movement")]
-        [SerializeField, Range(.1f, 1f)] private float _timeToMove;
+        [SerializeField, Range(.1f, 1f)] public float _timeToMove;
         [SerializeField] private LayerMask obstacleLayer;
 
         private Vector2 _moveDirection;

@@ -27,7 +27,7 @@ namespace NPC.Scripts.Networking
                     
                     if (_netWorker.IsServer)
                     {
-                        gameManager.SpawnPlayer();
+                        gameManager.SpawnNetworkedPlayer();
                     }
                     
                     break;

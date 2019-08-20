@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NPC.Scripts.Networking;
 using Pathfinding;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -32,7 +33,7 @@ namespace NPC.Scripts.Characters
         [SerializeField]
         private Vector2 _walkFarDistanceRange = new Vector2(5, 25);
         [SerializeField, Range(.1f, 1f)]
-        private float _timeToMove;
+        public float _timeToMove;
 
         // A* Pathfinding
         private Seeker _seeker;
@@ -62,9 +63,13 @@ namespace NPC.Scripts.Characters
         
         private float _emoteDuration = 2f;
         private float _alertDuration = 2f;
+        
+        public NetworkCharacterParameters networkedParameters;
 
         private void Start()
         {
+            networkedParameters = gameObject.GetComponent<NetworkCharacterParameters>();
+            
             _gameManager = FindObjectOfType<GameManager>();
             _seeker = GetComponent<Seeker>();
             float detectionFrequency = Random.Range(_detectionFrequency.x, _detectionFrequency.y);
@@ -221,6 +226,11 @@ namespace NPC.Scripts.Characters
             Vector2 movePosition = MovePosition(currentPos, position);
             animationMoveDirection = movePosition;
             animationSpeed = movePosition == Vector2.zero ? 0f : 1f;
+            
+            if (networkedParameters != null)
+            {
+                networkedParameters.GridPosition = position;
+            }
             
             float currentTime = 0f;
             while(currentTime < 1)

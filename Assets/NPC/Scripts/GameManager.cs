@@ -87,22 +87,33 @@ namespace NPC.Scripts
                     }
                 }
             }
-        
-            for(int i = 0; i < _npcCount; i++)
-            {
-                SpawnCharacter(NonPlayerCharacterPrefab);
-            }
-        
-            for(int i = 0; i < _otherPlayerCount; i++)
-            {
-                SpawnCharacter(otherPlayerPrefab);
-            }
 
             if (SceneManager.GetActiveScene().name == "Networking_Scene")
             {
-                SpawnPlayer();
+                SpawnNetworkedPlayer();
+                
+                if (NetworkManager.Instance.IsServer)
+                {
+                    for(int i = 0; i < _npcCount; i++)
+                    {
+                        SpawnNetworkedNPC();
+                    }
+                }
             }
+            
+            else
+            {
+                for(int i = 0; i < _npcCount; i++)
+                {
+                    SpawnCharacter(NonPlayerCharacterPrefab);
+                }
         
+                for(int i = 0; i < _otherPlayerCount; i++)
+                {
+                    SpawnCharacter(otherPlayerPrefab);
+                }
+            }
+
             // Spawn(playerPrefab);
         }
 
@@ -153,10 +164,16 @@ namespace NPC.Scripts
             }
         }
     
-        public void SpawnPlayer()
+        public void SpawnNetworkedPlayer()
         {
             Vector3 position = RetrieveRandomValidPosition();
             NetworkManager.Instance.InstantiatePlayer(0, position);
+        }
+
+        public void SpawnNetworkedNPC()
+        {
+            Vector3 position = RetrieveRandomValidPosition();
+            NetworkManager.Instance.InstantiatePlayer(1, position);
         }
 
         public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
