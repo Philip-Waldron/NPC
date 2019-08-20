@@ -22,6 +22,10 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
         [SerializeField] private string _bulletSortLayer = "UnderCharacter";
 
+        [Header("Cooldown")] [SerializeField, Range(0f, 10f)]
+        private float _shootCooldownTime;
+        private float _lastShotTime;
+        
         private int _startBulletChargeFrame;
         private float _chargingFor;
         private bool _bulletCharging;
@@ -99,6 +103,7 @@ namespace NPC.Scripts.Characters
             _bulletLine = gameObject.AddComponent<LineRenderer>();
             _bulletLine.positionCount = 2;
             _bulletLine.startWidth = 0.025f;
+            _bulletLine.endWidth = 0f;
             _bulletLine.material = new Material(Shader.Find("Sprites/Default")) { color = Color.cyan };
             _bulletLine.alignment = LineAlignment.TransformZ;
             _bulletLine.enabled = false;
@@ -172,7 +177,7 @@ namespace NPC.Scripts.Characters
         }
         public void ShootCharge(InputAction.CallbackContext context)
         {
-            if (context.performed && AmmoCount > 0 && !IsDead)
+            if (context.performed && AmmoCount > 0 && !IsDead && ((Time.time - _lastShotTime) >= _shootCooldownTime))
             {
                 if (_lineRendererAnimation != null)
                 {
@@ -218,6 +223,8 @@ namespace NPC.Scripts.Characters
         
             _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.1f, 3, Color.red, Color.cyan, true));
 
+            _lastShotTime = Time.time;
+            
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
             Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
             Vector3 position = transform.position;

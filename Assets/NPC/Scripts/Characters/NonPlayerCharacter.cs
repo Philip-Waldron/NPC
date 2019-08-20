@@ -15,7 +15,7 @@ namespace NPC.Scripts.Characters
         [Header("Detection")]
         [SerializeField, Range(0f, 20f)]
         private float _detectionRadius = 5f;
-        [SerializeField, Range(0f, 15f)]
+        [SerializeField]
         private Vector2 _detectionFrequency;
         [SerializeField]
         private List<string> _alerts = new List<string>();
@@ -56,7 +56,7 @@ namespace NPC.Scripts.Characters
         private float _totalChance;
 
         [Header("Emote")]
-        [SerializeField, Range(0f, 100f)]
+        [SerializeField]
         private Vector2 _talkativenessRange;
         private float _talkativeness;
         

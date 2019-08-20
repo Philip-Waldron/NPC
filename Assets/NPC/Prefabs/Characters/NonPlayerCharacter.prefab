@@ -33,9 +33,13 @@ MonoBehaviour:
     type: 3}
   bulletHole: {fileID: 7245982541705081319, guid: 92ad4855a7596da41bd33724bc84ceaf,
     type: 3}
-  _detectionRadius: 2
-  _detectionFrequency: 5
-  _talkativeness: 25
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _detectionRadius: 3
+  _detectionFrequency: {x: 2, y: 10}
   _alerts:
   - Whoa!
   - Hey!
@@ -76,9 +80,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  waitTimeRange: {x: 0, y: 0}
-  walkRandomTimeRange: {x: 0, y: 0}
+  _waitTimeRange: {x: 1, y: 5}
+  _walkCloseNodeRange: {x: 1, y: 4}
+  _walkFarDistanceRange: {x: 5, y: 25}
   _timeToMove: 0.2
+  _waitChance: 40
+  _walkToCloseChance: 20
+  _walkToFarChance: 10
+  _walkToRandomChance: 10
+  _walkInRoomChance: 15
+  _walkToItemChance: 5
+  _talkativenessRange: {x: 5, y: 15}
 --- !u!114 &2597228477026952477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
+  _RecalculatePathAfterRandomise: 0
   _randomizeAllPenalties: 1
   _randomizeAdjacentPenalties: 1
   penalty: 10000

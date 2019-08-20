@@ -522,6 +522,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  _useAmmo: 0
   AmmoCount: 1
   _shootRange: 5
   _laserParticleEffect: {fileID: 1018188143152966057, guid: cc47ada8c6adfd44fac6d722acd44ff3,
@@ -530,6 +531,8 @@ MonoBehaviour:
     type: 3}
   _bulletCharges: {fileID: 5962045978649014898}
   _bulletChargeTime: 1
+  _bulletSortLayer: UnderCharacter
+  _shootCooldownTime: 3
   pickupRange: 1
   itemMask:
     serializedVersion: 2

@@ -195,17 +195,22 @@ PrefabInstance:
     - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: AmmoCount
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: _shootRange
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
       propertyPath: _bulletChargeTime
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2478862999013664657, guid: b8eed74d086271842abf3db6d9d73c47,
+        type: 3}
+      propertyPath: _useAmmo
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5291657032341317854, guid: b8eed74d086271842abf3db6d9d73c47,
         type: 3}
