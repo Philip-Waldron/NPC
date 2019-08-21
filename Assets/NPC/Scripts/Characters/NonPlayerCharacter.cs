@@ -65,6 +65,7 @@ namespace NPC.Scripts.Characters
         private float _alertDuration = 2f;
         
         public NetworkCharacterParameters networkedParameters;
+        public bool pathingEnabled = true;
 
         private void Start()
         {
@@ -81,8 +82,11 @@ namespace NPC.Scripts.Characters
             _totalChance = _waitChance + _walkToCloseChance +
                            _walkToFarChance + _walkToRandomChance +
                            _walkInRoomChance + _walkToItemChance;
-
-            RollState();
+            
+            if (pathingEnabled)
+            {
+                RollState();
+            }
         }
 
         private void RollState()
@@ -202,7 +206,10 @@ namespace NPC.Scripts.Characters
 
         private void WalkToPosition(Vector3 targetPosition)
         {
-            _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
+            if (pathingEnabled)
+            {
+                _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
+            }
         }
 
         private void OnPathComplete(Path path)
@@ -211,7 +218,11 @@ namespace NPC.Scripts.Characters
             {
                 _path = path;
                 _currentWaypoint = 0;
-                StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
+                
+                if (pathingEnabled)
+                {
+                    StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
+                }
             }
             else
             {
@@ -240,7 +251,10 @@ namespace NPC.Scripts.Characters
                 yield return null;
             }
 
-            if (_currentWaypoint + 1 < _path.vectorPath.Count)
+            if (!pathingEnabled)
+                yield return null;
+
+            if (_path != null && _currentWaypoint + 1 < _path.vectorPath.Count)
             {
                 _currentWaypoint++;
                 StartCoroutine(MoveToPosition(targetTransform, _path.vectorPath[_currentWaypoint], _timeToMove));

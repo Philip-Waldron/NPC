@@ -38,7 +38,17 @@ namespace NPC.Scripts.Networking
             base.NetworkStart();
             if (!networkObject.IsOwner)
             {
-                _playerScript.MakeOtherPlayerCharacter();
+                if (_playerScript != null)
+                {
+                    _playerScript.MakeOtherPlayerCharacter();
+                } 
+                
+                else if (_nonPlayerCharacterScript != null)
+                {
+                    _nonPlayerCharacterScript.pathingEnabled = false;
+                }
+                
+                
             }
         }
 
@@ -49,12 +59,12 @@ namespace NPC.Scripts.Networking
             
             if (_playerScript != null && !networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
             {
-                StartCoroutine(_playerScript.MoveToPosition(gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
+                StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
             }
 
             if (_nonPlayerCharacterScript != null && !networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
             {
-                StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
+                StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
             }
         }
 
