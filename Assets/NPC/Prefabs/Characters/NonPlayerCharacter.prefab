@@ -83,7 +83,7 @@ MonoBehaviour:
   _waitTimeRange: {x: 1, y: 5}
   _walkCloseNodeRange: {x: 1, y: 4}
   _walkFarDistanceRange: {x: 5, y: 25}
-  _timeToMove: 0.2
+  _timeToMove: 0.3
   _waitChance: 40
   _walkToCloseChance: 20
   _walkToFarChance: 10

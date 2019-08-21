@@ -25,10 +25,12 @@ namespace NPC.Scripts.Networking
         private Vector2 _gridPosition;
 
         private Player _playerScript;
+        private NonPlayerCharacter _nonPlayerCharacterScript;
 
         private void Start()
         {
             _playerScript = gameObject.GetComponent<Player>();
+            _nonPlayerCharacterScript = gameObject.GetComponent<NonPlayerCharacter>();
         }
 
         public override void NetworkStart()
@@ -45,9 +47,14 @@ namespace NPC.Scripts.Networking
             if (networkObject == null)
                 return;
             
-            if (!networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
+            if (_playerScript != null && !networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
             {
-                StartCoroutine(_playerScript.MoveToPosition(gameObject.transform, networkObject.gridPosition, 0.3f));
+                StartCoroutine(_playerScript.MoveToPosition(gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
+            }
+
+            if (_nonPlayerCharacterScript != null && !networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
+            {
+                StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
             }
         }
 

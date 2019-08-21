@@ -219,7 +219,7 @@ namespace NPC.Scripts.Characters
             }
         }
 
-        private IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
+        public IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
         {
             Vector3 currentPos = targetTransform.position;
 
