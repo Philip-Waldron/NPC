@@ -55,6 +55,7 @@ namespace NPC.Scripts
         public Tilemap Tilemap;
         public Zone[] Zones;
 
+        [Header("Debug")]
         public List<Vector3> ValidSpawnPositions = new List<Vector3>();
         public List<Vector3> ValidMovePositions = new List<Vector3>();
         
@@ -106,21 +107,22 @@ namespace NPC.Scripts
                     }
                 }
             }
-            
             else
             {
-                for(int i = 0; i < _npcCount; i++)
-                {
-                    SpawnCharacter(NonPlayerCharacterPrefab, false);
-                }
-        
+                SpawnCharacter(playerPrefab, false);
+                
                 for(int i = 0; i < _otherPlayerCount; i++)
                 {
                     SpawnCharacter(otherPlayerPrefab, true);
                 }
+                
+                for(int i = 0; i < _npcCount; i++)
+                {
+                    SpawnCharacter(NonPlayerCharacterPrefab, false);
+                }
             }
 
-            // Spawn(playerPrefab);
+
             
             // UI Stuff
             if (onScreenInterface != null)
@@ -229,7 +231,6 @@ namespace NPC.Scripts
                 int index = Random.Range(0, ValidSpawnPositions.Count);
                 GameObject spawnedPlayer = Instantiate(gameObjectToSpawn, ValidSpawnPositions[index], Quaternion.identity, null);
                 Character character = spawnedPlayer.GetComponent<Character>();
-                character.Initialise(this, AnimatorControllers[Random.Range(0, AnimatorControllers.Count)]);
                 Player player = spawnedPlayer.GetComponent<Player>();
 
                 if (player != null && otherPlayer)

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NPC.Scripts.Items;
 using NPC.Scripts.Networking;
-using NPC.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -96,21 +95,21 @@ namespace NPC.Scripts.Characters
             
             onDeath.AddListener(UpdateUI);
 
-            if (_gameManager == null)
+            if (GameManager == null)
             {
                 Debug.LogWarning("GameManager was not set through GameManager spawning!");
-                _gameManager = FindObjectOfType<GameManager>();
+                GameManager = FindObjectOfType<GameManager>();
             }
         }
 
         private void UpdateUI()
         {
-            if (_gameManager.onScreenInterface == null)
+            if (GameManager.onScreenInterface == null)
             {
                 return;
             }
             
-            _gameManager.onScreenInterface.SetPlayerCount(_gameManager.AllPlayers.Count - 1);
+            GameManager.onScreenInterface.SetPlayerCount(GameManager.AllPlayers.Count - 1);
         }
 
         public void MakeOtherPlayerCharacter()
@@ -162,7 +161,7 @@ namespace NPC.Scripts.Characters
                 StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
             }
 
-            animationSpeed = _moveDirection.sqrMagnitude;
+            AnimationSpeed = _moveDirection.sqrMagnitude;
             
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
             {
@@ -376,7 +375,7 @@ namespace NPC.Scripts.Characters
         private void AdjustInventory()
         {
             // get rid of all the inventory
-            foreach (Transform inventoryBar in _gameManager.onScreenInterface.inventoryBar)
+            foreach (Transform inventoryBar in GameManager.onScreenInterface.inventoryBar)
             {
                 Destroy(inventoryBar.gameObject);
             }
@@ -384,7 +383,7 @@ namespace NPC.Scripts.Characters
             // restock the items
             foreach (Item item in _inventory)
             { 
-                GameObject itemImage = Instantiate(itemPrefab, _gameManager.onScreenInterface.inventoryBar); 
+                GameObject itemImage = Instantiate(itemPrefab, GameManager.onScreenInterface.inventoryBar); 
                 Debug.Log(item.itemSprite.name);
                 itemImage.GetComponent<Image>().sprite = item.itemSprite;
             }
@@ -440,14 +439,14 @@ namespace NPC.Scripts.Characters
             bool valid = ValidMove(targetTransform.position);
             if (!valid)
             {
-                animationSpeed = 0;
+                AnimationSpeed = 0;
                 _moving = false;
                 yield break;
             }
             
             _moving = true;
             Vector3 currentPos = targetTransform.position;
-            animationMoveDirection = MovePosition(currentPos, position);
+            AnimationMoveDirection = MovePosition(currentPos, position);
             
             if (networkedParameters != null)
             {

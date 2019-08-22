@@ -138,15 +138,15 @@ namespace NPC.Scripts.Characters
             // Walk to random position.
             else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance)
             {
-                Vector3 targetPosition = _gameManager.ValidMovePositions[Random.Range(0, _gameManager.ValidMovePositions.Count - 1)];
+                Vector3 targetPosition = GameManager.ValidMovePositions[Random.Range(0, GameManager.ValidMovePositions.Count - 1)];
                 WalkToPosition(targetPosition);
             }
             // Walk in room.
             else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance)
             {
-                Vector3Int tilePosition = _gameManager.Tilemap.WorldToCell(transform.position);
-                Tile tile = (Tile)_gameManager.Tilemap.GetTile(tilePosition);
-                List<Vector3> roomTiles = _gameManager.Zones.First(x => x.Tile == tile).TilePositions;
+                Vector3Int tilePosition = GameManager.Tilemap.WorldToCell(transform.position);
+                Tile tile = (Tile)GameManager.Tilemap.GetTile(tilePosition);
+                List<Vector3> roomTiles = GameManager.Zones.First(x => x.Tile == tile).TilePositions;
                 Vector3 targetPosition = roomTiles[Random.Range(0, roomTiles.Count)];
                 WalkToPosition(targetPosition);
             }
@@ -233,8 +233,8 @@ namespace NPC.Scripts.Characters
             Vector3 currentPos = targetTransform.position;
 
             Vector2 movePosition = MovePosition(currentPos, position);
-            animationMoveDirection = movePosition;
-            animationSpeed = movePosition == Vector2.zero ? 0f : 1f;
+            AnimationMoveDirection = movePosition;
+            AnimationSpeed = movePosition == Vector2.zero ? 0f : 1f;
             
             if (networkedParameters != null)
             {
@@ -259,7 +259,7 @@ namespace NPC.Scripts.Characters
             }
             else
             {
-                animationSpeed = 0f;
+                AnimationSpeed = 0f;
                 RollState();
             }
         }
