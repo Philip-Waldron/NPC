@@ -336,12 +336,11 @@ namespace NPC.Scripts.Characters
 
                 if (selectedItem == null) return;
                 
-                switch (trapItem)
+                switch (_inventory.Count > 0 && _inventory[0] is Trap)
                 {
                     case true:
                         selectedItem.SetTrap();
-                        trapItem = false;
-                        _inventory.Remove(selectedItem);
+                        _inventory.RemoveAt(0);
                         AdjustInventory();
                         break;
                     default:
