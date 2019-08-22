@@ -25,7 +25,6 @@ namespace NPC.Scripts.Items
                 default:
                     Player player = (Player)character;
                     player.AddInventoryItem(this, itemSprite);
-                    player.trapItem = true;
                     break;
             }
         }
