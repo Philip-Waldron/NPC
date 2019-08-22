@@ -54,6 +54,11 @@ namespace NPC.Scripts
         public List<Vector3> ValidSpawnPositions = new List<Vector3>();
         public List<Vector3> ValidMovePositions = new List<Vector3>();
 
+        [HideInInspector]
+        public List<Character> AllPlayers = new List<Character>();
+        [HideInInspector]
+        public List<Character> NonPlayers = new List<Character>();
+        
         private void Awake()
         {
             Tilemap.CompressBounds();
@@ -104,12 +109,12 @@ namespace NPC.Scripts
             {
                 for(int i = 0; i < _npcCount; i++)
                 {
-                    SpawnCharacter(NonPlayerCharacterPrefab);
+                    SpawnCharacter(NonPlayerCharacterPrefab, false);
                 }
         
                 for(int i = 0; i < _otherPlayerCount; i++)
                 {
-                    SpawnCharacter(otherPlayerPrefab);
+                    SpawnCharacter(otherPlayerPrefab, true);
                 }
             }
 
@@ -199,27 +204,32 @@ namespace NPC.Scripts
                 return new Vector3(0.5f, 0.5f, 0);
             }
         }
-        
+
         /// <summary>
         /// Spawn a Character prefab in a random valid spawn position.
         /// </summary>
         /// <param name="gameObjectToSpawn"></param>
-        public void SpawnCharacter(GameObject gameObjectToSpawn)
+        /// <param name="otherPlayer"></param>
+        public void SpawnCharacter(GameObject gameObjectToSpawn, bool otherPlayer)
         {
             if (ValidSpawnPositions.Count > 0)
             {
                 int index = Random.Range(0, ValidSpawnPositions.Count);
                 GameObject spawnedPlayer = Instantiate(gameObjectToSpawn, ValidSpawnPositions[index], Quaternion.identity, null);
                 Character character = spawnedPlayer.GetComponent<Character>();
-                character.animator.runtimeAnimatorController = AnimatorControllers[Random.Range(0, AnimatorControllers.Count)];
-                
-                /*
-                if (character is Player)
+                character.Initialise(this, AnimatorControllers[Random.Range(0, AnimatorControllers.Count)]);
+                Player player = spawnedPlayer.GetComponent<Player>();
+
+                if (player != null && otherPlayer)
                 {
-                    spawnedPlayer.GetComponent<Player>().MakeOtherPlayerCharacter();
+                    player.MakeOtherPlayerCharacter();
+                    AllPlayers.Add(player);
                 }
-                */
-                
+                else
+                {
+                    NonPlayers.Add(character);
+                }
+
                 ValidSpawnPositions.RemoveAt(index);
             }
             else
@@ -254,6 +264,22 @@ namespace NPC.Scripts
             else
             {
                 Debug.LogWarning("Attempted to spawn an item with no remaining spawn positions in room " + zone.Tile.name + "!");
+            }
+        }
+
+        public void CharacterDeath(Character character)
+        {
+            if (AllPlayers.Contains(character))
+            {
+                AllPlayers.Remove(character);
+            }
+            else if (NonPlayers.Contains(character))
+            {
+                NonPlayers.Remove(character);
+            }
+            else
+            {
+                Debug.LogWarning(character.name + " has died, but was not contained on any character lists");
             }
         }
     }

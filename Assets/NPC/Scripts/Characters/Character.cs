@@ -42,16 +42,24 @@ namespace NPC.Scripts.Characters
         // Animation.
         protected Vector2 animationMoveDirection = Vector2.zero;
         protected float animationSpeed;
+        protected RuntimeAnimatorController _animatorController;
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
         private static readonly int Vertical = Animator.StringToHash("Vertical");
         private static readonly int Speed = Animator.StringToHash("Speed");
         private static readonly int Dead = Animator.StringToHash("Dead");
 
         public bool IsDead { get; set; }
+        protected GameManager _gameManager;
 
         private void Awake()
         {
             SpriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        
+        public void Initialise(GameManager g, RuntimeAnimatorController a)
+        {
+            _gameManager = g;
+            _animatorController = a;
         }
 
         private void LateUpdate()
@@ -92,8 +100,12 @@ namespace NPC.Scripts.Characters
         
         public void Damage(Vector3 target, Vector2 hitPoint)
         {
+            // Death State
             onDeath.Invoke();
             IsDead = true;
+            _gameManager.CharacterDeath(this);
+            
+            // Death Effects
             Instantiate(deathPuddleParticleEffect, transform);
             GameObject splatter = Instantiate(deathSplatterParticleEffect, transform);
             GameObject bulletHole = Instantiate(this.bulletHole, transform);
@@ -101,6 +113,8 @@ namespace NPC.Scripts.Characters
             splatter.transform.position = transform.position;
             splatter.transform.right = target;
             animator.SetBool(Dead, true);
+            
+            // Messaging
             Scan(Mathf.Infinity);
             Emote(Random.Range(2, 3), 3f);
             SpeakAudio(Random.Range(0, audioClips.Count));
