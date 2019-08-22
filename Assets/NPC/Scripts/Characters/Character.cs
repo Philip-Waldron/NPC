@@ -32,7 +32,7 @@ namespace NPC.Scripts.Characters
         [SerializeField] protected List<AudioClip> audioClips = new List<AudioClip>();
 
         [Header("Animation")] 
-        [SerializeField, Space(10)] public Animator animator;
+        public Animator Animator;
         [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
         [SerializeField] private GameObject deathSplatterParticleEffect;
         [SerializeField] private GameObject bulletHole;
@@ -40,34 +40,36 @@ namespace NPC.Scripts.Characters
         [HideInInspector] public UnityEvent onDeath;
         
         // Animation.
-        protected Vector2 animationMoveDirection = Vector2.zero;
-        protected float animationSpeed;
-        protected RuntimeAnimatorController _animatorController;
+        protected Vector2 AnimationMoveDirection = Vector2.zero;
+        protected float AnimationSpeed;
+        private RuntimeAnimatorController _animatorController;
+        
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
         private static readonly int Vertical = Animator.StringToHash("Vertical");
         private static readonly int Speed = Animator.StringToHash("Speed");
         private static readonly int Dead = Animator.StringToHash("Dead");
 
-        public bool IsDead { get; set; }
-        protected GameManager _gameManager;
+        public bool IsDead { get; private set; }
+        protected GameManager GameManager;
 
         private void Awake()
         {
             SpriteRenderer = GetComponent<SpriteRenderer>();
-        }
-        
-        public void Initialise(GameManager g, RuntimeAnimatorController a)
-        {
-            _gameManager = g;
-            _animatorController = a;
-            animator.runtimeAnimatorController = _animatorController;
+            GameManager = FindObjectOfType<GameManager>();
+            _animatorController = GameManager.AnimatorControllers[Random.Range(0, GameManager.AnimatorControllers.Count)];
+            Animator.runtimeAnimatorController = _animatorController;
         }
 
         private void LateUpdate()
         {
-            animator.SetFloat(Horizontal, animationMoveDirection.x);
-            animator.SetFloat(Vertical, animationMoveDirection.y);
-            animator.SetFloat(Speed, animationSpeed /*animationMoveDirection.sqrMagnitude*/);
+            Animator.SetFloat(Horizontal, AnimationMoveDirection.x);
+            Animator.SetFloat(Vertical, AnimationMoveDirection.y);
+            Animator.SetFloat(Speed, AnimationSpeed);
+        }
+                
+        protected static Vector2 MovePosition(Vector3 currentPos, Vector3 position)
+        {
+            return (position - currentPos).normalized;
         }
 
         public void Emote(int emoteIndex, float duration)
@@ -104,7 +106,7 @@ namespace NPC.Scripts.Characters
             // Death State
             onDeath.Invoke();
             IsDead = true;
-            _gameManager.CharacterDeath(this);
+            GameManager.CharacterDeath(this);
             
             // Death Effects
             Instantiate(deathPuddleParticleEffect, transform);
@@ -113,7 +115,7 @@ namespace NPC.Scripts.Characters
             bulletHole.transform.position = hitPoint;
             splatter.transform.position = transform.position;
             splatter.transform.right = target;
-            animator.SetBool(Dead, true);
+            Animator.SetBool(Dead, true);
             
             // Messaging
             Scan(Mathf.Infinity);
@@ -152,11 +154,6 @@ namespace NPC.Scripts.Characters
             yield return new WaitForSeconds(duration);
             speechTextMesh.SetText("");
             speechBubble.SetActive(false);
-        }
-        
-        protected static Vector2 MovePosition(Vector3 currentPos, Vector3 position)
-        {
-            return (position - currentPos).normalized;
         }
     }
 }
