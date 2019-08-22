@@ -63,7 +63,6 @@ namespace NPC.Scripts.Characters
         private float _alertDuration = 2f;
         
         public NetworkCharacterParameters networkedParameters;
-        public bool pathingEnabled = true;
 
         private void Start()
         {
@@ -79,14 +78,9 @@ namespace NPC.Scripts.Characters
             _totalChance = _waitChance + _walkToCloseChance +
                            _walkToFarChance + _walkToRandomChance +
                            _walkInRoomChance + _walkToItemChance;
-            
-            if (pathingEnabled)
-            {
-                RollState();
-            }
         }
 
-        private void RollState()
+        public void RollState()
         {
             if (IsDead)
             {
@@ -204,10 +198,7 @@ namespace NPC.Scripts.Characters
 
         private void WalkToPosition(Vector3 targetPosition)
         {
-            if (pathingEnabled)
-            {
-                _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
-            }
+            _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
         }
 
         private void OnPathComplete(Path path)
@@ -217,10 +208,7 @@ namespace NPC.Scripts.Characters
                 _path = path;
                 _currentWaypoint = 0;
                 
-                if (pathingEnabled)
-                {
-                    StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
-                }
+                StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
             }
             else
             {
@@ -248,9 +236,6 @@ namespace NPC.Scripts.Characters
                 targetTransform.position = Vector3.Lerp(currentPos, position, currentTime);
                 yield return null;
             }
-
-            if (!pathingEnabled)
-                yield return null;
 
             if (_path != null && _currentWaypoint + 1 < _path.vectorPath.Count)
             {

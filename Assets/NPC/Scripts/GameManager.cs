@@ -121,8 +121,6 @@ namespace NPC.Scripts
                     SpawnCharacter(NonPlayerCharacterPrefab, false);
                 }
             }
-
-
             
             // UI Stuff
             if (onScreenInterface != null)
@@ -230,7 +228,7 @@ namespace NPC.Scripts
             {
                 int index = Random.Range(0, ValidSpawnPositions.Count);
                 GameObject spawnedPlayer = Instantiate(gameObjectToSpawn, ValidSpawnPositions[index], Quaternion.identity, null);
-                Character character = spawnedPlayer.GetComponent<Character>();
+                NonPlayerCharacter npc = spawnedPlayer.GetComponent<NonPlayerCharacter>();
                 Player player = spawnedPlayer.GetComponent<Player>();
 
                 if (player != null && otherPlayer)
@@ -240,7 +238,8 @@ namespace NPC.Scripts
                 }
                 else
                 {
-                    NonPlayers.Add(character);
+                    NonPlayers.Add(npc);
+                    npc.RollState();
                 }
 
                 ValidSpawnPositions.RemoveAt(index);
