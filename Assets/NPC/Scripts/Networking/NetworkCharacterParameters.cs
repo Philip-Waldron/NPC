@@ -41,14 +41,11 @@ namespace NPC.Scripts.Networking
                 if (_playerScript != null)
                 {
                     _playerScript.MakeOtherPlayerCharacter();
-                } 
-                
-                else if (_nonPlayerCharacterScript != null)
-                {
-                    _nonPlayerCharacterScript.pathingEnabled = false;
                 }
-                
-                
+            }
+            else if (_nonPlayerCharacterScript != null)
+            {
+                _nonPlayerCharacterScript.RollState();
             }
         }
 
