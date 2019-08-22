@@ -28,7 +28,8 @@ namespace NPC.Scripts
         }
 
         [Header("UI")] 
-        public OnScreenInterface onScreenInterface;
+        [SerializeField] private GameObject onScreenInterfacePrefab;
+        public OnScreenInterface onScreenInterface { get; private set; }
         
         [Header("Player")]
         public GameObject playerPrefab;
@@ -123,8 +124,10 @@ namespace NPC.Scripts
             }
             
             // UI Stuff
-            if (onScreenInterface != null)
+            if (onScreenInterfacePrefab != null)
             {
+                onScreenInterfacePrefab = Instantiate(onScreenInterfacePrefab);
+                onScreenInterface = onScreenInterfacePrefab.GetComponent<OnScreenInterface>();
                 onScreenInterface.SetupUI(this, AllPlayers.Count);
             }
             else
