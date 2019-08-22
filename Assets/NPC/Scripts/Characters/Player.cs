@@ -47,7 +47,7 @@ namespace NPC.Scripts.Characters
         private readonly List<Item> _inventory = new List<Item>();
         private bool _validItemPickup;
         public bool HoldingPickupButton { get; set; }
-        public bool trapItem { get; set; }
+        private int _inventoryIndex = 0;
 
         [Header("Disguise")]
         [SerializeField] public float MaxDisguiseIntegrity = 100f;
@@ -335,7 +335,7 @@ namespace NPC.Scripts.Characters
 
                 if (selectedItem == null) return;
                 
-                switch (_inventory.Count > 0 && _inventory[0] is Trap)
+                switch (_inventory.Count > 0 && _inventory[_inventoryIndex] is Trap)
                 {
                     case true:
                         selectedItem.SetTrap();
@@ -366,14 +366,21 @@ namespace NPC.Scripts.Characters
             {
                 if (_inventory.Count > 0)
                 {
-                    _inventory[0].Use(this);
-                    _inventory.RemoveAt(0);
+                    if (_inventory[_inventoryIndex] is Trap)
+                    {
+                        return;
+                    }
+                    _inventory[_inventoryIndex].Use(this);
+                    _inventory.RemoveAt(_inventoryIndex);
                     AdjustInventory();
                 }
             }
         }
         private void AdjustInventory()
         {
+            // If you used the last item, set the new item to the last item
+            _inventoryIndex = _inventoryIndex > _inventory.Count - 1 ? _inventory.Count > 0 ? _inventory.Count - 1 : 0 : _inventoryIndex;
+            
             // get rid of all the inventory
             foreach (Transform inventoryBar in GameManager.onScreenInterface.inventoryBar)
             {
@@ -381,11 +388,17 @@ namespace NPC.Scripts.Characters
             }
             
             // restock the items
+            int index = 0;
+            
             foreach (Item item in _inventory)
             { 
-                GameObject itemImage = Instantiate(itemPrefab, GameManager.onScreenInterface.inventoryBar); 
-                Debug.Log(item.itemSprite.name);
+                GameObject itemImage = Instantiate(itemPrefab, GameManager.onScreenInterface.inventoryBar);
                 itemImage.GetComponent<Image>().sprite = item.itemSprite;
+                if (index == _inventoryIndex)
+                {
+                    itemImage.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                index++;
             }
         }
         
@@ -495,6 +508,26 @@ namespace NPC.Scripts.Characters
             if (disableLineRenderer)
             {
                 _bulletLine.enabled = false;
+            }
+        }
+        
+        public void CycleInventoryItems(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered && _inventory.Count > 0)
+            {
+                switch (context.ReadValue<float>() > 0)
+                {
+                    case true:
+                        _inventoryIndex--;
+                        _inventoryIndex = _inventoryIndex < 0 ? _inventory.Count - 1 : _inventoryIndex;
+                        break;
+                    default:
+                        _inventoryIndex++;
+                        _inventoryIndex = _inventoryIndex > _inventory.Count - 1 ? 0 : _inventoryIndex;
+                        break;
+                }
+                
+                AdjustInventory();
             }
         }
         
