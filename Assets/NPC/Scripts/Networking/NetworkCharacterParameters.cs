@@ -46,6 +46,7 @@ namespace NPC.Scripts.Networking
             else if (_nonPlayerCharacterScript != null)
             {
                 _nonPlayerCharacterScript.UsePathfinding = true;
+                _nonPlayerCharacterScript.RollState();
             }
         }
 

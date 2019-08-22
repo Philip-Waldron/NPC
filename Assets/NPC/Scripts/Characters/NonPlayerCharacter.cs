@@ -83,9 +83,9 @@ namespace NPC.Scripts.Characters
             RollState();
         }
 
-        private void RollState()
+        public void RollState()
         {
-            if (IsDead || UsePathfinding)
+            if (IsDead || !UsePathfinding)
             {
                 return;
             }
