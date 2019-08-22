@@ -60,6 +60,7 @@ namespace NPC.Scripts.Characters
         {
             _gameManager = g;
             _animatorController = a;
+            animator.runtimeAnimatorController = _animatorController;
         }
 
         private void LateUpdate()

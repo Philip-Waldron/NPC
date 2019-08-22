@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd402cf80b3c6543a50861bea4159a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDuration: 10
+  pickupDuration: 0.1
   pickupBar: {fileID: 7772781803950771798}
   pickupBarImage: {fileID: 5995546701854396166}
   pickupBarSprite: {fileID: 21300000, guid: 4ed888557ebb44e48ac37fe3cae212a5, type: 3}
@@ -22,6 +22,7 @@ MonoBehaviour:
   downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
     type: 3}
   Rarity: 10
+  itemSprite: {fileID: 0}
 --- !u!1001 &5323066472167894210
 PrefabInstance:
   m_ObjectHideFlags: 0

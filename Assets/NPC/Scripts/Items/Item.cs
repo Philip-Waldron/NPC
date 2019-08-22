@@ -36,7 +36,9 @@ namespace NPC.Scripts.Items
         public bool Accessed { get; private set; }
         public bool Trapped { get; set; }
 
-        protected Sprite itemSprite;
+        [HideInInspector]
+        public Sprite itemSprite;
+        
         private const float SliderMax = 100f;
         private const float SliderMin = 0f;
         private float _t;

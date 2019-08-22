@@ -6,6 +6,7 @@ using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Characters;
 using NPC.Scripts.Items;
+using NPC.Scripts.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -26,6 +27,9 @@ namespace NPC.Scripts
             public List<Vector3> TilePositions;
         }
 
+        [Header("UI")] 
+        public OnScreenInterface onScreenInterface;
+        
         [Header("Player")]
         public GameObject playerPrefab;
     
@@ -53,10 +57,8 @@ namespace NPC.Scripts
 
         public List<Vector3> ValidSpawnPositions = new List<Vector3>();
         public List<Vector3> ValidMovePositions = new List<Vector3>();
-
-        [HideInInspector]
+        
         public List<Character> AllPlayers = new List<Character>();
-        [HideInInspector]
         public List<Character> NonPlayers = new List<Character>();
         
         private void Awake()
@@ -119,6 +121,16 @@ namespace NPC.Scripts
             }
 
             // Spawn(playerPrefab);
+            
+            // UI Stuff
+            if (onScreenInterface != null)
+            {
+                onScreenInterface.SetupUI(this, AllPlayers.Count);
+            }
+            else
+            {
+                Debug.LogWarning("Please add UI references in scene");
+            }
         }
 
         private void SetupItems()

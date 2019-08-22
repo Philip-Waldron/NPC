@@ -11,8 +11,6 @@ namespace NPC.Scripts.Characters
 {
     public class NonPlayerCharacter : Character
     {
-        private GameManager _gameManager;
-        
         [Header("Detection")]
         [SerializeField, Range(0f, 20f)]
         private float _detectionRadius = 5f;
@@ -71,7 +69,6 @@ namespace NPC.Scripts.Characters
         {
             networkedParameters = gameObject.GetComponent<NetworkCharacterParameters>();
             
-            _gameManager = FindObjectOfType<GameManager>();
             _seeker = GetComponent<Seeker>();
             float detectionFrequency = Random.Range(_detectionFrequency.x, _detectionFrequency.y);
             InvokeRepeating(nameof(DetectPlayersAttempt), detectionFrequency, detectionFrequency);
@@ -183,6 +180,7 @@ namespace NPC.Scripts.Characters
             foreach (Collider2D playerCollider in playerColliders)
             {
                 Player player = playerCollider.GetComponent<Player>();
+
                 int detectionChance = Mathf.RoundToInt(_detectionChanceCurve.Evaluate(player.DisguiseIntegrity));
 
                 if (detectionChance != 0 && IsAlerted(detectionChance))
