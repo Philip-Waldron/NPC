@@ -63,6 +63,7 @@ namespace NPC.Scripts.Characters
         private float _alertDuration = 2f;
         
         public NetworkCharacterParameters networkedParameters;
+        public bool UsePathfinding = false;
 
         private void Start()
         {
@@ -78,11 +79,13 @@ namespace NPC.Scripts.Characters
             _totalChance = _waitChance + _walkToCloseChance +
                            _walkToFarChance + _walkToRandomChance +
                            _walkInRoomChance + _walkToItemChance;
+            
+            RollState();
         }
 
-        public void RollState()
+        private void RollState()
         {
-            if (IsDead)
+            if (IsDead || UsePathfinding)
             {
                 return;
             }

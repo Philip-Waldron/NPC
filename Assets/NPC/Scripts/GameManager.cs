@@ -239,7 +239,7 @@ namespace NPC.Scripts
                 else
                 {
                     NonPlayers.Add(npc);
-                    npc.RollState();
+                    npc.UsePathfinding = true;
                 }
 
                 ValidSpawnPositions.RemoveAt(index);
