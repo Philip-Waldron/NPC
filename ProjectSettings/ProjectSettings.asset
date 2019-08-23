@@ -15,7 +15,7 @@ PlayerSettings:
   companyName: The Boys INC.
   productName: NPC
   defaultCursor: {fileID: 2800000, guid: 0dd9710cba2a0fb4e87af24c3184dc72, type: 3}
-  cursorHotspot: {x: 0, y: 0}
+  cursorHotspot: {x: 0.5, y: 0.5}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
