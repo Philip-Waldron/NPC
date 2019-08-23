@@ -35,6 +35,7 @@ namespace NPC.Scripts.Networking
         public override void NetworkStart()
         {
             base.NetworkStart();
+            
             if (!networkObject.IsOwner)
             {
                 if (_playerScript != null)
@@ -55,9 +56,9 @@ namespace NPC.Scripts.Networking
             if (networkObject == null)
                 return;
             
-            if (_playerScript != null && !networkObject.IsOwner)
+            if (_playerScript != null)
             {
-                if (_gridPosition != networkObject.gridPosition)
+                if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
                 {
                     StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
                 }
@@ -65,6 +66,12 @@ namespace NPC.Scripts.Networking
                 if (_isDead != networkObject.isDead)
                 {
                     _playerScript.IsDead = networkObject.isDead;
+                    _isDead = networkObject.isDead;
+                    
+                    if (networkObject.isDead)
+                    {
+                        _playerScript.Damage(Vector2.down, Vector2.zero);
+                    }
                 }
             }
 
