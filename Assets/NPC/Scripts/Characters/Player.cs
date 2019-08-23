@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NPC.Scripts.Items;
 using NPC.Scripts.Networking;
-using NPC.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -48,7 +47,7 @@ namespace NPC.Scripts.Characters
         private readonly List<Item> _inventory = new List<Item>();
         private bool _validItemPickup;
         public bool HoldingPickupButton { get; set; }
-        public bool trapItem { get; set; }
+        private int _inventoryIndex = 0;
 
         [Header("Disguise")]
         [SerializeField] public float MaxDisguiseIntegrity = 100f;
@@ -96,21 +95,21 @@ namespace NPC.Scripts.Characters
             
             onDeath.AddListener(UpdateUI);
 
-            if (_gameManager == null)
+            if (GameManager == null)
             {
                 Debug.LogWarning("GameManager was not set through GameManager spawning!");
-                _gameManager = FindObjectOfType<GameManager>();
+                GameManager = FindObjectOfType<GameManager>();
             }
         }
 
         private void UpdateUI()
         {
-            if (_gameManager.onScreenInterface == null)
+            if (GameManager.onScreenInterface == null)
             {
                 return;
             }
             
-            _gameManager.onScreenInterface.SetPlayerCount(_gameManager.AllPlayers.Count - 1);
+            GameManager.onScreenInterface.SetPlayerCount(GameManager.AllPlayers.Count - 1);
         }
 
         public void MakeOtherPlayerCharacter()
@@ -162,7 +161,7 @@ namespace NPC.Scripts.Characters
                 StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
             }
 
-            animationSpeed = _moveDirection.sqrMagnitude;
+            AnimationSpeed = _moveDirection.sqrMagnitude;
             
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
             {
@@ -272,6 +271,8 @@ namespace NPC.Scripts.Characters
                         {
                             hitPlayer = true;
                         }
+                        //todo: find better way of updating network
+                        networkedParameters.IsDead = true;
                         target.Damage(direction, hit.point);
                     }
                     else
@@ -281,10 +282,13 @@ namespace NPC.Scripts.Characters
                 }
             }
 
-            if (!hitPlayer && _useAmmo)
-            {    
-                AmmoCount--;
-                AdjustAmmo();
+            if (!hitPlayer)
+            {
+                if (_useAmmo)
+                {
+                    AmmoCount--;
+                    AdjustAmmo();
+                }
             }
             else
             {
@@ -336,7 +340,11 @@ namespace NPC.Scripts.Characters
 
                 if (selectedItem == null) return;
                 
+<<<<<<< HEAD
                 switch (trapItem)
+=======
+                switch (_inventory.Count > 0 && _inventory[_inventoryIndex] is Trap)
+>>>>>>> 6c1399125afa928a085959dc801d1118c592da1d
                 {
                     case true:
                         selectedItem.SetTrap();
@@ -368,26 +376,39 @@ namespace NPC.Scripts.Characters
             {
                 if (_inventory.Count > 0)
                 {
-                    _inventory[0].Use(this);
-                    _inventory.RemoveAt(0);
+                    if (_inventory[_inventoryIndex] is Trap)
+                    {
+                        return;
+                    }
+                    _inventory[_inventoryIndex].Use(this);
+                    _inventory.RemoveAt(_inventoryIndex);
                     AdjustInventory();
                 }
             }
         }
         private void AdjustInventory()
         {
+            // If you used the last item, set the new item to the last item
+            _inventoryIndex = _inventoryIndex > _inventory.Count - 1 ? _inventory.Count > 0 ? _inventory.Count - 1 : 0 : _inventoryIndex;
+            
             // get rid of all the inventory
-            foreach (Transform inventoryBar in _gameManager.onScreenInterface.inventoryBar)
+            foreach (Transform inventoryBar in GameManager.onScreenInterface.inventoryBar)
             {
                 Destroy(inventoryBar.gameObject);
             }
             
             // restock the items
+            int index = 0;
+            
             foreach (Item item in _inventory)
             { 
-                GameObject itemImage = Instantiate(itemPrefab, _gameManager.onScreenInterface.inventoryBar); 
-                Debug.Log(item.itemSprite.name);
+                GameObject itemImage = Instantiate(itemPrefab, GameManager.onScreenInterface.inventoryBar);
                 itemImage.GetComponent<Image>().sprite = item.itemSprite;
+                if (index == _inventoryIndex)
+                {
+                    itemImage.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                index++;
             }
         }
         
@@ -441,14 +462,14 @@ namespace NPC.Scripts.Characters
             bool valid = ValidMove(targetTransform.position);
             if (!valid)
             {
-                animationSpeed = 0;
+                AnimationSpeed = 0;
                 _moving = false;
                 yield break;
             }
             
             _moving = true;
             Vector3 currentPos = targetTransform.position;
-            animationMoveDirection = MovePosition(currentPos, position);
+            AnimationMoveDirection = MovePosition(currentPos, position);
             
             if (networkedParameters != null)
             {
@@ -497,6 +518,26 @@ namespace NPC.Scripts.Characters
             if (disableLineRenderer)
             {
                 _bulletLine.enabled = false;
+            }
+        }
+        
+        public void CycleInventoryItems(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered && _inventory.Count > 0)
+            {
+                switch (context.ReadValue<float>() > 0)
+                {
+                    case true:
+                        _inventoryIndex--;
+                        _inventoryIndex = _inventoryIndex < 0 ? _inventory.Count - 1 : _inventoryIndex;
+                        break;
+                    default:
+                        _inventoryIndex++;
+                        _inventoryIndex = _inventoryIndex > _inventory.Count - 1 ? 0 : _inventoryIndex;
+                        break;
+                }
+                
+                AdjustInventory();
             }
         }
         

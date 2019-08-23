@@ -9,19 +9,18 @@ namespace NPC.Scripts.Networking
 {
     public class NetworkCharacterParameters : PlayerBehavior
     {
-        public Vector2 MoveDirection
-        {
-            get => _moveDirection;
-            private set => UpdateDirection(value);
-        }
-
         public Vector2 GridPosition
         {
             get => _gridPosition;
             set => UpdatePosition(value);
         }
-
-        private Vector2 _moveDirection;
+        public bool IsDead
+        {
+            get => _isDead;
+            set => UpdateAliveStatus(value);
+        }
+        
+        private bool _isDead;
         private Vector2 _gridPosition;
 
         private Player _playerScript;
@@ -41,14 +40,13 @@ namespace NPC.Scripts.Networking
                 if (_playerScript != null)
                 {
                     _playerScript.MakeOtherPlayerCharacter();
-                } 
-                
-                else if (_nonPlayerCharacterScript != null)
-                {
-                    _nonPlayerCharacterScript.pathingEnabled = false;
                 }
-                
-                
+            }
+            
+            else if (_nonPlayerCharacterScript != null)
+            {
+                _nonPlayerCharacterScript.UsePathfinding = true;
+                _nonPlayerCharacterScript.RollState();
             }
         }
 
@@ -57,14 +55,30 @@ namespace NPC.Scripts.Networking
             if (networkObject == null)
                 return;
             
-            if (_playerScript != null && !networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
+            if (_playerScript != null && !networkObject.IsOwner)
             {
-                StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
+                if (_gridPosition != networkObject.gridPosition)
+                {
+                    StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
+                }
+
+                if (_isDead != networkObject.isDead)
+                {
+                    _playerScript.IsDead = networkObject.isDead;
+                }
             }
 
-            if (_nonPlayerCharacterScript != null && !networkObject.IsOwner && _gridPosition != networkObject.gridPosition)
+            if (_nonPlayerCharacterScript != null && !networkObject.IsOwner)
             {
-                StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
+                if (_gridPosition != networkObject.gridPosition)
+                {
+                    StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
+                }
+
+                if (_isDead != networkObject.isDead)
+                {
+                    _nonPlayerCharacterScript.IsDead = networkObject.isDead;
+                }
             }
         }
 
@@ -81,13 +95,16 @@ namespace NPC.Scripts.Networking
             }
         }
         
-        public void UpdateDirection(Vector2 moveDirection)
+        public void UpdateAliveStatus(bool isDead)
         {
-            _moveDirection = moveDirection;
+            if (networkObject == null)
+                return;
+            
+            _isDead = isDead;
             
             if (networkObject.IsOwner)
             {
-                networkObject.moveDirection = moveDirection;
+                networkObject.isDead = isDead;
             }
         }
     }

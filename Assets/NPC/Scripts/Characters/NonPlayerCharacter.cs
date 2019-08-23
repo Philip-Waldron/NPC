@@ -63,7 +63,7 @@ namespace NPC.Scripts.Characters
         private float _alertDuration = 2f;
         
         public NetworkCharacterParameters networkedParameters;
-        public bool pathingEnabled = true;
+        public bool UsePathfinding = false;
 
         private void Start()
         {
@@ -80,15 +80,12 @@ namespace NPC.Scripts.Characters
                            _walkToFarChance + _walkToRandomChance +
                            _walkInRoomChance + _walkToItemChance;
             
-            if (pathingEnabled)
-            {
-                RollState();
-            }
+            RollState();
         }
 
-        private void RollState()
+        public void RollState()
         {
-            if (IsDead)
+            if (IsDead || !UsePathfinding)
             {
                 return;
             }
@@ -138,15 +135,15 @@ namespace NPC.Scripts.Characters
             // Walk to random position.
             else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance)
             {
-                Vector3 targetPosition = _gameManager.ValidMovePositions[Random.Range(0, _gameManager.ValidMovePositions.Count - 1)];
+                Vector3 targetPosition = GameManager.ValidMovePositions[Random.Range(0, GameManager.ValidMovePositions.Count - 1)];
                 WalkToPosition(targetPosition);
             }
             // Walk in room.
             else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance)
             {
-                Vector3Int tilePosition = _gameManager.Tilemap.WorldToCell(transform.position);
-                Tile tile = (Tile)_gameManager.Tilemap.GetTile(tilePosition);
-                List<Vector3> roomTiles = _gameManager.Zones.First(x => x.Tile == tile).TilePositions;
+                Vector3Int tilePosition = GameManager.Tilemap.WorldToCell(transform.position);
+                Tile tile = (Tile)GameManager.Tilemap.GetTile(tilePosition);
+                List<Vector3> roomTiles = GameManager.Zones.First(x => x.Tile == tile).TilePositions;
                 Vector3 targetPosition = roomTiles[Random.Range(0, roomTiles.Count)];
                 WalkToPosition(targetPosition);
             }
@@ -204,10 +201,7 @@ namespace NPC.Scripts.Characters
 
         private void WalkToPosition(Vector3 targetPosition)
         {
-            if (pathingEnabled)
-            {
-                _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
-            }
+            _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
         }
 
         private void OnPathComplete(Path path)
@@ -217,10 +211,7 @@ namespace NPC.Scripts.Characters
                 _path = path;
                 _currentWaypoint = 0;
                 
-                if (pathingEnabled)
-                {
-                    StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
-                }
+                StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
             }
             else
             {
@@ -233,8 +224,8 @@ namespace NPC.Scripts.Characters
             Vector3 currentPos = targetTransform.position;
 
             Vector2 movePosition = MovePosition(currentPos, position);
-            animationMoveDirection = movePosition;
-            animationSpeed = movePosition == Vector2.zero ? 0f : 1f;
+            AnimationMoveDirection = movePosition;
+            AnimationSpeed = movePosition == Vector2.zero ? 0f : 1f;
             
             if (networkedParameters != null)
             {
@@ -249,9 +240,6 @@ namespace NPC.Scripts.Characters
                 yield return null;
             }
 
-            if (!pathingEnabled)
-                yield return null;
-
             if (_path != null && _currentWaypoint + 1 < _path.vectorPath.Count)
             {
                 _currentWaypoint++;
@@ -259,7 +247,7 @@ namespace NPC.Scripts.Characters
             }
             else
             {
-                animationSpeed = 0f;
+                AnimationSpeed = 0f;
                 RollState();
             }
         }

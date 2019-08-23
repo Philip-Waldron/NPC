@@ -28,7 +28,8 @@ namespace NPC.Scripts
         }
 
         [Header("UI")] 
-        public OnScreenInterface onScreenInterface;
+        [SerializeField] private GameObject onScreenInterfacePrefab;
+        public OnScreenInterface onScreenInterface { get; private set; }
         
         [Header("Player")]
         public GameObject playerPrefab;
@@ -55,6 +56,7 @@ namespace NPC.Scripts
         public Tilemap Tilemap;
         public Zone[] Zones;
 
+        [Header("Debug")]
         public List<Vector3> ValidSpawnPositions = new List<Vector3>();
         public List<Vector3> ValidMovePositions = new List<Vector3>();
         
@@ -66,7 +68,20 @@ namespace NPC.Scripts
             Tilemap.CompressBounds();
             FindValidPositions();
             SetupItems();
+            
+            // UI Stuff
+            if (onScreenInterfacePrefab != null)
+            {
+                onScreenInterfacePrefab = Instantiate(onScreenInterfacePrefab);
+                onScreenInterface = onScreenInterfacePrefab.GetComponent<OnScreenInterface>();
+                onScreenInterface.SetupUI(this, AllPlayers.Count);
+            }
+            else
+            {
+                Debug.LogWarning("Please add UI references in scene");
+            }
 
+            // Zone Stuff
             foreach (Zone zone in Zones)
             {
                 Vector3[] tileSpawnPositions = zone.TilePositions.Intersect(ValidSpawnPositions).ToArray();
@@ -106,30 +121,19 @@ namespace NPC.Scripts
                     }
                 }
             }
-            
             else
             {
-                for(int i = 0; i < _npcCount; i++)
-                {
-                    SpawnCharacter(NonPlayerCharacterPrefab, false);
-                }
-        
+                SpawnCharacter(playerPrefab, false);
+                
                 for(int i = 0; i < _otherPlayerCount; i++)
                 {
                     SpawnCharacter(otherPlayerPrefab, true);
                 }
-            }
-
-            // Spawn(playerPrefab);
-            
-            // UI Stuff
-            if (onScreenInterface != null)
-            {
-                onScreenInterface.SetupUI(this, AllPlayers.Count);
-            }
-            else
-            {
-                Debug.LogWarning("Please add UI references in scene");
+                
+                for(int i = 0; i < _npcCount; i++)
+                {
+                    SpawnCharacter(NonPlayerCharacterPrefab, false);
+                }
             }
         }
 
@@ -228,8 +232,7 @@ namespace NPC.Scripts
             {
                 int index = Random.Range(0, ValidSpawnPositions.Count);
                 GameObject spawnedPlayer = Instantiate(gameObjectToSpawn, ValidSpawnPositions[index], Quaternion.identity, null);
-                Character character = spawnedPlayer.GetComponent<Character>();
-                character.Initialise(this, AnimatorControllers[Random.Range(0, AnimatorControllers.Count)]);
+                NonPlayerCharacter npc = spawnedPlayer.GetComponent<NonPlayerCharacter>();
                 Player player = spawnedPlayer.GetComponent<Player>();
 
                 if (player != null && otherPlayer)
@@ -239,7 +242,8 @@ namespace NPC.Scripts
                 }
                 else
                 {
-                    NonPlayers.Add(character);
+                    NonPlayers.Add(npc);
+                    npc.UsePathfinding = true;
                 }
 
                 ValidSpawnPositions.RemoveAt(index);
