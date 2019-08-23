@@ -161,13 +161,13 @@ GameObject:
   - component: {fileID: 7386164656553810016}
   - component: {fileID: 7231542131669053484}
   - component: {fileID: 4749694150178419119}
-  m_Layer: 5
+  m_Layer: 4
   m_Name: PlayerIdentification
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7386164656553810016
 RectTransform:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.4243727, g: 1, b: 0.3537736, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -364,7 +364,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 7989
+    m_Bits: 7975
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1476,7 +1476,7 @@ PrefabInstance:
     - target: {fileID: 1204044645467033302, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 148766743979349648, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
