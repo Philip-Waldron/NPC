@@ -20,16 +20,10 @@ namespace NPC.Scripts.Networking
             foreach (var gameObject in scene.GetRootGameObjects())
             {
                 GameManager gameManager = gameObject.GetComponent<GameManager>();
-                if (gameManager != null)
+                if (gameManager != null && _netWorker.IsServer)
                 {
                     _netWorker.playerAccepted += gameManager.OnPlayerAccepted;
                     foundComponent = true;
-                    
-                    if (_netWorker.IsServer)
-                    {
-                        gameManager.SpawnNetworkedPlayer();
-                    }
-                    
                     break;
                 }
             }

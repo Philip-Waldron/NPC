@@ -111,10 +111,10 @@ namespace NPC.Scripts
 
             if (SceneManager.GetActiveScene().name == "Networking_Scene")
             {
-                SpawnNetworkedPlayer();
-                
                 if (NetworkManager.Instance.IsServer)
                 {
+                    SpawnNetworkedPlayer();
+                    
                     for(int i = 0; i < _npcCount; i++)
                     {
                         SpawnNetworkedNPC();
