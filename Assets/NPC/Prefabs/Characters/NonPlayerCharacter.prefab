@@ -92,6 +92,7 @@ MonoBehaviour:
   _walkToItemChance: 5
   _talkativenessRange: {x: 5, y: 15}
   networkedParameters: {fileID: 0}
+  pathingEnabled: 1
 --- !u!114 &2597228477026952477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +158,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3222394472677673887, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1790dee243fde984facda6fc64a0d6b5,
+        type: 3}
     - target: {fileID: 474047629950386863, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_Name
@@ -228,12 +235,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3222394472677673887, guid: 9caec9a4f2a35f9438883c2a774657c1,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 1790dee243fde984facda6fc64a0d6b5,
-        type: 3}
     - target: {fileID: 3222394472677673873, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_IsActive
