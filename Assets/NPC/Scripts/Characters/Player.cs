@@ -272,7 +272,7 @@ namespace NPC.Scripts.Characters
                             hitPlayer = true;
                         }
                         
-                        target.Damage(direction, hit.point);
+                        target.Damage(direction, hit.point, true);
                     }
                     else
                     {

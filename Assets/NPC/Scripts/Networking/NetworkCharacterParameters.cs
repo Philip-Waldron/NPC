@@ -96,12 +96,12 @@ namespace NPC.Scripts.Networking
                     
                     if (_playerScript != null)
                     {
-                        _playerScript.Damage(target, hitPoint);
+                        _playerScript.Damage(target, hitPoint, false);
                     }
                     
                     if (_nonPlayerCharacterScript != null)
                     {
-                        _nonPlayerCharacterScript.Damage(target, hitPoint);
+                        _nonPlayerCharacterScript.Damage(target, hitPoint, false);
                     }  
                 }
                 );

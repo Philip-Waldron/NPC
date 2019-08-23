@@ -102,14 +102,14 @@ namespace NPC.Scripts.Characters
             }
         }
         
-        public void Damage(Vector3 target, Vector2 hitPoint)
+        public void Damage(Vector3 target, Vector2 hitPoint, bool shouldBroadcast)
         {
-            if (this is Player)
+            if (this is Player && shouldBroadcast)
             {
                 ((Player)this).networkedParameters.CommunicateShot(target, hitPoint);
             }
             
-            else if (this is NonPlayerCharacter)
+            else if (this is NonPlayerCharacter && shouldBroadcast)
             {
                 ((NonPlayerCharacter)this).networkedParameters.CommunicateShot(target, hitPoint);
             }
