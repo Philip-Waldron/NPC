@@ -84,7 +84,7 @@ namespace NPC.Scripts.Networking
 
         public void CommunicateShot(Vector2 target, Vector2 hitPoint)
         {
-            networkObject.SendRpc(RPC_SHOTS_FIRED, Receivers.All, target, hitPoint);
+            networkObject.SendRpc(RPC_SHOTS_FIRED, Receivers.Others, target, hitPoint);
         }
 
         public override void ShotsFired(RpcArgs args)
