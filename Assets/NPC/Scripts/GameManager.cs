@@ -240,7 +240,7 @@ namespace NPC.Scripts
                     player.MakeOtherPlayerCharacter();
                     AllPlayers.Add(player);
                 }
-                else
+                else if (npc != null)
                 {
                     NonPlayers.Add(npc);
                     npc.UsePathfinding = true;
