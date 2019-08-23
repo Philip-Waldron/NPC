@@ -164,7 +164,7 @@ namespace NPC.Scripts.Characters
             
             // Update Cooldown and Charge Bars
             _cooldownBar.SetValueWithoutNotify((Time.time - _lastShotTime) / _shootCooldownTime);
-            _chargeBar.SetValueWithoutNotify(_chargingFor > _bulletChargeTime ? 1 :  _chargingFor / _bulletChargeTime);
+            _chargeBar.SetValueWithoutNotify(_chargingFor > _bulletChargeTime ? 1 : _chargingFor / _bulletChargeTime);
 
             // Move.
             if (!_moving && _moveDirection != Vector2.zero)
@@ -240,7 +240,6 @@ namespace NPC.Scripts.Characters
                 {
                     _bulletLine.enabled = false;
                 }
-                
                 _bulletCharging = false;
                 _chargeReady = false;
                 _chargingFor = 0;
@@ -248,6 +247,8 @@ namespace NPC.Scripts.Characters
         }
         private void Shoot()
         {
+            _chargingFor = 0;
+            
             if (_lineRendererAnimation != null)
             {
                 StopCoroutine(_lineRendererAnimation);
@@ -331,18 +332,22 @@ namespace NPC.Scripts.Characters
             // Interactions
             if (context.started && !IsDead)
             {
-                Array itemColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange, itemMask);
+                Vector3 position = transform.position;
                 
+                Array itemColliders = Physics2D.OverlapCircleAll(position, pickupRange, itemMask);
                 float minDistance = pickupRange;
                 Item selectedItem = null;
 
                 foreach (Collider2D itemCollider in itemColliders)
                 {
+                    Vector3 itemPosition = itemCollider.transform.position;
+                    float itemDistance = Vector2.Distance(itemPosition, position);;
+                    bool obstructed = Physics2D.Raycast(position, itemPosition - position, itemDistance, obstacleLayer);
                     Item item = itemCollider.GetComponent<Item>();
 
-                    if (item != null && !item.Accessed && Vector2.Distance(item.transform.position, transform.position) < minDistance)
+                    if (item != null && !item.Accessed && Vector2.Distance(item.transform.position, position) < minDistance && !obstructed)
                     {
-                        minDistance = Vector2.Distance(item.transform.position, transform.position);
+                        minDistance = itemDistance;
                         selectedItem = item;
                     }
                 }
