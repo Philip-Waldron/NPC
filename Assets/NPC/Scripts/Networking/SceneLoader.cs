@@ -23,6 +23,7 @@ namespace NPC.Scripts.Networking
                 if (gameManager != null && _netWorker.IsServer)
                 {
                     _netWorker.playerAccepted += gameManager.OnPlayerAccepted;
+                    _netWorker.playerDisconnected += gameManager.OnPlayerDisconnected;
                     foundComponent = true;
                     break;
                 }

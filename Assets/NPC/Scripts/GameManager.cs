@@ -62,7 +62,8 @@ namespace NPC.Scripts
         
         public List<Character> AllPlayers = new List<Character>();
         public List<Character> NonPlayers = new List<Character>();
-        
+        public Dictionary<int, PlayerBehavior> networkedPlayerScripts = new Dictionary<int, PlayerBehavior>();
+
         private void Awake()
         {
             Tilemap.CompressBounds();
@@ -113,7 +114,7 @@ namespace NPC.Scripts
             {
                 if (NetworkManager.Instance.IsServer)
                 {
-                    SpawnNetworkedPlayer();
+                    SpawnNetworkedPlayer(NetworkManager.Instance.Networker.Me.NetworkId);
                     
                     for(int i = 0; i < _npcCount; i++)
                     {
@@ -183,28 +184,36 @@ namespace NPC.Scripts
                 }
             }
         }
-    
-        public void SpawnNetworkedPlayer()
+
+        public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
+        {
+            MainThreadManager.Run(() =>
+            {
+                SpawnNetworkedPlayer(player.NetworkId);
+            });
+        }
+
+        public void OnPlayerDisconnected(NetworkingPlayer player, NetWorker netWorker)
+        {
+            if (networkedPlayerScripts.Count > 0)
+            {
+                var networkedScript = networkedPlayerScripts[networkedPlayerScripts.Count - 1];
+                networkedScript.networkObject.Destroy();
+                networkedPlayerScripts.Remove((int)player.NetworkId);
+            }
+        }
+        
+        public void SpawnNetworkedPlayer(uint playerID)
         {
             Vector3 position = RetrieveRandomValidPosition();
-            NetworkManager.Instance.InstantiatePlayer(0, position);
+            var playerScript = NetworkManager.Instance.InstantiatePlayer(0, position);
+            networkedPlayerScripts[(int)playerID] = playerScript;
         }
 
         public void SpawnNetworkedNPC()
         {
             Vector3 position = RetrieveRandomValidPosition();
             NetworkManager.Instance.InstantiatePlayer(1, position);
-        }
-
-        public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
-        {
-            
-            MainThreadManager.Run(() =>
-            {
-                Vector3 position = RetrieveRandomValidPosition();
-                PlayerBehavior playerScript = NetworkManager.Instance.InstantiatePlayer(0, position);
-                playerScript.networkObject.AssignOwnership(player);
-            });
         }
     
         public Vector3 RetrieveRandomValidPosition()
