@@ -124,7 +124,7 @@ namespace NPC.Scripts.Items
             }
         }
 
-        public void Damage(Vector3 target, Vector2 hitPoint)
+        public void Damage(Vector3 target, Vector2 hitPoint, bool shouldBroadcast)
         {
             pickupBar.SetValueWithoutNotify(SliderMin);
             Accessed = true;
