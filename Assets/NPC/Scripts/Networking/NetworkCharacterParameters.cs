@@ -68,9 +68,9 @@ namespace NPC.Scripts.Networking
                 }
             }
 
-            if (_nonPlayerCharacterScript != null && !networkObject.IsOwner)
+            if (_nonPlayerCharacterScript != null)
             {
-                if (_gridPosition != networkObject.gridPosition)
+                if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
                 {
                     StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
                 }
@@ -102,10 +102,7 @@ namespace NPC.Scripts.Networking
             
             _isDead = isDead;
             
-            if (networkObject.IsOwner)
-            {
-                networkObject.isDead = isDead;
-            }
+            networkObject.isDead = isDead;
         }
     }
 }
