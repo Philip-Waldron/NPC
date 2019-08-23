@@ -268,6 +268,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
+      propertyPath: Items.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
+        type: 3}
       propertyPath: Tilemap
       value: 
       objectReference: {fileID: 1129942107}
@@ -332,5 +337,16 @@ PrefabInstance:
       propertyPath: Zones.Array.data[7].ItemsInZone
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
+        type: 3}
+      propertyPath: _npcCount
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
+        type: 3}
+      propertyPath: Items.Array.data[0]
+      value: 
+      objectReference: {fileID: 7842114992730812468, guid: 30ed6ac06f9796041a4ff5bcfd634cdd,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc3ea58be1c4f324eb66a2251b4bf606, type: 3}
