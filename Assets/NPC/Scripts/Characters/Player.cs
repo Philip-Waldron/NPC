@@ -13,14 +13,24 @@ namespace NPC.Scripts.Characters
     public class Player : Character
     {
         [Header("Ammo")]
-        [SerializeField] private bool _useAmmo = true;
-        [SerializeField, Range(1, 3)] public int AmmoCount = 1;
-        [SerializeField, Range(1f, 10f)] public float _shootRange;
-        [SerializeField] private GameObject _laserParticleEffect;
-        [SerializeField] private GameObject _bulletChargeSprite;
-        [SerializeField] private Transform _bulletCharges;
-        [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
-        [SerializeField] private string _bulletSortLayer = "UnderCharacter";
+        [SerializeField] 
+        private bool _useAmmo = true;
+        [SerializeField, Range(1, 3)]
+        public int AmmoCount = 1;
+        [SerializeField, Range(1f, 10f)] 
+        public float _shootRange;
+        [SerializeField] 
+        private GameObject _laserParticleEffect;
+        [SerializeField] 
+        private GameObject _bulletChargeSprite;
+        [SerializeField] 
+        private Transform _bulletCharges;
+        [SerializeField, Range(0f, 3f)] 
+        private float _bulletChargeTime = 1;
+        [SerializeField] 
+        private Slider _chargeBar;
+        [SerializeField]
+        private string _bulletSortLayer = "UnderCharacter";
 
         [Header("Cooldown")] 
         [SerializeField, Range(0f, 10f)]
@@ -152,9 +162,10 @@ namespace NPC.Scripts.Characters
             _elapsedTime += Time.deltaTime / _disguiseDuration;
             _disguiseIntegrity = IsDead? 0f : Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
             
-            // Update Cooldown
-            _cooldownBar.SetValueWithoutNotify(((Time.time - _lastShotTime) / _shootCooldownTime));
-            
+            // Update Cooldown and Charge Bars
+            _cooldownBar.SetValueWithoutNotify((Time.time - _lastShotTime) / _shootCooldownTime);
+            _chargeBar.SetValueWithoutNotify(_chargingFor > _bulletChargeTime ? 1 :  _chargingFor / _bulletChargeTime);
+
             // Move.
             if (!_moving && _moveDirection != Vector2.zero)
             {
@@ -251,7 +262,6 @@ namespace NPC.Scripts.Characters
             
             // Cooldown
             _lastShotTime = Time.time;
-            
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
             Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
