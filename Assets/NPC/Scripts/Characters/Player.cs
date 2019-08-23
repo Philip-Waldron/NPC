@@ -70,7 +70,7 @@ namespace NPC.Scripts.Characters
         private bool _moving;
 
         [Header("Emote")]
-        private float _emoteDuration = 2f;
+        public float _emoteDuration = 2f;
         
         [Header("Other Player Character"), Tooltip("List of GameObjects to be disabled when Other Player")]
         [SerializeField] private List<GameObject> otherPlayerObjects = new List<GameObject>();
@@ -271,9 +271,8 @@ namespace NPC.Scripts.Characters
                         {
                             hitPlayer = true;
                         }
-                        //todo: find better way of updating network
-                        networkedParameters.IsDead = true;
-                        target.Damage(direction, hit.point);
+                        
+                        target.Damage(direction, hit.point, true);
                     }
                     else
                     {
@@ -547,6 +546,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
+                networkedParameters.BroadcastEmote(0);
                 Emote(0, _emoteDuration);
             }
         }
@@ -554,6 +554,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
+                networkedParameters.BroadcastEmote(1);
                 Emote(1, _emoteDuration);
             }
         }
@@ -561,6 +562,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
+                networkedParameters.BroadcastEmote(2);
                 Emote(2, _emoteDuration);
             }
         }
@@ -568,6 +570,7 @@ namespace NPC.Scripts.Characters
         {
             if (context.action.triggered)
             {
+                networkedParameters.BroadcastEmote(3);
                 Emote(3, _emoteDuration);
             }
         }

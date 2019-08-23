@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[]")]
-	[GeneratedRPCVariableNames("{\"types\":[]")]
+	[GeneratedRPC("{\"types\":[[\"Vector2\", \"Vector2\"][\"int\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"target\", \"hitPoint\"][\"index\"]]")]
 	public abstract partial class PlayerBehavior : NetworkBehavior
 	{
+		public const byte RPC_SHOTS_FIRED = 0 + 5;
+		public const byte RPC_EMOTE = 1 + 5;
 		
 		public PlayerNetworkObject networkObject = null;
 
@@ -21,6 +23,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
+			networkObject.RegisterRpc("ShotsFired", ShotsFired, typeof(Vector2), typeof(Vector2));
+			networkObject.RegisterRpc("Emote", Emote, typeof(int));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -97,6 +101,17 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.SnapInterpolations();
 		}
 
+		/// <summary>
+		/// Arguments:
+		/// Vector2 target
+		/// Vector2 hitPoint
+		/// </summary>
+		public abstract void ShotsFired(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// int index
+		/// </summary>
+		public abstract void Emote(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

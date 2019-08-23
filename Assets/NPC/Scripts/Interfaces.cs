@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using NPC.Scripts.Characters;
+using UnityEngine;
 
 namespace NPC.Scripts
 {
     public interface IDamageable
     {
-        void Damage(Vector3 target, Vector2 hitPoint);
+        void Damage(Vector3 target, Vector2 hitPoint, bool shouldBroadcast);
     }
     
     public interface IScannable

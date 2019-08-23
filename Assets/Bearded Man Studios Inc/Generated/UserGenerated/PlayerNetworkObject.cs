@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0,0,0]")]
+	[GeneratedInterpol("{\"inter\":[0,0]")]
 	public partial class PlayerNetworkObject : NetworkObject
 	{
 		public const int IDENTITY = 7;
@@ -77,37 +77,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (gridPositionChanged != null) gridPositionChanged(_gridPosition, timestep);
 			if (fieldAltered != null) fieldAltered("gridPosition", _gridPosition, timestep);
 		}
-		[ForgeGeneratedField]
-		private bool _isDead;
-		public event FieldEvent<bool> isDeadChanged;
-		public Interpolated<bool> isDeadInterpolation = new Interpolated<bool>() { LerpT = 0f, Enabled = false };
-		public bool isDead
-		{
-			get { return _isDead; }
-			set
-			{
-				// Don't do anything if the value is the same
-				if (_isDead == value)
-					return;
-
-				// Mark the field as dirty for the network to transmit
-				_dirtyFields[0] |= 0x4;
-				_isDead = value;
-				hasDirtyFields = true;
-			}
-		}
-
-		public void SetisDeadDirty()
-		{
-			_dirtyFields[0] |= 0x4;
-			hasDirtyFields = true;
-		}
-
-		private void RunChange_isDead(ulong timestep)
-		{
-			if (isDeadChanged != null) isDeadChanged(_isDead, timestep);
-			if (fieldAltered != null) fieldAltered("isDead", _isDead, timestep);
-		}
 
 		protected override void OwnershipChanged()
 		{
@@ -119,7 +88,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		{
 			moveDirectionInterpolation.current = moveDirectionInterpolation.target;
 			gridPositionInterpolation.current = gridPositionInterpolation.target;
-			isDeadInterpolation.current = isDeadInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -128,7 +96,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		{
 			UnityObjectMapper.Instance.MapBytes(data, _moveDirection);
 			UnityObjectMapper.Instance.MapBytes(data, _gridPosition);
-			UnityObjectMapper.Instance.MapBytes(data, _isDead);
 
 			return data;
 		}
@@ -143,10 +110,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			gridPositionInterpolation.current = _gridPosition;
 			gridPositionInterpolation.target = _gridPosition;
 			RunChange_gridPosition(timestep);
-			_isDead = UnityObjectMapper.Instance.Map<bool>(payload);
-			isDeadInterpolation.current = _isDead;
-			isDeadInterpolation.target = _isDead;
-			RunChange_isDead(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -158,8 +121,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _moveDirection);
 			if ((0x2 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _gridPosition);
-			if ((0x4 & _dirtyFields[0]) != 0)
-				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _isDead);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -202,19 +163,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					RunChange_gridPosition(timestep);
 				}
 			}
-			if ((0x4 & readDirtyFlags[0]) != 0)
-			{
-				if (isDeadInterpolation.Enabled)
-				{
-					isDeadInterpolation.target = UnityObjectMapper.Instance.Map<bool>(data);
-					isDeadInterpolation.Timestep = timestep;
-				}
-				else
-				{
-					_isDead = UnityObjectMapper.Instance.Map<bool>(data);
-					RunChange_isDead(timestep);
-				}
-			}
 		}
 
 		public override void InterpolateUpdate()
@@ -231,11 +179,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			{
 				_gridPosition = (Vector2)gridPositionInterpolation.Interpolate();
 				//RunChange_gridPosition(gridPositionInterpolation.Timestep);
-			}
-			if (isDeadInterpolation.Enabled && !isDeadInterpolation.current.UnityNear(isDeadInterpolation.target, 0.0015f))
-			{
-				_isDead = (bool)isDeadInterpolation.Interpolate();
-				//RunChange_isDead(isDeadInterpolation.Timestep);
 			}
 		}
 

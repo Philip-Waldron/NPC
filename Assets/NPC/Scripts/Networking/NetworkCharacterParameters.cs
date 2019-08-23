@@ -1,5 +1,7 @@
 ﻿using System;
+using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Characters;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
@@ -14,13 +16,7 @@ namespace NPC.Scripts.Networking
             get => _gridPosition;
             set => UpdatePosition(value);
         }
-        public bool IsDead
-        {
-            get => _isDead;
-            set => UpdateAliveStatus(value);
-        }
-        
-        private bool _isDead;
+
         private Vector2 _gridPosition;
 
         private Player _playerScript;
@@ -35,6 +31,7 @@ namespace NPC.Scripts.Networking
         public override void NetworkStart()
         {
             base.NetworkStart();
+            
             if (!networkObject.IsOwner)
             {
                 if (_playerScript != null)
@@ -55,29 +52,19 @@ namespace NPC.Scripts.Networking
             if (networkObject == null)
                 return;
             
-            if (_playerScript != null && !networkObject.IsOwner)
+            if (_playerScript != null)
             {
-                if (_gridPosition != networkObject.gridPosition)
+                if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
                 {
                     StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
                 }
-
-                if (_isDead != networkObject.isDead)
-                {
-                    _playerScript.IsDead = networkObject.isDead;
-                }
             }
 
-            if (_nonPlayerCharacterScript != null && !networkObject.IsOwner)
+            if (_nonPlayerCharacterScript != null)
             {
-                if (_gridPosition != networkObject.gridPosition)
+                if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
                 {
                     StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
-                }
-
-                if (_isDead != networkObject.isDead)
-                {
-                    _nonPlayerCharacterScript.IsDead = networkObject.isDead;
                 }
             }
         }
@@ -94,17 +81,44 @@ namespace NPC.Scripts.Networking
                 networkObject.gridPosition = position;
             }
         }
-        
-        public void UpdateAliveStatus(bool isDead)
+
+        public void CommunicateShot(Vector2 target, Vector2 hitPoint)
         {
-            if (networkObject == null)
-                return;
-            
-            _isDead = isDead;
-            
-            if (networkObject.IsOwner)
+            networkObject.SendRpc(RPC_SHOTS_FIRED, Receivers.Others, target, hitPoint);
+        }
+
+        public override void ShotsFired(RpcArgs args)
+        {
+            MainThreadManager.Run(() =>
+                {
+                    var target = args.GetAt<Vector2>(0);
+                    var hitPoint = args.GetAt<Vector2>(1);
+                    
+                    if (_playerScript != null)
+                    {
+                        _playerScript.Damage(target, hitPoint, false);
+                    }
+                    
+                    if (_nonPlayerCharacterScript != null)
+                    {
+                        _nonPlayerCharacterScript.Damage(target, hitPoint, false);
+                    }  
+                }
+                );
+        }
+
+        public void BroadcastEmote(int index)
+        {
+            networkObject.SendRpc(RPC_EMOTE, Receivers.Others, index);
+        }
+
+        public override void Emote(RpcArgs args)
+        {
+            var index = args.GetNext<int>();
+
+            if (_playerScript != null)
             {
-                networkObject.isDead = isDead;
+                _playerScript.Emote(index, _playerScript._emoteDuration);
             }
         }
     }
