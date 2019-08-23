@@ -198,9 +198,10 @@ namespace NPC.Scripts
 
         public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
         {
+            
             MainThreadManager.Run(() =>
             {
-                Vector3 position = new Vector3(0.5f, 0.5f, 0);
+                Vector3 position = RetrieveRandomValidPosition();
                 PlayerBehavior playerScript = NetworkManager.Instance.InstantiatePlayer(0, position);
                 playerScript.networkObject.AssignOwnership(player);
             });
