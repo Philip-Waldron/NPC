@@ -49,7 +49,7 @@ namespace NPC.Scripts.Characters
         private static readonly int Speed = Animator.StringToHash("Speed");
         private static readonly int Dead = Animator.StringToHash("Dead");
 
-        public bool IsDead { get; private set; }
+        public bool IsDead { get; set; }
         protected GameManager GameManager;
 
         private void Awake()
