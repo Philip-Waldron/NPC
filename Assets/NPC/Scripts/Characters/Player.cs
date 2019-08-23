@@ -271,7 +271,6 @@ namespace NPC.Scripts.Characters
                         {
                             hitPlayer = true;
                         }
-                        networkedParameters.CommunicateShot(direction, hit.point);
                         
                         target.Damage(direction, hit.point);
                     }

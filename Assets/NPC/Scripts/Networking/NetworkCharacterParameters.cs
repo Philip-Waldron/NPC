@@ -91,8 +91,8 @@ namespace NPC.Scripts.Networking
         {
             MainThreadManager.Run(() =>
                 {
-                    var target = args.GetNext<Vector2>();
-                    var hitPoint = args.GetNext<Vector2>();
+                    var target = args.GetAt<Vector2>(0);
+                    var hitPoint = args.GetAt<Vector2>(1);
                     
                     if (_playerScript != null)
                     {

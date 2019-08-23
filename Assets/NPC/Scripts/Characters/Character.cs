@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using BeardedManStudios.Forge.Networking.Generated;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -103,6 +104,16 @@ namespace NPC.Scripts.Characters
         
         public void Damage(Vector3 target, Vector2 hitPoint)
         {
+            if (this is Player)
+            {
+                ((Player)this).networkedParameters.CommunicateShot(target, hitPoint);
+            }
+            
+            else if (this is NonPlayerCharacter)
+            {
+                ((NonPlayerCharacter)this).networkedParameters.CommunicateShot(target, hitPoint);
+            }
+            
             // Death State
             onDeath.Invoke();
             IsDead = true;
