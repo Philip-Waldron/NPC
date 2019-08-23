@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34750bca848b1614786691c96d569142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDuration: 0.1
+  pickupDuration: 5
   pickupBar: {fileID: 4778918661288381157}
   pickupBarImage: {fileID: 8842856454928239541}
   pickupBarSprite: {fileID: 21300000, guid: 4ed888557ebb44e48ac37fe3cae212a5, type: 3}
@@ -57,6 +57,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c6a8baa670c90004ea36ddb2c5e255e9,
         type: 3}
+    - target: {fileID: 320986668726085502, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 0.375
+      objectReference: {fileID: 0}
     - target: {fileID: 2032267457349828954, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111,11 +116,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 320986668726085502, guid: 7c58c7da86937344a9d52e779bb3810d,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 0.375
       objectReference: {fileID: 0}
     - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
