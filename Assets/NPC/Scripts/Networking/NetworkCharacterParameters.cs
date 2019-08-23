@@ -1,5 +1,7 @@
 ﻿using System;
+using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Characters;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
@@ -14,13 +16,7 @@ namespace NPC.Scripts.Networking
             get => _gridPosition;
             set => UpdatePosition(value);
         }
-        public bool IsDead
-        {
-            get => _isDead;
-            set => UpdateAliveStatus(value);
-        }
-        
-        private bool _isDead;
+
         private Vector2 _gridPosition;
 
         private Player _playerScript;
@@ -62,17 +58,6 @@ namespace NPC.Scripts.Networking
                 {
                     StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
                 }
-
-                if (_isDead != networkObject.isDead)
-                {
-                    _playerScript.IsDead = networkObject.isDead;
-                    _isDead = networkObject.isDead;
-                    
-                    if (networkObject.isDead)
-                    {
-                        _playerScript.Damage(Vector2.down, Vector2.zero);
-                    }
-                }
             }
 
             if (_nonPlayerCharacterScript != null)
@@ -80,11 +65,6 @@ namespace NPC.Scripts.Networking
                 if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
                 {
                     StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
-                }
-
-                if (_isDead != networkObject.isDead)
-                {
-                    _nonPlayerCharacterScript.IsDead = networkObject.isDead;
                 }
             }
         }
@@ -101,15 +81,30 @@ namespace NPC.Scripts.Networking
                 networkObject.gridPosition = position;
             }
         }
-        
-        public void UpdateAliveStatus(bool isDead)
+
+        public void CommunicateShot(Vector2 target, Vector2 hitPoint)
         {
-            if (networkObject == null)
-                return;
-            
-            _isDead = isDead;
-            
-            networkObject.isDead = isDead;
+            networkObject.SendRpc(RPC_SHOTS_FIRED, Receivers.All, target, hitPoint);
+        }
+
+        public override void ShotsFired(RpcArgs args)
+        {
+            MainThreadManager.Run(() =>
+                {
+                    var target = args.GetNext<Vector2>();
+                    var hitPoint = args.GetNext<Vector2>();
+                    
+                    if (_playerScript != null)
+                    {
+                        _playerScript.Damage(target, hitPoint);
+                    }
+                    
+                    if (_nonPlayerCharacterScript != null)
+                    {
+                        _nonPlayerCharacterScript.Damage(target, hitPoint);
+                    }  
+                }
+                );
         }
     }
 }

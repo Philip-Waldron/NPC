@@ -271,8 +271,8 @@ namespace NPC.Scripts.Characters
                         {
                             hitPlayer = true;
                         }
-                        //todo: find better way of updating network
-                        networkedParameters.IsDead = true;
+                        networkedParameters.CommunicateShot(direction, hit.point);
+                        
                         target.Damage(direction, hit.point);
                     }
                     else
