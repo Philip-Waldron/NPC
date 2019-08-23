@@ -106,5 +106,20 @@ namespace NPC.Scripts.Networking
                 }
                 );
         }
+
+        public void BroadcastEmote(int index)
+        {
+            networkObject.SendRpc(RPC_EMOTE, Receivers.Others, index);
+        }
+
+        public override void Emote(RpcArgs args)
+        {
+            var index = args.GetNext<int>();
+
+            if (_playerScript != null)
+            {
+                _playerScript.Emote(index, _playerScript._emoteDuration);
+            }
+        }
     }
 }
