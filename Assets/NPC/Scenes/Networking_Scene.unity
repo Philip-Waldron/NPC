@@ -524,6 +524,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a296fbbd984561d41bbcbca1e7acf241, type: 3}
+--- !u!1839735485 &1357016562 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 2658168806306073318, guid: a296fbbd984561d41bbcbca1e7acf241,
+    type: 3}
+  m_PrefabInstance: {fileID: 1357016561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1538135089
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -595,7 +601,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Tilemap
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1357016562}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: otherPlayerPrefab
