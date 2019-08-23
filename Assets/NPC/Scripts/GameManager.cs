@@ -68,7 +68,20 @@ namespace NPC.Scripts
             Tilemap.CompressBounds();
             FindValidPositions();
             SetupItems();
+            
+            // UI Stuff
+            if (onScreenInterfacePrefab != null)
+            {
+                onScreenInterfacePrefab = Instantiate(onScreenInterfacePrefab);
+                onScreenInterface = onScreenInterfacePrefab.GetComponent<OnScreenInterface>();
+                onScreenInterface.SetupUI(this, AllPlayers.Count);
+            }
+            else
+            {
+                Debug.LogWarning("Please add UI references in scene");
+            }
 
+            // Zone Stuff
             foreach (Zone zone in Zones)
             {
                 Vector3[] tileSpawnPositions = zone.TilePositions.Intersect(ValidSpawnPositions).ToArray();
@@ -121,18 +134,6 @@ namespace NPC.Scripts
                 {
                     SpawnCharacter(NonPlayerCharacterPrefab, false);
                 }
-            }
-            
-            // UI Stuff
-            if (onScreenInterfacePrefab != null)
-            {
-                onScreenInterfacePrefab = Instantiate(onScreenInterfacePrefab);
-                onScreenInterface = onScreenInterfacePrefab.GetComponent<OnScreenInterface>();
-                onScreenInterface.SetupUI(this, AllPlayers.Count);
-            }
-            else
-            {
-                Debug.LogWarning("Please add UI references in scene");
             }
         }
 

@@ -282,10 +282,13 @@ namespace NPC.Scripts.Characters
                 }
             }
 
-            if (!hitPlayer && _useAmmo)
-            {    
-                AmmoCount--;
-                AdjustAmmo();
+            if (!hitPlayer)
+            {
+                if (_useAmmo)
+                {
+                    AmmoCount--;
+                    AdjustAmmo();
+                }
             }
             else
             {
