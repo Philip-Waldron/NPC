@@ -1317,6 +1317,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   _emoteDuration: 2
+  playerCamera: {fileID: 5663642255746815986}
   otherPlayerObjects:
   - {fileID: 2651586330853848326}
   - {fileID: 8178181114743947702}
@@ -1539,6 +1540,23 @@ MonoBehaviour:
       Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
     m_ActionId: 7d2d250c-a646-4778-8b43-63786db0c2bc
     m_ActionName: Player/EmoteF[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2478862999013664657}
+        m_MethodName: CyclePlayers
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
+      Version=0.9.2.0, Culture=neutral, PublicKeyToken=null
+    m_ActionId: 2dcf9b9a-f4e7-4ff6-b375-02a398e187a7
+    m_ActionName: Player/CyclePlayers[/Mouse/scroll/y]
   m_AutoSwitchControlScheme: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: bc17f7d1-57a0-4c9e-956f-39baed694873

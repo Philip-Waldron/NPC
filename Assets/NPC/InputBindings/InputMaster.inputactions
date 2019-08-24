@@ -92,6 +92,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "CyclePlayers",
+                    "type": "Value",
+                    "id": "2dcf9b9a-f4e7-4ff6-b375-02a398e187a7",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -356,6 +364,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "EmoteF",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1d7445c-da3d-4783-b808-ce2af94e15f2",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CyclePlayers",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

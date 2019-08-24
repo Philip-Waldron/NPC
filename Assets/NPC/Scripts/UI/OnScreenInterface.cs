@@ -9,6 +9,7 @@ namespace NPC.Scripts.UI
         [Header("UI References")]
         public Transform inventoryBar;
         public TextMeshProUGUI playerCount;
+        public TextMeshProUGUI spectatingText;
         public GameObject winScreen;
 
         private GameManager gameManager;
@@ -17,7 +18,6 @@ namespace NPC.Scripts.UI
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
-            gameManager.WinState.AddListener(WinScreen);
         }
 
         private void Update()
@@ -26,14 +26,20 @@ namespace NPC.Scripts.UI
             maxPlayerCount = allPlayerCount > maxPlayerCount ? allPlayerCount : maxPlayerCount;
             SetPlayerCount(allPlayerCount);
         }
-        
-        public void SetPlayerCount(int players)
+
+        private void SetPlayerCount(int players)
         {
             string s = players + " | " + maxPlayerCount;
             playerCount.SetText(s);
         }
+        
+        public void SetSpectatingText(string playerName)
+        {
+            string s = "You're  Spectating  " + playerName;
+            spectatingText.SetText(s);
+        }
 
-        private void WinScreen()
+        public void WinScreen()
         {
             winScreen.SetActive(true);
         }

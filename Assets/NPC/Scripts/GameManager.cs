@@ -61,7 +61,7 @@ namespace NPC.Scripts
         public List<Vector3> ValidSpawnPositions = new List<Vector3>();
         public List<Vector3> ValidMovePositions = new List<Vector3>();
         
-        public List<Character> AllPlayers = new List<Character>();
+        public List<Player> AllPlayers = new List<Player>();
         public List<Character> NonPlayers = new List<Character>();
 
         private int maxPlayerCount;
@@ -140,7 +140,7 @@ namespace NPC.Scripts
                 }
             }
         }
-
+        
         private void Update()
         {
             int allPlayerCount = AllPlayers.Count;
@@ -151,7 +151,7 @@ namespace NPC.Scripts
                 WinState.Invoke();
             }
         }
-
+        
         private void SetupItems()
         {
             _itemRarities.Add(Item.ItemRarity.Common, new List<GameObject>());
@@ -304,7 +304,7 @@ namespace NPC.Scripts
         {
             if (AllPlayers.Contains(character))
             {
-                AllPlayers.Remove(character);
+                AllPlayers.Remove((Player)character);
             }
             else if (NonPlayers.Contains(character))
             {

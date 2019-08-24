@@ -69,11 +69,16 @@ namespace NPC.Scripts.Characters
 
         [Header("Emote")]
         public float _emoteDuration = 2f;
-        
+
+        [Header("Spectating")]
+        public Transform playerCamera;
+        private int spectatingIndex;
+
         [Header("Other Player Character")]
         [Tooltip("List of GameObjects to be disabled when Other Player")]
         [SerializeField] private List<GameObject> otherPlayerObjects = new List<GameObject>();
         [SerializeField] private PlayerInput playerInput;
+        private bool isOtherPlayer;
 
         private void Start()
         {
@@ -93,6 +98,8 @@ namespace NPC.Scripts.Characters
                 Debug.LogWarning("GameManager was not set through GameManager spawning!");
                 GameManager = FindObjectOfType<GameManager>();
             }
+            
+            GameManager.WinState.AddListener(OnWin);
             
             // Add to GameManager Lists
             GameManager.AllPlayers.Add(this);
@@ -146,6 +153,7 @@ namespace NPC.Scripts.Characters
         }
         public void MakeOtherPlayerCharacter()
         {
+            isOtherPlayer = true;
             playerInput.enabled = false;
             foreach (GameObject otherPlayerObject in otherPlayerObjects)
             {
@@ -249,6 +257,11 @@ namespace NPC.Scripts.Characters
         }
         private void Shoot()
         {
+            if (IsDead)
+            {
+                return;
+            }
+            
             _chargingFor = 0;
             
             if (_lineRendererAnimation != null)
@@ -591,6 +604,40 @@ namespace NPC.Scripts.Characters
             {
                 _bulletLine.enabled = false;
             }
+        }
+        public void CyclePlayers(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered && IsDead)
+            {
+                switch (context.ReadValue<float>() > 0)
+                {
+                    case true:
+                        spectatingIndex--;
+                        spectatingIndex = spectatingIndex < 0 ? GameManager.AllPlayers.Count - 1 : spectatingIndex;
+                        break;
+                    default:
+                        spectatingIndex++;
+                        spectatingIndex = spectatingIndex > GameManager.AllPlayers.Count - 1 ? 0 : spectatingIndex;
+                        break;
+                }
+                
+                SpectatePlayer(spectatingIndex);
+            }
+        }
+        private void OnWin()
+        {
+            if (!IsDead && !isOtherPlayer)
+            {
+                GameManager.onScreenInterface.WinScreen();
+            }
+        }
+        private void SpectatePlayer(int index)
+        {
+            Player spectatingPlayer = GameManager.AllPlayers[index];
+            Vector3 targetCameraPos = spectatingPlayer.playerCamera.transform.localPosition;
+            playerCamera.SetParent(spectatingPlayer.transform);
+            playerCamera.localPosition = targetCameraPos;
+            GameManager.onScreenInterface.SetSpectatingText(spectatingPlayer.characterName);
         }
     }
 }
