@@ -120,6 +120,81 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &924752709
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8905195606021345639, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_Name
+      value: SmallGrid
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905195606021345637, guid: d32f676f39662b04aa7dda942eb1a87b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d32f676f39662b04aa7dda942eb1a87b, type: 3}
+--- !u!1839735485 &924752710 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 526547337, guid: d32f676f39662b04aa7dda942eb1a87b,
+    type: 3}
+  m_PrefabInstance: {fileID: 924752709}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1839735485 &2092540404 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 2658168806306073318, guid: a296fbbd984561d41bbcbca1e7acf241,
@@ -133,15 +208,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8605758360864349392, guid: a296fbbd984561d41bbcbca1e7acf241,
-        type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 6432
-      objectReference: {fileID: 0}
     - target: {fileID: 2658168807719399279, guid: a296fbbd984561d41bbcbca1e7acf241,
         type: 3}
       propertyPath: m_Name
       value: BigGrid
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658168807719399279, guid: a296fbbd984561d41bbcbca1e7acf241,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8605758360864349392, guid: a296fbbd984561d41bbcbca1e7acf241,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 6432
       objectReference: {fileID: 0}
     - target: {fileID: 2658168807719399276, guid: a296fbbd984561d41bbcbca1e7acf241,
         type: 3}
@@ -201,6 +281,11 @@ PrefabInstance:
     - target: {fileID: 2658168806306073319, guid: a296fbbd984561d41bbcbca1e7acf241,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658168807102332218, guid: a296fbbd984561d41bbcbca1e7acf241,
+        type: 3}
+      propertyPath: m_ColliderPaths.Array.size
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -301,7 +386,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Tilemap
       value: 
-      objectReference: {fileID: 2092540404}
+      objectReference: {fileID: 924752710}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
       propertyPath: onScreenInterface
