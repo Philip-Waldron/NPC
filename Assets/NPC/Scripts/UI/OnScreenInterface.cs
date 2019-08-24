@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace NPC.Scripts.UI
@@ -10,18 +11,23 @@ namespace NPC.Scripts.UI
         public TextMeshProUGUI playerCount;
         
         private GameManager gameManager;
-        private int originalPlayerCount;
+        private int maxPlayerCount;
 
-        public void SetupUI(GameManager g, int playerTotal)
+        private void Awake()
         {
-            gameManager = g;
-            originalPlayerCount = playerTotal;
-            SetPlayerCount(originalPlayerCount);
+            gameManager = FindObjectOfType<GameManager>();
+        }
+
+        private void Update()
+        {
+            int allPlayerCount = gameManager.AllPlayers.Count;
+            maxPlayerCount = allPlayerCount > maxPlayerCount ? allPlayerCount : maxPlayerCount;
+            SetPlayerCount(allPlayerCount);
         }
         
         public void SetPlayerCount(int players)
         {
-            string s = players + " | " + originalPlayerCount;
+            string s = players + " | " + maxPlayerCount;
             playerCount.SetText(s);
         }
     }

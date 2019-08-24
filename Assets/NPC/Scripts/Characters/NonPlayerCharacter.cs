@@ -49,6 +49,10 @@ namespace NPC.Scripts.Characters
 
         private void Start()
         {
+            // Add to GameManager Lists
+            GameManager.NonPlayers.Add(this);
+            
+            // Setup
             _seeker = GetComponent<Seeker>();
             float detectionFrequency = Random.Range(_detectionFrequency.x, _detectionFrequency.y);
             InvokeRepeating(nameof(DetectPlayersAttempt), detectionFrequency, detectionFrequency);

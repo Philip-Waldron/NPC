@@ -95,6 +95,9 @@ namespace NPC.Scripts.Characters
                 Debug.LogWarning("GameManager was not set through GameManager spawning!");
                 GameManager = FindObjectOfType<GameManager>();
             }
+            
+            // Add to GameManager Lists
+            GameManager.AllPlayers.Add(this);
         }
         private void Update()
         {

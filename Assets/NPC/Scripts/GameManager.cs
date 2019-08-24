@@ -74,7 +74,6 @@ namespace NPC.Scripts
             {
                 onScreenInterfacePrefab = Instantiate(onScreenInterfacePrefab);
                 onScreenInterface = onScreenInterfacePrefab.GetComponent<OnScreenInterface>();
-                onScreenInterface.SetupUI(this, AllPlayers.Count);
             }
             else
             {
@@ -136,6 +135,11 @@ namespace NPC.Scripts
                     SpawnCharacter(NonPlayerCharacterPrefab, false);
                 }
             }
+            
+            if (onScreenInterfacePrefab != null)
+            {
+                //onScreenInterface.SetupUI(this, AllPlayers.Count);
+            }
         }
 
         private void SetupItems()
@@ -188,12 +192,14 @@ namespace NPC.Scripts
         public void SpawnNetworkedPlayer()
         {
             Vector3 position = RetrieveRandomValidPosition();
+            //AllPlayers.Add(NetworkManager.Instance.InstantiatePlayer(0, position).GetComponent<Character>());
             NetworkManager.Instance.InstantiatePlayer(0, position);
         }
 
         public void SpawnNetworkedNPC()
         {
             Vector3 position = RetrieveRandomValidPosition();
+            //NonPlayers.Add(NetworkManager.Instance.InstantiatePlayer(1, position).GetComponent<Character>());
             NetworkManager.Instance.InstantiatePlayer(1, position);
         }
 
@@ -247,7 +253,7 @@ namespace NPC.Scripts
                     npc.UsePathfinding = true;
                 }
 
-                ValidSpawnPositions.RemoveAt(index);
+                ValidSpawnPositions.RemoveAt(index); 
             }
             else
             {

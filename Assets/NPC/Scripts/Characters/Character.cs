@@ -15,7 +15,9 @@ namespace NPC.Scripts.Characters
         protected SpriteRenderer SpriteRenderer;
 
         [Header("Scan")]
-        [SerializeField] protected SpriteRenderer revealedSprite;
+        [SerializeField] protected SpriteRenderer identificationSprite;
+        [SerializeField] protected TextMeshPro identificationText;
+        [SerializeField] protected string characterName = "Character Name";
 
         [Header("Speech Bubble")]
         [SerializeField] protected GameObject speechBubble;
@@ -61,6 +63,7 @@ namespace NPC.Scripts.Characters
             GameManager = FindObjectOfType<GameManager>();
             _animatorController = GameManager.AnimatorControllers[Random.Range(0, GameManager.AnimatorControllers.Count)];
             Animator.runtimeAnimatorController = _animatorController;
+            identificationText.SetText(characterName);
         }
 
         private void LateUpdate()
@@ -135,10 +138,11 @@ namespace NPC.Scripts.Characters
 
         IEnumerator OnScan(float scanDuration)
         {
-            revealedSprite.enabled = true;
+            identificationSprite.enabled = true;
+            identificationText.renderer.enabled = true;
             yield return new WaitForSeconds(scanDuration);
-            yield return new WaitForSeconds(scanDuration);
-            revealedSprite.enabled = false;
+            identificationSprite.enabled = false;
+            identificationText.renderer.enabled = false;
         }
 
         private IEnumerator Emote(Sprite emoteSprite, float duration)
