@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NPC.Scripts.Items;
-using NPC.Scripts.Networking;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -13,30 +12,19 @@ namespace NPC.Scripts.Characters
     public class Player : Character
     {
         [Header("Ammo")]
-        [SerializeField] 
-        private bool _useAmmo = true;
-        [SerializeField, Range(1, 3)]
-        public int AmmoCount = 1;
-        [SerializeField, Range(1f, 10f)] 
-        public float _shootRange;
-        [SerializeField] 
-        private GameObject _laserParticleEffect;
-        [SerializeField] 
-        private GameObject _bulletChargeSprite;
-        [SerializeField] 
-        private Transform _bulletCharges;
-        [SerializeField, Range(0f, 3f)] 
-        private float _bulletChargeTime = 1;
-        [SerializeField] 
-        private Slider _chargeBar;
-        [SerializeField]
-        private string _bulletSortLayer = "UnderCharacter";
+        [SerializeField] private bool _useAmmo = true;
+        [SerializeField, Range(1, 3)] public int AmmoCount = 1;
+        [SerializeField, Range(1f, 10f)] public float _shootRange;
+        [SerializeField] private GameObject _laserParticleEffect;
+        [SerializeField] private GameObject _bulletChargeSprite;
+        [SerializeField] private Transform _bulletCharges;
+        [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
+        [SerializeField] private Slider _chargeBar;
+        [SerializeField]private string _bulletSortLayer = "UnderCharacter";
 
         [Header("Cooldown")] 
-        [SerializeField, Range(0f, 10f)]
-        private float _shootCooldownTime;
-        [SerializeField] 
-        private Slider _cooldownBar;
+        [SerializeField, Range(0f, 10f)] private float _shootCooldownTime;
+        [SerializeField] private Slider _cooldownBar;
         private float _lastShotTime;
         public bool QueuedWeaponCharge { get; set; }
         
@@ -50,8 +38,7 @@ namespace NPC.Scripts.Characters
         private readonly List<ParticleSystem> _laserParticleSystem = new List<ParticleSystem>();
         
         [Header("Items")]
-        [SerializeField, Space(10f), Range(.1f, 3f)]
-        public float pickupRange;
+        [SerializeField, Space(10f), Range(.1f, 3f)]public float pickupRange;
         [SerializeField] public LayerMask itemMask;
         [SerializeField] private GameObject itemPrefab;
         [SerializeField, Range(0, 10)] private int inventoryCount = 3;
@@ -83,16 +70,13 @@ namespace NPC.Scripts.Characters
         [Header("Emote")]
         public float _emoteDuration = 2f;
         
-        [Header("Other Player Character"), Tooltip("List of GameObjects to be disabled when Other Player")]
+        [Header("Other Player Character")]
+        [Tooltip("List of GameObjects to be disabled when Other Player")]
         [SerializeField] private List<GameObject> otherPlayerObjects = new List<GameObject>();
         [SerializeField] private PlayerInput playerInput;
 
-        public NetworkCharacterParameters networkedParameters;
-        
         private void Start()
         {
-            networkedParameters = gameObject.GetComponent<NetworkCharacterParameters>();
-            
             AdjustAmmo();
             _lastShotTime = Time.time - _shootCooldownTime;
             
@@ -110,50 +94,6 @@ namespace NPC.Scripts.Characters
             {
                 Debug.LogWarning("GameManager was not set through GameManager spawning!");
                 GameManager = FindObjectOfType<GameManager>();
-            }
-        }
-
-        private void UpdateUI()
-        {
-            if (GameManager.onScreenInterface == null)
-            {
-                return;
-            }
-            
-            GameManager.onScreenInterface.SetPlayerCount(GameManager.AllPlayers.Count - 1);
-        }
-
-        public void MakeOtherPlayerCharacter()
-        {
-            playerInput.enabled = false;
-            foreach (GameObject otherPlayerObject in otherPlayerObjects)
-            {
-                otherPlayerObject.SetActive(false);
-            }
-        }
-        
-        private void SetupLineRenderer()
-        {
-            _bulletLine = gameObject.AddComponent<LineRenderer>();
-            _bulletLine.positionCount = 2;
-            _bulletLine.startWidth = 0.025f;
-            _bulletLine.endWidth = 0f;
-            _bulletLine.material = new Material(Shader.Find("Sprites/Default")) { color = Color.cyan };
-            _bulletLine.alignment = LineAlignment.TransformZ;
-            _bulletLine.enabled = false;
-            _bulletLine.sortingLayerName = _bulletSortLayer;
-        }
-
-        private void SetupParticleSystem()
-        {
-            _laserParticleEffect = Instantiate(_laserParticleEffect, transform);
-            foreach (Transform child in _laserParticleEffect.transform)
-            {
-                ParticleSystem particle = child.GetComponent<ParticleSystem>();
-                if (particle != null)
-                {
-                    _laserParticleSystem.Add(particle);
-                }
             }
         }
         private void Update()
@@ -202,6 +142,46 @@ namespace NPC.Scripts.Characters
             {
                 ShootCharge();
             } 
+        }
+        private void UpdateUI()
+        {
+            if (GameManager.onScreenInterface == null)
+            {
+                return;
+            }
+            
+            GameManager.onScreenInterface.SetPlayerCount(GameManager.AllPlayers.Count - 1);
+        }
+        public void MakeOtherPlayerCharacter()
+        {
+            playerInput.enabled = false;
+            foreach (GameObject otherPlayerObject in otherPlayerObjects)
+            {
+                otherPlayerObject.SetActive(false);
+            }
+        }
+        private void SetupLineRenderer()
+        {
+            _bulletLine = gameObject.AddComponent<LineRenderer>();
+            _bulletLine.positionCount = 2;
+            _bulletLine.startWidth = 0.025f;
+            _bulletLine.endWidth = 0f;
+            _bulletLine.material = new Material(Shader.Find("Sprites/Default")) { color = Color.cyan };
+            _bulletLine.alignment = LineAlignment.TransformZ;
+            _bulletLine.enabled = false;
+            _bulletLine.sortingLayerName = _bulletSortLayer;
+        }
+        private void SetupParticleSystem()
+        {
+            _laserParticleEffect = Instantiate(_laserParticleEffect, transform);
+            foreach (Transform child in _laserParticleEffect.transform)
+            {
+                ParticleSystem particle = child.GetComponent<ParticleSystem>();
+                if (particle != null)
+                {
+                    _laserParticleSystem.Add(particle);
+                }
+            }
         }
         public void Move(InputAction.CallbackContext context)
         {
@@ -347,6 +327,48 @@ namespace NPC.Scripts.Characters
             _laserParticleEffect.transform.right = direction;
             _bulletLine.SetPositions(new Vector3[] { position, endPoint });
         }
+        #region Emotes
+        public void Emote1(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                networkedParameters.BroadcastEmote(0);
+                Emote(0, _emoteDuration);
+            }
+        }
+        public void Emote2(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                networkedParameters.BroadcastEmote(1);
+                Emote(1, _emoteDuration);
+            }
+        }
+        public void Emote3(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                networkedParameters.BroadcastEmote(2);
+                Emote(2, _emoteDuration);
+            }
+        }
+        public void Emote4(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                networkedParameters.BroadcastEmote(3);
+                Emote(3, _emoteDuration);
+            }
+        }
+        public void EmoteF(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                networkedParameters.BroadcastEmote(4);
+                Emote(4, _emoteDuration);
+            }
+        }
+        #endregion
         public void Interact(InputAction.CallbackContext context)
         {
             // Button States
@@ -408,6 +430,25 @@ namespace NPC.Scripts.Characters
         {
             _inventory.Add(item);
             AdjustInventory();
+        }
+        public void CycleInventoryItems(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered && _inventory.Count > 0)
+            {
+                switch (context.ReadValue<float>() > 0)
+                {
+                    case true:
+                        _inventoryIndex--;
+                        _inventoryIndex = _inventoryIndex < 0 ? _inventory.Count - 1 : _inventoryIndex;
+                        break;
+                    default:
+                        _inventoryIndex++;
+                        _inventoryIndex = _inventoryIndex > _inventory.Count - 1 ? 0 : _inventoryIndex;
+                        break;
+                }
+                
+                AdjustInventory();
+            }
         }
         public void UseEquipmentItem(InputAction.CallbackContext context)
         {
@@ -559,69 +600,5 @@ namespace NPC.Scripts.Characters
                 _bulletLine.enabled = false;
             }
         }
-        
-        public void CycleInventoryItems(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered && _inventory.Count > 0)
-            {
-                switch (context.ReadValue<float>() > 0)
-                {
-                    case true:
-                        _inventoryIndex--;
-                        _inventoryIndex = _inventoryIndex < 0 ? _inventory.Count - 1 : _inventoryIndex;
-                        break;
-                    default:
-                        _inventoryIndex++;
-                        _inventoryIndex = _inventoryIndex > _inventory.Count - 1 ? 0 : _inventoryIndex;
-                        break;
-                }
-                
-                AdjustInventory();
-            }
-        }
-        
-        #region Emotes
-
-        public void Emote1(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                networkedParameters.BroadcastEmote(0);
-                Emote(0, _emoteDuration);
-            }
-        }
-        public void Emote2(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                networkedParameters.BroadcastEmote(1);
-                Emote(1, _emoteDuration);
-            }
-        }
-        public void Emote3(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                networkedParameters.BroadcastEmote(2);
-                Emote(2, _emoteDuration);
-            }
-        }
-        public void Emote4(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                networkedParameters.BroadcastEmote(3);
-                Emote(3, _emoteDuration);
-            }
-        }
-        public void EmoteF(InputAction.CallbackContext context)
-        {
-            if (context.action.triggered)
-            {
-                networkedParameters.BroadcastEmote(4);
-                Emote(4, _emoteDuration);
-            }
-        }
-        #endregion
     }
 }
