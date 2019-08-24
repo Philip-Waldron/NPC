@@ -109,6 +109,7 @@ namespace NPC.Scripts
                 }
             }
 
+            // Network Spawning Stuff
             if (SceneManager.GetActiveScene().name == "Networking_Scene")
             {
                 SpawnNetworkedPlayer();

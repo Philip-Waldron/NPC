@@ -84,6 +84,14 @@
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "EmoteF",
+                    "type": "Button",
+                    "id": "7d2d250c-a646-4778-8b43-63786db0c2bc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -337,6 +345,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "CycleItems",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9adc1392-0736-4e31-9eee-6fa9315e125e",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "EmoteF",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -38,6 +38,7 @@ namespace NPC.Scripts.Characters
         [SerializeField] 
         private Slider _cooldownBar;
         private float _lastShotTime;
+        public bool QueuedWeaponCharge { get; set; }
         
         private int _startBulletChargeFrame;
         private float _chargingFor;
@@ -174,6 +175,7 @@ namespace NPC.Scripts.Characters
 
             AnimationSpeed = _moveDirection.sqrMagnitude;
             
+            // Shooting Charge
             if (_bulletCharging && _startBulletChargeFrame != Time.frameCount)
             {
                 DrawLineRenderer();
@@ -195,6 +197,11 @@ namespace NPC.Scripts.Characters
                     }
                 }
             }
+
+            if ((Time.time - _lastShotTime) >= _shootCooldownTime && !_bulletCharging && QueuedWeaponCharge)
+            {
+                ShootCharge();
+            } 
         }
         public void Move(InputAction.CallbackContext context)
         {
@@ -214,35 +221,58 @@ namespace NPC.Scripts.Characters
         }
         public void ShootCharge(InputAction.CallbackContext context)
         {
-            if (context.performed && AmmoCount > 0 && !IsDead && ((Time.time - _lastShotTime) >= _shootCooldownTime))
+            if (context.performed && AmmoCount > 0 && !IsDead)
             {
-                if (_lineRendererAnimation != null)
+                switch ((Time.time - _lastShotTime) >= _shootCooldownTime)
                 {
-                    StopCoroutine(_lineRendererAnimation);
-                    _bulletLine.material.color = Color.cyan;
+                    case true: // Weapon has cooled down
+                        ShootCharge();
+                        break;
+                    default: // Weapon has not cooled down
+                        QueuedWeaponCharge = true;
+                        break;
                 }
-
-                DrawLineRenderer();
-                _bulletLine.enabled = true;
-                _bulletCharging = true;
-                _startBulletChargeFrame = Time.frameCount;
             }
+        }
+
+        private void ShootCharge()
+        {
+            if (_lineRendererAnimation != null)
+            {
+                StopCoroutine(_lineRendererAnimation);
+                _bulletLine.material.color = Color.cyan;
+            }
+
+            DrawLineRenderer();
+            _bulletLine.enabled = true;
+            _bulletCharging = true;
+            _startBulletChargeFrame = Time.frameCount;
         }
         public void ShootRelease(InputAction.CallbackContext context)
         {
-            if (context.performed && _bulletCharging)
+            if (context.performed)
             {
-                if (_chargingFor >= _bulletChargeTime)
+                switch (_bulletCharging)
                 {
-                    Shoot();
+                    case true: // When the weapon is charging
+                        if (_chargingFor >= _bulletChargeTime)
+                        {
+                            Shoot();
+                        }
+                        else
+                        {
+                            _bulletLine.enabled = false;
+                        }
+                        QueuedWeaponCharge = false;
+                        _bulletCharging = false;
+                        _chargeReady = false;
+                        _chargingFor = 0;
+                        break;
+                    default: // When the weapon is cooling down
+                        QueuedWeaponCharge = false;
+                        break;
                 }
-                else
-                {
-                    _bulletLine.enabled = false;
-                }
-                _bulletCharging = false;
-                _chargeReady = false;
-                _chargingFor = 0;
+                
             }
         }
         private void Shoot()
@@ -584,7 +614,14 @@ namespace NPC.Scripts.Characters
                 Emote(3, _emoteDuration);
             }
         }
-
+        public void EmoteF(InputAction.CallbackContext context)
+        {
+            if (context.action.triggered)
+            {
+                networkedParameters.BroadcastEmote(4);
+                Emote(4, _emoteDuration);
+            }
+        }
         #endregion
     }
 }
