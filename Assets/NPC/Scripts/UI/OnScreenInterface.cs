@@ -9,13 +9,15 @@ namespace NPC.Scripts.UI
         [Header("UI References")]
         public Transform inventoryBar;
         public TextMeshProUGUI playerCount;
-        
+        public GameObject winScreen;
+
         private GameManager gameManager;
         private int maxPlayerCount;
 
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
+            gameManager.WinState.AddListener(WinScreen);
         }
 
         private void Update()
@@ -29,6 +31,11 @@ namespace NPC.Scripts.UI
         {
             string s = players + " | " + maxPlayerCount;
             playerCount.SetText(s);
+        }
+
+        private void WinScreen()
+        {
+            winScreen.SetActive(true);
         }
     }
 }

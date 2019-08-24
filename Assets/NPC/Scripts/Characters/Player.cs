@@ -87,8 +87,6 @@ namespace NPC.Scripts.Characters
             SetupParticleSystem();
             
             SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
-            
-            onDeath.AddListener(UpdateUI);
 
             if (GameManager == null)
             {
@@ -145,15 +143,6 @@ namespace NPC.Scripts.Characters
             {
                 ShootCharge();
             } 
-        }
-        private void UpdateUI()
-        {
-            if (GameManager.onScreenInterface == null)
-            {
-                return;
-            }
-            
-            GameManager.onScreenInterface.SetPlayerCount(GameManager.AllPlayers.Count - 1);
         }
         public void MakeOtherPlayerCharacter()
         {

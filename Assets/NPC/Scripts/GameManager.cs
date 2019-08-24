@@ -8,6 +8,7 @@ using NPC.Scripts.Characters;
 using NPC.Scripts.Items;
 using NPC.Scripts.UI;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -62,6 +63,9 @@ namespace NPC.Scripts
         
         public List<Character> AllPlayers = new List<Character>();
         public List<Character> NonPlayers = new List<Character>();
+
+        private int maxPlayerCount;
+        [HideInInspector] public UnityEvent WinState;
         
         private void Awake()
         {
@@ -135,10 +139,16 @@ namespace NPC.Scripts
                     SpawnCharacter(NonPlayerCharacterPrefab, false);
                 }
             }
+        }
+
+        private void Update()
+        {
+            int allPlayerCount = AllPlayers.Count;
+            maxPlayerCount = allPlayerCount > maxPlayerCount ? allPlayerCount : maxPlayerCount;
             
-            if (onScreenInterfacePrefab != null)
+            if (AllPlayers.Count == 1 && maxPlayerCount > 1)
             {
-                //onScreenInterface.SetupUI(this, AllPlayers.Count);
+                WinState.Invoke();
             }
         }
 
