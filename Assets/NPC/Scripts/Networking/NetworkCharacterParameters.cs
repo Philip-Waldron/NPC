@@ -1,11 +1,8 @@
-﻿using System;
-using BeardedManStudios.Forge.Networking;
+﻿using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Characters;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
-using UnityEngine.InputSystem;
 
 namespace NPC.Scripts.Networking
 {
@@ -31,7 +28,7 @@ namespace NPC.Scripts.Networking
         public override void NetworkStart()
         {
             base.NetworkStart();
-            
+
             if (!networkObject.IsOwner)
             {
                 if (_playerScript != null)
@@ -39,7 +36,7 @@ namespace NPC.Scripts.Networking
                     _playerScript.MakeOtherPlayerCharacter();
                 }
             }
-            
+
             else if (_nonPlayerCharacterScript != null)
             {
                 _nonPlayerCharacterScript.UsePathfinding = true;
@@ -50,8 +47,10 @@ namespace NPC.Scripts.Networking
         private void Update()
         {
             if (networkObject == null)
+            {
                 return;
-            
+            }
+
             if (_playerScript != null)
             {
                 if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
@@ -69,13 +68,15 @@ namespace NPC.Scripts.Networking
             }
         }
 
-        public void UpdatePosition(Vector2 position)
+        private void UpdatePosition(Vector2 position)
         {
             if (networkObject == null)
+            {
                 return;
-            
+            }
+
             _gridPosition = position;
-            
+
             if (networkObject.IsOwner)
             {
                 networkObject.gridPosition = position;
@@ -90,21 +91,20 @@ namespace NPC.Scripts.Networking
         public override void ShotsFired(RpcArgs args)
         {
             MainThreadManager.Run(() =>
+            {
+                var target = args.GetAt<Vector2>(0);
+                var hitPoint = args.GetAt<Vector2>(1);
+
+                if (_playerScript != null)
                 {
-                    var target = args.GetAt<Vector2>(0);
-                    var hitPoint = args.GetAt<Vector2>(1);
-                    
-                    if (_playerScript != null)
-                    {
-                        _playerScript.Damage(target, hitPoint, false);
-                    }
-                    
-                    if (_nonPlayerCharacterScript != null)
-                    {
-                        _nonPlayerCharacterScript.Damage(target, hitPoint, false);
-                    }  
+                    _playerScript.Damage(target, hitPoint, false);
                 }
-                );
+
+                if (_nonPlayerCharacterScript != null)
+                {
+                    _nonPlayerCharacterScript.Damage(target, hitPoint, false);
+                }
+            });
         }
 
         public void BroadcastEmote(int index)
