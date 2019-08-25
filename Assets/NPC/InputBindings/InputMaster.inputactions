@@ -100,6 +100,14 @@
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "MenuButton",
+                    "type": "Button",
+                    "id": "793678eb-5e9f-4aaa-9fa0-c68a6f58fa88",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -375,6 +383,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "CyclePlayers",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7f28a96e-6605-4716-b76c-c3479bebf432",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "MenuButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -80,6 +80,8 @@ namespace NPC.Scripts.Characters
         [SerializeField] private PlayerInput playerInput;
         private bool isOtherPlayer;
 
+        public bool DisableInput { get; set; } // Used for disabling user input when the menu is open
+        
         private void Start()
         {
             AdjustAmmo();
@@ -100,6 +102,7 @@ namespace NPC.Scripts.Characters
             }
             
             GameManager.WinState.AddListener(OnWin);
+            GameManager.onScreenInterface.Player = this;
             
             // Add to GameManager Lists
             GameManager.AllPlayers.Add(this);
@@ -185,6 +188,10 @@ namespace NPC.Scripts.Characters
         }
         public void Move(InputAction.CallbackContext context)
         {
+            if (DisableInput)
+            {
+                return;
+            }
             if (context.performed && !IsDead)
             {
                 Vector2 moveDirection = context.ReadValue<Vector2>();
@@ -201,6 +208,10 @@ namespace NPC.Scripts.Characters
         }
         public void ShootCharge(InputAction.CallbackContext context)
         {
+            if (DisableInput)
+            {
+                return;
+            }
             if (context.performed && AmmoCount > 0 && !IsDead)
             {
                 switch ((Time.time - _lastShotTime) >= _shootCooldownTime)
@@ -214,7 +225,6 @@ namespace NPC.Scripts.Characters
                 }
             }
         }
-
         private void ShootCharge()
         {
             if (_lineRendererAnimation != null)
@@ -257,7 +267,7 @@ namespace NPC.Scripts.Characters
         }
         private void Shoot()
         {
-            if (IsDead)
+            if (IsDead || DisableInput)
             {
                 return;
             }
@@ -374,6 +384,13 @@ namespace NPC.Scripts.Characters
             }
         }
         #endregion
+        public void OpenMenu(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                GameManager.onScreenInterface.MenuScreen(true);
+            }
+        }
         public void Interact(InputAction.CallbackContext context)
         {
             // Button States
@@ -438,6 +455,10 @@ namespace NPC.Scripts.Characters
         }
         public void CycleInventoryItems(InputAction.CallbackContext context)
         {
+            if (DisableInput)
+            {
+                return;
+            }
             if (context.action.triggered && _inventory.Count > 0)
             {
                 switch (context.ReadValue<float>() > 0)
@@ -457,7 +478,11 @@ namespace NPC.Scripts.Characters
         }
         public void UseEquipmentItem(InputAction.CallbackContext context)
         {
-            if (context.action.triggered && !IsDead)
+            if (IsDead || DisableInput)
+            {
+                return;
+            }
+            if (context.action.triggered)
             {
                 if (_inventory.Count > 0)
                 {
@@ -533,10 +558,9 @@ namespace NPC.Scripts.Characters
             {
                 Destroy(charge.gameObject);
             }
-            // add as many new bullets as there is ammo
-
-            AmmoCount = AmmoCount < 0 ? 0 : AmmoCount;
             
+            // add as many new bullets as there is ammo
+            AmmoCount = AmmoCount < 0 ? 0 : AmmoCount;
             for (int i = 0; i < AmmoCount; i++)
             {
                 Instantiate(_bulletChargeSprite, _bulletCharges);
