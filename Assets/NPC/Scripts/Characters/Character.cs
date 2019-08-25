@@ -109,7 +109,10 @@ namespace NPC.Scripts.Characters
 
         public void Damage(Vector3 target, Vector2 hitPoint, bool shouldBroadcast)
         {
-            networkedParameters.CommunicateShot(target, hitPoint);
+            if (shouldBroadcast)
+            {
+                networkedParameters.CommunicateShot(target, hitPoint);
+            }
 
             // Death State
             onDeath.Invoke();
