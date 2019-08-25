@@ -30,7 +30,7 @@ namespace NPC.Scripts.Characters
         private readonly Color _disabledColor = new Color(1, 1, 1, 0);
 
         [Header("Audio")]
-        [SerializeField] private AudioSource audioSource;
+        [SerializeField] protected AudioSource audioSource;
         [SerializeField] protected List<AudioClip> audioClips = new List<AudioClip>();
 
         [Header("Animation")]

@@ -11,7 +11,7 @@ namespace NPC.Scripts.Characters
 {
     public class Player : Character
     {
-        [Header("Ammo")]
+        [Header("Shooting")]
         [SerializeField] private bool _useAmmo = true;
         [SerializeField, Range(1, 3)] public int AmmoCount = 1;
         [SerializeField, Range(1f, 10f)] public float _shootRange;
@@ -20,7 +20,8 @@ namespace NPC.Scripts.Characters
         [SerializeField] private Transform _bulletCharges;
         [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
         [SerializeField] private Slider _chargeBar;
-        [SerializeField]private string _bulletSortLayer = "UnderCharacter";
+        [SerializeField] private string _bulletSortLayer = "UnderCharacter";
+        [SerializeField] private AudioClip shootAudioClip;
 
         [Header("Cooldown")] 
         [SerializeField, Range(0f, 10f)] private float _shootCooldownTime;
@@ -109,6 +110,7 @@ namespace NPC.Scripts.Characters
         }
         private void Update()
         {
+            Debug.Log(audioSource.isPlaying);
             // Update Disguise.
             _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / MaxDisguiseIntegrity);
             _elapsedTime += Time.deltaTime / _disguiseDuration;
@@ -288,6 +290,10 @@ namespace NPC.Scripts.Characters
             
             // Cooldown
             _lastShotTime = Time.time;
+            
+            // Audio
+            audioSource.clip = shootAudioClip;
+            audioSource.Play();
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
             Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);

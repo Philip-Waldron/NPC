@@ -1,4 +1,5 @@
-﻿using NPC.Scripts.Characters;
+﻿using System.Collections.Generic;
+using NPC.Scripts.Characters;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -15,13 +16,16 @@ namespace NPC.Scripts.UI
         public TextMeshProUGUI spectatingText;
         public GameObject winScreen;
         public GameObject menuScreen;
-        public string MultiplayerMenuSceneName;
 
         [Header("Menu Buttons")] 
         public Button settingsButton;
         public Button backToLobbyButton;
         public Button quitButton;
         public Button closeMenuButton;
+
+        [Header("Audio")] 
+        public AudioSource audioSource;
+        public List<AudioClip> backgroundMusic = new List<AudioClip>();
 
         private GameManager gameManager;
         private int maxPlayerCount;
@@ -31,10 +35,16 @@ namespace NPC.Scripts.UI
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
+            
+            // Button Listeners
             settingsButton.onClick.AddListener(OpenSettings);
             backToLobbyButton.onClick.AddListener(BackToLobby);
             quitButton.onClick.AddListener(QuitApplication);
             closeMenuButton.onClick.AddListener(CloseMenu);
+            
+            // Music
+            audioSource.clip = backgroundMusic[Random.Range(0, backgroundMusic.Count)];
+            audioSource.Play();
         }
         private void Update()
         {
