@@ -53,13 +53,11 @@ namespace NPC.Scripts.Characters
         [SerializeField] public float MaxDisguiseIntegrity = 100f;
         [SerializeField] public float MinDisguiseIntegrity = 0f;
         [SerializeField] private float _disguiseIntegrity = 100f;
-        public float DisguiseIntegrity => _disguiseIntegrity;
-        private float timeScalar;
-
         [SerializeField] private float _disguiseDuration = 300f;
         [SerializeField] private Slider _disguiseBar;
-
-        [SerializeField] private float _elapsedTime;
+        public float DisguiseIntegrity => _disguiseIntegrity;
+        private float timeScalar;
+        private float _elapsedTime;
         private float _startDisguise;
 
         [Header("Movement")]
@@ -561,16 +559,11 @@ namespace NPC.Scripts.Characters
 
             if (scalar)
             {
-                Debug.Log("Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
-                //adjustedDisguiseIntegrity *= adjustment;
                 adjustedDisguiseIntegrity += (adjustedDisguiseIntegrity * adjustment);
-                Debug.Log("Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
             }
             else
             {
-                Debug.Log("Non-Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
                 adjustedDisguiseIntegrity += adjustment;
-                Debug.Log("Non-Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
             }
 
             _disguiseIntegrity = adjustedDisguiseIntegrity;

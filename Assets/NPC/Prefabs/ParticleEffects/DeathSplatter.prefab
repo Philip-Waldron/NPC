@@ -805,9 +805,9 @@ ParticleSystem:
     m_TextureColorAffectsParticles: 1
     m_TextureAlphaAffectsParticles: 1
     m_TextureBilinearFiltering: 0
-    randomDirectionAmount: 0
-    sphericalDirectionAmount: 0
-    randomPositionAmount: 0
+    randomDirectionAmount: 0.3
+    sphericalDirectionAmount: 0.2
+    randomPositionAmount: 1
     radius:
       value: 0.7
       mode: 0
@@ -5648,9 +5648,9 @@ ParticleSystem:
     m_TextureColorAffectsParticles: 1
     m_TextureAlphaAffectsParticles: 1
     m_TextureBilinearFiltering: 0
-    randomDirectionAmount: 0
-    sphericalDirectionAmount: 0
-    randomPositionAmount: 0
+    randomDirectionAmount: 0.3
+    sphericalDirectionAmount: 0.2
+    randomPositionAmount: 1
     radius:
       value: 0.7
       mode: 0
@@ -10460,9 +10460,9 @@ ParticleSystem:
     m_TextureColorAffectsParticles: 1
     m_TextureAlphaAffectsParticles: 1
     m_TextureBilinearFiltering: 0
-    randomDirectionAmount: 0
-    sphericalDirectionAmount: 0
-    randomPositionAmount: 0
+    randomDirectionAmount: 0.3
+    sphericalDirectionAmount: 0.2
+    randomPositionAmount: 1
     radius:
       value: 0.7
       mode: 0

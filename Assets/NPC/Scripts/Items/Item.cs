@@ -9,21 +9,16 @@ namespace NPC.Scripts.Items
     public abstract class Item : MonoBehaviour, IDamageable
     {
         [Header("Pickup")]
-        [SerializeField, Range(0f, 30f)] 
-        public float pickupDuration = 5f;
+        [SerializeField, Range(0f, 30f)] public float pickupDuration = 5f;
+        [SerializeField] private AudioClip pickupAudio;
         [Header("References")]
-        [SerializeField, Space(10)] 
-        protected Slider pickupBar;
-        [SerializeField] 
-        protected Image pickupBarImage;
-        [SerializeField] 
-        protected Sprite pickupBarSprite;
-        [SerializeField] 
-        protected Sprite trapBarSprite;
-        [SerializeField, Space(10)]
-        protected GameObject downloadParticleEffect;
-        [SerializeField]
-        protected GameObject downloadTrapParticleEffect;
+        [SerializeField, Space(10)] protected Slider pickupBar;
+        [SerializeField] protected Image pickupBarImage;
+        [SerializeField] protected Sprite pickupBarSprite;
+        [SerializeField] protected Sprite trapBarSprite;
+        [SerializeField, Space(10)]protected GameObject downloadParticleEffect;
+        [SerializeField] protected GameObject downloadTrapParticleEffect;
+        [SerializeField] private AudioSource audioSource;
         [Header("Item Characteristics")]
         public ItemRarity Rarity;
         public enum ItemRarity
@@ -111,7 +106,10 @@ namespace NPC.Scripts.Items
             {
                 yield break;
             }
+            // Pickup the item
             Pickup(player);
+            
+            // Pickup Consequences
             Accessed = true;
             switch (Trapped)
             {
@@ -122,6 +120,10 @@ namespace NPC.Scripts.Items
                     Instantiate(downloadParticleEffect, transform);
                     break;
             }
+            
+            // Messaging
+            audioSource.clip = pickupAudio;
+            audioSource.Play();
         }
 
         public void Damage(Vector3 target, Vector2 hitPoint, bool shouldBroadcast)

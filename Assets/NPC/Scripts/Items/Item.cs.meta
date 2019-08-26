@@ -3,7 +3,18 @@ guid: dce762d7a0b9c1a43bb946817e6ab103
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - pickupAudio: {fileID: 8300000, guid: b9f1a9d110d293e4b8f35c908650cd81, type: 3}
+  - pickupBar: {instanceID: 0}
+  - pickupBarImage: {instanceID: 0}
+  - pickupBarSprite: {instanceID: 0}
+  - trapBarSprite: {instanceID: 0}
+  - downloadParticleEffect: {fileID: 7245982541705081319, guid: 288f0bcfb9d8b9043a5c4b5f762424e8,
+      type: 3}
+  - downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
+      type: 3}
+  - audioSource: {instanceID: 0}
+  - itemSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

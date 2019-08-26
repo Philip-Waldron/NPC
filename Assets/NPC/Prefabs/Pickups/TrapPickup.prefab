@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupDuration: 10
+  pickupAudio: {fileID: 8300000, guid: b9f1a9d110d293e4b8f35c908650cd81, type: 3}
   pickupBar: {fileID: 7772781803950771798}
   pickupBarImage: {fileID: 5995546701854396166}
   pickupBarSprite: {fileID: 21300000, guid: 4ed888557ebb44e48ac37fe3cae212a5, type: 3}
@@ -21,6 +22,7 @@ MonoBehaviour:
     type: 3}
   downloadTrapParticleEffect: {fileID: 5776467069491783416, guid: 172394151e77656489ef95e9ddaaac08,
     type: 3}
+  audioSource: {fileID: 7768590034116343835}
   Rarity: 10
   itemSprite: {fileID: 0}
 --- !u!1001 &5323066472167894210
@@ -111,6 +113,12 @@ PrefabInstance:
 --- !u!1 &8535408051630531515 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4588192368794636153, guid: 7c58c7da86937344a9d52e779bb3810d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5323066472167894210}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &7768590034116343835 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2454681394308125913, guid: 7c58c7da86937344a9d52e779bb3810d,
     type: 3}
   m_PrefabInstance: {fileID: 5323066472167894210}
   m_PrefabAsset: {fileID: 0}

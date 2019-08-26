@@ -1298,6 +1298,7 @@ MonoBehaviour:
   _chargeBar: {fileID: 8473303510217472768}
   _bulletSortLayer: UnderCharacter
   shootAudioClip: {fileID: 8300000, guid: 244f825a85028aa4b858d05e90623dbd, type: 3}
+  _shootNonPlayerPenalty: 0.2
   _shootCooldownTime: 3
   _cooldownBar: {fileID: 2709775219976786996}
   pickupRange: 2.5
@@ -1854,6 +1855,12 @@ PrefabInstance:
       propertyPath: m_Volume
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 474047629950386862, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0e426953a373efd48a41e623527d726f,
+        type: 3}
     - target: {fileID: 474047629950386865, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_LocalPosition.x

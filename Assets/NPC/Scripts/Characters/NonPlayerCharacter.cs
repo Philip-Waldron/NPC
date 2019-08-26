@@ -16,6 +16,7 @@ namespace NPC.Scripts.Characters
         [SerializeField] private List<string> _alerts = new List<string>();
         [SerializeField] private LayerMask _playerMask;
         [SerializeField] private AnimationCurve _detectionChanceCurve;
+        [SerializeField] private AudioClip alertAudio;
 
         [Header("Path-finding")]
         [SerializeField] private Vector2 _waitTimeRange = new Vector2(1, 5);
@@ -185,6 +186,8 @@ namespace NPC.Scripts.Characters
             }
 
             SpeakText(_alerts[Random.Range(0, _alerts.Count)], _alertDuration);
+            audioSource.clip = alertAudio;
+            audioSource.Play();
             return true;
         }
 
