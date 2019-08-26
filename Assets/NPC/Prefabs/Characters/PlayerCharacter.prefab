@@ -1294,11 +1294,11 @@ MonoBehaviour:
   _bulletChargeSprite: {fileID: 4807289715813367792, guid: e40d8b1837c88644086a43ff6d1b4a21,
     type: 3}
   _bulletCharges: {fileID: 5962045978649014898}
-  _bulletChargeTime: 1
+  _bulletChargeTime: 2
   _chargeBar: {fileID: 8473303510217472768}
   _bulletSortLayer: UnderCharacter
-  shootAudioClip: {fileID: 8300000, guid: 3769eef08f1307841b0430df1daed3af, type: 3}
-  _shootCooldownTime: 1
+  shootAudioClip: {fileID: 8300000, guid: 244f825a85028aa4b858d05e90623dbd, type: 3}
+  _shootCooldownTime: 3
   _cooldownBar: {fileID: 2709775219976786996}
   pickupRange: 2.5
   itemMask:
@@ -1849,6 +1849,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
         type: 0}
+    - target: {fileID: 3875099665963925400, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 474047629950386865, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_LocalPosition.x

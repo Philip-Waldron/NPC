@@ -22,6 +22,7 @@ namespace NPC.Scripts.Characters
         [SerializeField] private Slider _chargeBar;
         [SerializeField] private string _bulletSortLayer = "UnderCharacter";
         [SerializeField] private AudioClip shootAudioClip;
+        [SerializeField, Range(0f, 1f)] private float _shootNonPlayerPenalty = .2f;
 
         [Header("Cooldown")] 
         [SerializeField, Range(0f, 10f)] private float _shootCooldownTime;
@@ -102,6 +103,7 @@ namespace NPC.Scripts.Characters
                 GameManager = FindObjectOfType<GameManager>();
             }
             
+            onDeath.AddListener(ShootRelease);
             GameManager.WinState.AddListener(OnWin);
             GameManager.onScreenInterface.Player = this;
             
@@ -110,7 +112,6 @@ namespace NPC.Scripts.Characters
         }
         private void Update()
         {
-            Debug.Log(audioSource.isPlaying);
             // Update Disguise.
             _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / MaxDisguiseIntegrity);
             _elapsedTime += Time.deltaTime / _disguiseDuration;
@@ -244,7 +245,12 @@ namespace NPC.Scripts.Characters
         {
             if (context.performed)
             {
-                switch (_bulletCharging)
+                ShootRelease();
+            }
+        }
+        private void ShootRelease()
+        {
+            switch (_bulletCharging)
                 {
                     case true: // When the weapon is charging
                         if (_chargingFor >= _bulletChargeTime)
@@ -264,8 +270,6 @@ namespace NPC.Scripts.Characters
                         QueuedWeaponCharge = false;
                         break;
                 }
-                
-            }
         }
         private void Shoot()
         {
@@ -302,6 +306,8 @@ namespace NPC.Scripts.Characters
             RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, _shootRange).OrderBy(h => h.distance).ToArray();
 
             bool hitPlayer = false;
+            bool hitNonPlayer = false;
+            
             foreach (RaycastHit2D hit in hits)
             {
                 if (hit.collider != null && hit.collider != _thisCollider2D)
@@ -313,6 +319,11 @@ namespace NPC.Scripts.Characters
                         {
                             hitPlayer = true;
                         }
+                        else if (target is NonPlayerCharacter &&
+                                 !hit.collider.GetComponent<NonPlayerCharacter>().IsDead)
+                        {
+                            hitNonPlayer = true;
+                        }
                         
                         target.Damage(direction, hit.point, true);
                     }
@@ -323,17 +334,28 @@ namespace NPC.Scripts.Characters
                 }
             }
 
-            if (!hitPlayer)
-            {
-                if (_useAmmo)
-                {
-                    AmmoCount--;
-                    AdjustAmmo();
-                }
-            }
-            else
+            if (hitPlayer) // Reward for killing player
             {
                 AdjustDisguise(MaxDisguiseIntegrity);
+            }
+            if (hitNonPlayer) // Punishment for hitting NPC
+            {
+                AdjustDisguise(-_shootNonPlayerPenalty, true); // If we make this scalar, we encourage players to play more recklessly when they are nearly out of disguise
+                if (!_useAmmo)
+                {
+                    return;
+                }
+                AmmoCount--;
+                AdjustAmmo();
+            }
+            if (!hitPlayer && !hitNonPlayer) // Hit nothing
+            {
+                if (!_useAmmo)
+                {
+                    return;
+                }
+                AmmoCount--;
+                AdjustAmmo();
             }
         }
         private void DrawLineRenderer()
@@ -539,11 +561,16 @@ namespace NPC.Scripts.Characters
 
             if (scalar)
             {
-                adjustedDisguiseIntegrity *= adjustment;
+                Debug.Log("Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
+                //adjustedDisguiseIntegrity *= adjustment;
+                adjustedDisguiseIntegrity += (adjustedDisguiseIntegrity * adjustment);
+                Debug.Log("Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
             }
             else
             {
+                Debug.Log("Non-Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
                 adjustedDisguiseIntegrity += adjustment;
+                Debug.Log("Non-Scalar: " + adjustedDisguiseIntegrity + ", " + adjustment);
             }
 
             _disguiseIntegrity = adjustedDisguiseIntegrity;
