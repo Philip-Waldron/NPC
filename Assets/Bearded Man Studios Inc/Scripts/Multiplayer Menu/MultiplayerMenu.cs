@@ -197,7 +197,9 @@ public class MultiplayerMenu : MonoBehaviour
 			mgr = networkManager.AddComponent<NetworkManager>();
 		}
 		else if (mgr == null)
+		{
 			mgr = Instantiate(networkManager).GetComponent<NetworkManager>();
+		}
 
 		// If we are using the master server we need to get the registration data
 		JSONNode masterServerData = null;
@@ -215,16 +217,19 @@ public class MultiplayerMenu : MonoBehaviour
 		mgr.Initialize(networker, masterServerHost, masterServerPort, masterServerData);
 
 		if (useInlineChat && networker.IsServer)
+		{
 			SceneManager.sceneLoaded += CreateInlineChat;
+		}
 
 		if (networker is IServer)
 		{
 			if (!DontChangeSceneOnConnect)
+			{
 				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+			}
 			else
 			{
 				NetworkObject.Flush(networker); //Called because we are already in the correct scene!
-				
 				SceneLoader sceneLoader = new SceneLoader();
 				sceneLoader.ServerLoaded(server);
 			}

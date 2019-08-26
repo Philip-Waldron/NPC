@@ -96,6 +96,7 @@ namespace NPC.Scripts.Characters
             
             SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
             GameManager.onScreenInterface.Player = this;
+            GameManager.onScreenInterface.nameField.text = characterName;
             selfSpectatePosition = playerCamera.localPosition;
             
             // Add Listeners
@@ -417,6 +418,12 @@ namespace NPC.Scripts.Characters
                 GameManager.onScreenInterface.MenuScreen(true);
             }
         }
+        public void SetCharacterName(string newName)
+        {
+            characterName = newName;
+            identificationText.SetText(characterName);
+            networkedParameters.BroadcastName(characterName);
+        }
         public void Interact(InputAction.CallbackContext context)
         {
             // Button States
@@ -684,7 +691,10 @@ namespace NPC.Scripts.Characters
         }
         private void OnDeathSpectate()
         {
-            SpectatePlayer(GameManager.AllPlayers.Count);
+            if (GameManager.AllPlayers.Count > 1)
+            {
+                SpectatePlayer(GameManager.AllPlayers.Count);
+            }
         }
         private void SpectatePlayer(int index = 0)
         {

@@ -16,12 +16,18 @@ namespace NPC.Scripts.UI
         public TextMeshProUGUI spectatingText;
         public GameObject winScreen;
         public GameObject menuScreen;
+        public GameObject rootMenuScreen;
+        public GameObject settingsScreen;
 
         [Header("Menu Buttons")] 
         public Button settingsButton;
         public Button backToLobbyButton;
         public Button quitButton;
         public Button closeMenuButton;
+        
+        [Header("Settings Buttons")] 
+        public TMP_InputField nameField;
+        public Button backToMenuButton;
 
         [Header("Audio")] 
         public AudioSource audioSource;
@@ -43,6 +49,9 @@ namespace NPC.Scripts.UI
             backToLobbyButton.onClick.AddListener(BackToLobby);
             quitButton.onClick.AddListener(QuitApplication);
             closeMenuButton.onClick.AddListener(CloseMenu);
+            backToMenuButton.onClick.AddListener(BackToMenu);
+            nameField.onEndEdit.AddListener(SetPlayerName);
+            nameField.onSelect.AddListener(DisableUserInput);
             
             // Music
             audioSource.clip = backgroundMusic[Random.Range(0, backgroundMusic.Count)];
@@ -80,9 +89,10 @@ namespace NPC.Scripts.UI
             }
             Player.DisableInput = menuScreen.activeSelf;
         }
-        private static void OpenSettings()
+        private void OpenSettings()
         {
-            Debug.Log("Sorry TotalBiscuit");
+            settingsScreen.SetActive(true);
+            rootMenuScreen.SetActive(false);
         }
         public void BackToLobby()
         {
@@ -95,6 +105,20 @@ namespace NPC.Scripts.UI
         private void CloseMenu()
         {
             MenuScreen(false, false);
+        }
+        private void BackToMenu()
+        {
+            settingsScreen.SetActive(false);
+            rootMenuScreen.SetActive(true);
+        }
+        private void DisableUserInput(string n)
+        {
+            Player.DisableInput = true;
+        }
+        private void SetPlayerName(string n)
+        {
+            Player.SetCharacterName(n);
+            Player.DisableInput = false;
         }
     }
 }

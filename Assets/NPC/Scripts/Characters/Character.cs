@@ -16,8 +16,8 @@ namespace NPC.Scripts.Characters
 
         [Header("Scan")]
         [SerializeField] protected SpriteRenderer identificationSprite;
-        [SerializeField] protected TextMeshPro identificationText;
-        [SerializeField] protected string characterName = "Character Name";
+        [SerializeField] public TextMeshPro identificationText;
+        [SerializeField] public string characterName = "Character Name";
 
         [Header("Speech Bubble")]
         [SerializeField] protected GameObject speechBubble;
