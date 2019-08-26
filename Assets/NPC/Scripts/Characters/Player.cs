@@ -107,7 +107,10 @@ namespace NPC.Scripts.Characters
             // Add to GameManager Lists
             GameManager.AllPlayers.Add(this);
             
-            SetCharacterName(characterName + "  " + GameManager.AllPlayers.Count);
+            return;
+            string n = characterName + "_" + GameManager.AllPlayers.Count;
+            name = n;
+            SetCharacterName(n);
         }
         private void Update()
         {
@@ -421,17 +424,14 @@ namespace NPC.Scripts.Characters
         }
         public void SetCharacterName(string newName)
         {
-            string originalName = characterName;
-            
+            NameUpdate(newName);
+            //networkedParameters.BroadcastName(characterName);
+        }
+        public void NameUpdate(string newName)
+        {
             characterName = newName;
             identificationText.SetText(characterName);
-            GameManager.onScreenInterface.nameField.text = newName;
-            
-            if (originalName != newName)
-            {
-                Debug.Log(characterName + "'s name was broadcasted from " + originalName + " to " + newName + ".");
-                networkedParameters.BroadcastName(characterName);
-            }
+            GameManager.onScreenInterface.nameField.text = characterName;
         }
         public void Interact(InputAction.CallbackContext context)
         {

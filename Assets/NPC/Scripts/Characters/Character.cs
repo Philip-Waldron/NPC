@@ -84,7 +84,6 @@ namespace NPC.Scripts.Characters
             {
                 StopCoroutine(_speechBubbleCoroutine);
             }
-
             _speechBubbleCoroutine = StartCoroutine(Emote(emotes[emoteIndex], duration));
         }
 

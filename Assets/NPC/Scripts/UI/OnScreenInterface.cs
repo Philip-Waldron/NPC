@@ -32,13 +32,10 @@ namespace NPC.Scripts.UI
         [Header("Audio")] 
         public AudioSource audioSource;
         public List<AudioClip> backgroundMusic = new List<AudioClip>();
-
         private GameManager gameManager;
         private int maxPlayerCount;
-        
         private NetWorker server;
-
-        public Player Player { get; set; }
+        public Player Player { private get; set; }
 
         private void Awake()
         {

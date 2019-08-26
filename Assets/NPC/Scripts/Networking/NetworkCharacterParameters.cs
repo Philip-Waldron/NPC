@@ -120,18 +120,21 @@ namespace NPC.Scripts.Networking
                 _playerScript.Emote(index, _playerScript._emoteDuration);
             }
         }
-
+/*
         public override void Name(RpcArgs args)
         {
-            if (_playerScript != null)
+            return;
+            if (_playerScript != null && !networkObject.IsOwner)
             {
-                _playerScript.SetCharacterName(args.GetAt<string>(0));
+                _playerScript.NameUpdate(args.GetNext<string>());
             }
         }
 
         public void BroadcastName(string n)
         {
-            networkObject.SendRpc(RPC_NAME, Receivers.Owner, n);
+            return;
+            networkObject.SendRpc(RPC_NAME, Receivers.Others, n);
         }
+*/
     }
 }
