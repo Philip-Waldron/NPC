@@ -15,7 +15,6 @@ namespace NPC.Scripts.Networking
         }
 
         private Vector2 _gridPosition;
-
         private Player _playerScript;
         private NonPlayerCharacter _nonPlayerCharacterScript;
 

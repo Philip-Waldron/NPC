@@ -96,7 +96,6 @@ namespace NPC.Scripts.Characters
             
             SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
             GameManager.onScreenInterface.Player = this;
-            GameManager.onScreenInterface.nameField.text = characterName;
             selfSpectatePosition = playerCamera.localPosition;
             
             // Add Listeners
@@ -107,6 +106,8 @@ namespace NPC.Scripts.Characters
 
             // Add to GameManager Lists
             GameManager.AllPlayers.Add(this);
+            
+            SetCharacterName(characterName + "  " + GameManager.AllPlayers.Count);
         }
         private void Update()
         {
@@ -420,9 +421,17 @@ namespace NPC.Scripts.Characters
         }
         public void SetCharacterName(string newName)
         {
+            string originalName = characterName;
+            
             characterName = newName;
             identificationText.SetText(characterName);
-            networkedParameters.BroadcastName(characterName);
+            GameManager.onScreenInterface.nameField.text = newName;
+            
+            if (originalName != newName)
+            {
+                Debug.Log(characterName + "'s name was broadcasted from " + originalName + " to " + newName + ".");
+                networkedParameters.BroadcastName(characterName);
+            }
         }
         public void Interact(InputAction.CallbackContext context)
         {
