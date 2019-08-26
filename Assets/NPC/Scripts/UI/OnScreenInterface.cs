@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using BeardedManStudios.Forge.Networking;
 using NPC.Scripts.Characters;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -29,6 +29,8 @@ namespace NPC.Scripts.UI
 
         private GameManager gameManager;
         private int maxPlayerCount;
+        
+        private NetWorker server;
 
         public Player Player { get; set; }
 

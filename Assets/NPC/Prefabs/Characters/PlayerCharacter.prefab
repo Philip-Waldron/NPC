@@ -1313,7 +1313,6 @@ MonoBehaviour:
   _disguiseIntegrity: 100
   _disguiseDuration: 300
   _disguiseBar: {fileID: 515758332961612954}
-  _elapsedTime: 0
   _timeToMove: 0.3
   obstacleLayer:
     serializedVersion: 2

@@ -94,17 +94,13 @@ namespace NPC.Scripts.Characters
             SetupParticleSystem();
             
             SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
-
-            if (GameManager == null)
-            {
-                Debug.LogWarning("GameManager was not set through GameManager spawning!");
-                GameManager = FindObjectOfType<GameManager>();
-            }
-            
-            onDeath.AddListener(ShootRelease);
-            GameManager.WinState.AddListener(OnWin);
             GameManager.onScreenInterface.Player = this;
             
+            // Add Listeners
+            onDeath.AddListener(ShootRelease);
+            onDeath.AddListener(StopAllCoroutines);
+            GameManager.WinState.AddListener(OnWin);
+
             // Add to GameManager Lists
             GameManager.AllPlayers.Add(this);
         }
@@ -150,6 +146,7 @@ namespace NPC.Scripts.Characters
                 }
             }
 
+            // Shoot Queueing
             if ((Time.time - _lastShotTime) >= _shootCooldownTime && !_bulletCharging && QueuedWeaponCharge)
             {
                 ShootCharge();
@@ -189,11 +186,11 @@ namespace NPC.Scripts.Characters
         }
         public void Move(InputAction.CallbackContext context)
         {
-            if (DisableInput)
+            if (DisableInput || IsDead)
             {
                 return;
             }
-            if (context.performed && !IsDead)
+            if (context.performed)
             {
                 Vector2 moveDirection = context.ReadValue<Vector2>();
 
@@ -595,7 +592,8 @@ namespace NPC.Scripts.Characters
         public IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
         {
             bool valid = ValidMove(targetTransform.position);
-            if (!valid)
+            
+            if (!valid || IsDead)
             {
                 AnimationSpeed = 0;
                 _moving = false;

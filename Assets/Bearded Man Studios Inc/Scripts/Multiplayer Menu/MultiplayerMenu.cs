@@ -38,6 +38,9 @@ public class MultiplayerMenu : MonoBehaviour
 
 	private void Start()
 	{
+		// This is a bit of a hack, but it might work...
+		OnApplicationQuit();
+		
 		ipAddress.text = "127.0.0.1";
 		portNumber.text = "15937";
 
@@ -243,9 +246,16 @@ public class MultiplayerMenu : MonoBehaviour
 
 	private void OnApplicationQuit()
 	{
-		if (getLocalNetworkConnections)
-			NetWorker.EndSession();
+		Debug.Log(server + " was disconnected.");
 
-		if (server != null) server.Disconnect(true);
+		if (getLocalNetworkConnections)
+		{
+			NetWorker.EndSession();
+		}
+
+		if (server != null)
+		{
+			server.Disconnect(true);
+		}
 	}
 }

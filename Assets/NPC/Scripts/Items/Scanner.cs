@@ -45,7 +45,7 @@ namespace NPC.Scripts.Items
                         if (hit.collider != null && hit.collider != thisCollider)
                         {
                             Character hitCharacter = hit.transform.GetComponent<Character>();
-                            if (hitCharacter != null)
+                            if (hitCharacter != null && !hitCharacter.IsDead)
                             {
                                 hitCharacter.Scan(revealDuration);
                             }

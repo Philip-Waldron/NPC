@@ -67,6 +67,9 @@ namespace NPC.Scripts
         private int maxPlayerCount;
         [HideInInspector] public UnityEvent WinState;
         
+        // This needs to be set by the MultiPlayer Menu
+        private NetWorker server;
+        
         private void Awake()
         {
             Tilemap.CompressBounds();
