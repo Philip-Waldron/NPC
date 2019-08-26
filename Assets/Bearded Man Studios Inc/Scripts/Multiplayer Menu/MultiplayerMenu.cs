@@ -246,8 +246,6 @@ public class MultiplayerMenu : MonoBehaviour
 
 	private void OnApplicationQuit()
 	{
-		Debug.Log(server + " was disconnected.");
-
 		if (getLocalNetworkConnections)
 		{
 			NetWorker.EndSession();
@@ -255,6 +253,7 @@ public class MultiplayerMenu : MonoBehaviour
 
 		if (server != null)
 		{
+			Debug.Log(server + " was disconnected.");
 			server.Disconnect(true);
 		}
 	}

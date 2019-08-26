@@ -73,6 +73,7 @@ namespace NPC.Scripts.Characters
         [Header("Spectating")]
         public Transform playerCamera;
         private int spectatingIndex;
+        private Vector3 selfSpectatePosition;
 
         [Header("Other Player Character")]
         [Tooltip("List of GameObjects to be disabled when Other Player")]
@@ -95,10 +96,12 @@ namespace NPC.Scripts.Characters
             
             SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
             GameManager.onScreenInterface.Player = this;
+            selfSpectatePosition = playerCamera.localPosition;
             
             // Add Listeners
             onDeath.AddListener(ShootRelease);
             onDeath.AddListener(StopAllCoroutines);
+            onDeath.AddListener(OnDeathSpectate);
             GameManager.WinState.AddListener(OnWin);
 
             // Add to GameManager Lists
@@ -661,11 +664,11 @@ namespace NPC.Scripts.Characters
                 {
                     case true:
                         spectatingIndex--;
-                        spectatingIndex = spectatingIndex < 0 ? GameManager.AllPlayers.Count - 1 : spectatingIndex;
+                        spectatingIndex = spectatingIndex < 0 ? GameManager.AllPlayers.Count : spectatingIndex;
                         break;
                     default:
                         spectatingIndex++;
-                        spectatingIndex = spectatingIndex > GameManager.AllPlayers.Count - 1 ? 0 : spectatingIndex;
+                        spectatingIndex = spectatingIndex > GameManager.AllPlayers.Count ? 0 : spectatingIndex;
                         break;
                 }
                 
@@ -679,13 +682,27 @@ namespace NPC.Scripts.Characters
                 GameManager.onScreenInterface.WinScreen();
             }
         }
-        private void SpectatePlayer(int index)
+        private void OnDeathSpectate()
         {
-            Player spectatingPlayer = GameManager.AllPlayers[index];
-            Vector3 targetCameraPos = spectatingPlayer.playerCamera.transform.localPosition;
-            playerCamera.SetParent(spectatingPlayer.transform);
-            playerCamera.localPosition = targetCameraPos;
-            GameManager.onScreenInterface.SetSpectatingText(spectatingPlayer.characterName);
+            SpectatePlayer(GameManager.AllPlayers.Count);
+        }
+        private void SpectatePlayer(int index = 0)
+        {
+            switch (index == GameManager.AllPlayers.Count)
+            {
+                case true:
+                    playerCamera.SetParent(transform);
+                    playerCamera.localPosition = selfSpectatePosition;
+                    GameManager.onScreenInterface.SetSpectatingText("yourself,  you  dead  bitch");
+                    break;
+                default:
+                    Player spectatingPlayer = GameManager.AllPlayers[index];
+                    Vector3 targetCameraPos = spectatingPlayer.playerCamera.transform.localPosition;
+                    playerCamera.SetParent(spectatingPlayer.transform);
+                    playerCamera.localPosition = targetCameraPos;
+                    GameManager.onScreenInterface.SetSpectatingText(spectatingPlayer.characterName);
+                    break;
+            }
         }
     }
 }
