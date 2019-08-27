@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking;
 using NPC.Scripts.Characters;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace NPC.Scripts.UI
 {
@@ -45,7 +47,12 @@ namespace NPC.Scripts.UI
         private GameManager gameManager;
         private NetWorker server;
         public Player Player { private get; set; }
-
+        
+        // Player Prefs
+        private const string MASTER_VOLUME_PREF = "MasterVolume";
+        private const string MUSIC_VOLUME_PREF = "MusicVolume";
+        private const string SFX_VOLUME_PREF = "SFXVolume";
+            
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
@@ -64,9 +71,15 @@ namespace NPC.Scripts.UI
             musicVolume.onValueChanged.AddListener(MusicVolume);
             sfxVolume.onValueChanged.AddListener(SFXVolume);
             // Set Values
-            AudioListener.volume = masterVolume.value;
-            audioSource.volume = musicVolume.value;
+            MasterVolume(PlayerPrefs.GetFloat(MASTER_VOLUME_PREF));
+            MusicVolume(PlayerPrefs.GetFloat(MUSIC_VOLUME_PREF));
+            SFXVolume(PlayerPrefs.GetFloat(SFX_VOLUME_PREF));
+            masterVolume.value = PlayerPrefs.GetFloat(MASTER_VOLUME_PREF);
+            musicVolume.value = PlayerPrefs.GetFloat(MUSIC_VOLUME_PREF);
+            sfxVolume.value = PlayerPrefs.GetFloat(SFX_VOLUME_PREF);
 
+            Debug.Log(PlayerPrefs.GetFloat(MASTER_VOLUME_PREF));
+            
             // Text Field Listeners
             nameField.onEndEdit.AddListener(SetPlayerName);
             nameField.onSelect.AddListener(DisableUserInput);
@@ -156,14 +169,21 @@ namespace NPC.Scripts.UI
         private static void MasterVolume(float value)
         {
             AudioListener.volume = value;
+            PlayerPrefs.SetFloat(MASTER_VOLUME_PREF, value);
         }
         private void MusicVolume(float value)
         {
             audioSource.volume = value;
+            PlayerPrefs.SetFloat(MUSIC_VOLUME_PREF, value);
         }
         private void SFXVolume(float value)
         {
-            Player.audioSource.volume = value;
+            if (Player != null)
+            {
+                Player.audioSource.volume = value;
+            }
+            
+            PlayerPrefs.SetFloat(SFX_VOLUME_PREF, value);
             
             // This is messy, but hey how are ya
             foreach (Character nonPlayer in gameManager.NonPlayers)

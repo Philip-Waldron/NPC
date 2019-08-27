@@ -6,6 +6,7 @@ using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Items;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -77,6 +78,8 @@ namespace NPC.Scripts.Characters
         public Transform playerCamera;
         private int spectatingIndex;
         private Vector3 selfSpectatePosition;
+        [HideInInspector] public UnityEvent onSpectateStart;
+        [HideInInspector] public UnityEvent onSpectateEnd;
 
         [Header("Other Player Character")]
         [Tooltip("List of GameObjects to be disabled when Other Player")]
@@ -103,13 +106,16 @@ namespace NPC.Scripts.Characters
             {
                 GameManager.onScreenInterface.Player = this;
             }
-            audioSource.volume = GameManager.onScreenInterface.sfxVolume.value;
+
+            audioSource.volume = PlayerPrefs.GetFloat("SFXVolume");
             
             // Add Listeners
             onDeath.AddListener(ShootRelease);
             onDeath.AddListener(StopAllCoroutines);
             onDeath.AddListener(OnDeathSpectate);
             GameManager.WinState.AddListener(OnWin);
+            onSpectateStart.AddListener(SpectateStart);
+            onSpectateEnd.AddListener(SpectateEnd);
 
             // Add to GameManager Lists
             GameManager.LivePlayers.Add(this);
@@ -741,7 +747,33 @@ namespace NPC.Scripts.Characters
                     string n = spectatingPlayer.characterName;
                     string s = spectatingPlayer.IsDead ? n + ",  but  they're  dead  lmao" : n;
                     GameManager.onScreenInterface.SetSpectatingText(s);
+                    foreach (Player player in GameManager.AllPlayers)
+                    {
+                        switch (player == spectatingPlayer)
+                        {
+                            case true:
+                                player.onSpectateStart.Invoke();
+                                break;
+                            default:
+                                player.onSpectateEnd.Invoke();
+                                break;
+                        }
+                    }
                     break;
+            }
+        }
+        private void SpectateStart()
+        {
+            foreach (GameObject otherPlayerObject in otherPlayerObjects)
+            {
+                otherPlayerObject.SetActive(true);
+            }
+        }
+        private void SpectateEnd()
+        {
+            foreach (GameObject otherPlayerObject in otherPlayerObjects)
+            {
+                otherPlayerObject.SetActive(false);
             }
         }
     }
