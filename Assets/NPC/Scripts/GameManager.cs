@@ -229,8 +229,6 @@ namespace NPC.Scripts
 
         public void OnPlayerDisconnected(NetworkingPlayer player, NetWorker netWorker)
         {
-            Debug.Log("Disconnected!");
-            
             MainThreadManager.Run(() =>
             {
                 //Loop through all players and find the player who disconnected, store all it's networkobjects to a list

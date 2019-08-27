@@ -26,7 +26,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			base.SetupHelperRpcs(networkObject);
 			networkObject.RegisterRpc("ShotsFired", ShotsFired, typeof(Vector2), typeof(Vector2));
 			networkObject.RegisterRpc("Emote", Emote, typeof(int));
-			networkObject.RegisterRpc("Name", Name, typeof(string));
+			//networkObject.RegisterRpc("Name", Name, typeof(string));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -114,6 +114,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// int index
 		/// </summary>
 		public abstract void Emote(RpcArgs args);
+		
 		/// <summary>
 		/// Arguments:
 		/// string name
