@@ -69,7 +69,7 @@ namespace NPC.Scripts
         
         // This needs to be set by the MultiPlayer Menu
         private NetWorker server;
-        
+
         private void Awake()
         {
             Tilemap.CompressBounds();
@@ -218,11 +218,41 @@ namespace NPC.Scripts
 
         public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
         {
+            Debug.Log("Connected!");
+//            MainThreadManager.Run(() =>
+//            {
+//                Vector3 position = new Vector3(0.5f, 0.5f, 0);
+//                PlayerBehavior playerScript = NetworkManager.Instance.InstantiatePlayer(0, position);
+//                playerScript.networkObject.AssignOwnership(player);
+//            });
+        }
+
+        public void OnPlayerDisconnected(NetworkingPlayer player, NetWorker netWorker)
+        {
+            Debug.Log("Disconnected!");
+            
             MainThreadManager.Run(() =>
             {
-                Vector3 position = new Vector3(0.5f, 0.5f, 0);
-                PlayerBehavior playerScript = NetworkManager.Instance.InstantiatePlayer(0, position);
-                playerScript.networkObject.AssignOwnership(player);
+                //Loop through all players and find the player who disconnected, store all it's networkobjects to a list
+                List<NetworkObject> toDelete = new List<NetworkObject>();
+                foreach (var no in netWorker.NetworkObjectList)
+                {
+                    if (no.Owner == player)
+                    {
+                        //Found him
+                        toDelete.Add(no);
+                    }
+                }
+
+                //Remove the actual network object outside of the foreach loop, as we would modify the collection at runtime elsewise. (could also use a return, too late)
+                if (toDelete.Count > 0)
+                {
+                    for (int i = toDelete.Count - 1; i >= 0; i--)
+                    {
+                        netWorker.NetworkObjectList.Remove(toDelete[i]);
+                        toDelete[i].Destroy();
+                    }
+                }
             });
         }
     

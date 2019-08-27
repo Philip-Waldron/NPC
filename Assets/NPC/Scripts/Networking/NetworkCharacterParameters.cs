@@ -1,4 +1,5 @@
-﻿using BeardedManStudios.Forge.Networking;
+﻿using System;
+using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Characters;
@@ -40,6 +41,47 @@ namespace NPC.Scripts.Networking
             {
                 _nonPlayerCharacterScript.UsePathfinding = true;
                 _nonPlayerCharacterScript.RollState();
+            }
+            
+            if (!(NetworkManager.Instance.Networker is IServer) && _playerScript != null)
+            {
+                //setup the disconnected event
+                NetworkManager.Instance.Networker.disconnected += DisconnectedFromServer;
+                networkObject.onDestroy += WasDestroyed;
+            }
+        }
+        
+        private void DisconnectedFromServer(NetWorker sender)
+        {
+            MainThreadManager.Run(() =>
+            {
+                //Loop through the network objects to see if the disconnected player is the host
+                foreach (var networkObject in sender.NetworkObjectList)
+                {
+                    if (networkObject.Owner.IsHost)
+                    {
+                        //todo: Add a disconnect message here instead of just bootin em out
+                        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+                    }
+                }
+                
+                NetworkManager.Instance.Disconnect();
+            });
+        }
+
+        public void GenerateName()
+        {
+            if (networkObject.IsServer)
+            {
+                BroadcastName(_playerScript.characterName + "  " + networkObject.Networker.ServerPlayerCounter);
+            }
+        }
+
+        void WasDestroyed(NetWorker sender)
+        {
+            if (_playerScript != null)
+            {
+                _playerScript.RemoveFromAllPlayersList();
             }
         }
 
@@ -131,7 +173,10 @@ namespace NPC.Scripts.Networking
 
         public void BroadcastName(string n)
         {
-            networkObject.SendRpc(RPC_NAME, Receivers.Owner, n);
+            if (networkObject.IsOwner)
+            {
+                networkObject.SendRpc(RPC_NAME, Receivers.AllBuffered, n);
+            }
         }
     }
 }

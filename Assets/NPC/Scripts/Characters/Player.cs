@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -106,9 +108,17 @@ namespace NPC.Scripts.Characters
 
             // Add to GameManager Lists
             GameManager.AllPlayers.Add(this);
-            
+
+            networkedParameters.GenerateName();
             SetCharacterName(characterName + "  " + GameManager.AllPlayers.Count);
         }
+        
+        //todo: Find better means of updating the player Count
+        public void RemoveFromAllPlayersList()
+        {
+            GameManager.AllPlayers.Remove(this);
+        }
+        
         private void Update()
         {
             // Update Disguise.
@@ -426,12 +436,6 @@ namespace NPC.Scripts.Characters
             characterName = newName;
             identificationText.SetText(characterName);
             GameManager.onScreenInterface.nameField.text = newName;
-            
-            if (originalName != newName)
-            {
-                Debug.Log(characterName + "'s name was broadcasted from " + originalName + " to " + newName + ".");
-                networkedParameters.BroadcastName(characterName);
-            }
         }
         public void Interact(InputAction.CallbackContext context)
         {
