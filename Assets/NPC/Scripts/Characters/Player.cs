@@ -18,6 +18,7 @@ namespace NPC.Scripts.Characters
         [SerializeField, Range(1, 3)] public int AmmoCount = 1;
         [SerializeField, Range(1f, 10f)] public float _shootRange;
         [SerializeField] private GameObject _laserParticleEffect;
+        [SerializeField] private GameObject _shootParticleEffect;
         [SerializeField] private GameObject _bulletChargeSprite;
         [SerializeField] private Transform _bulletCharges;
         [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
@@ -295,6 +296,7 @@ namespace NPC.Scripts.Characters
             
             _chargingFor = 0;
             
+            // A E S T H E T I C S
             if (_lineRendererAnimation != null)
             {
                 StopCoroutine(_lineRendererAnimation);
@@ -304,9 +306,9 @@ namespace NPC.Scripts.Characters
             {
                 particle.Stop();
             }
-        
             _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.1f, 3, Color.red, Color.cyan, true));
-            
+            _shootParticleEffect = Instantiate(_shootParticleEffect);
+
             // Cooldown
             _lastShotTime = Time.time;
             
@@ -322,6 +324,9 @@ namespace NPC.Scripts.Characters
 
             bool hitPlayer = false;
             bool hitNonPlayer = false;
+
+            _shootParticleEffect.transform.right = direction;
+            _shootParticleEffect.transform.position = position;
             
             foreach (RaycastHit2D hit in hits)
             {
