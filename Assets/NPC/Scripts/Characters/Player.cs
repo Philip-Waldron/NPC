@@ -438,7 +438,10 @@ namespace NPC.Scripts.Characters
         {
             characterName = newName;
             identificationText.SetText(characterName);
-            GameManager.onScreenInterface.playerName.SetText(characterName);
+            if (networkedParameters.networkObject.IsOwner)
+            {
+                GameManager.onScreenInterface.playerName.SetText(characterName);
+            }
         }
         public void Interact(InputAction.CallbackContext context)
         {
@@ -723,6 +726,10 @@ namespace NPC.Scripts.Characters
                     break;
                 default:
                     Player spectatingPlayer = GameManager.AllPlayers[index];
+                    if (spectatingPlayer == this)
+                    {
+                        break;
+                    }
                     Vector3 targetCameraPos = spectatingPlayer.playerCamera.transform.localPosition;
                     playerCamera.SetParent(spectatingPlayer.transform);
                     playerCamera.localPosition = targetCameraPos;
