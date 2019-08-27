@@ -136,11 +136,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         public void StartGame(int sceneID)
         {
-#if UNITY_5_6_OR_NEWER
-            SceneManager.LoadScene(sceneID);
-#else
-            Application.LoadLevel(sceneID);
-#endif
+	        SceneManager.LoadScene("Networking_Scene");
         }
         #endregion
 
@@ -279,7 +275,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     item.KickButton.SetActive(true);
                 item.SetParent(Grid);
             });
-        }
+		}
 
 		public void OnFNPlayerDisconnected(IClientMockPlayer player)
 		{

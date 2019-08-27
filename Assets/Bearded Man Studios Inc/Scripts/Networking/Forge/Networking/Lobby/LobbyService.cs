@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace BeardedManStudios.Forge.Networking.Lobby
@@ -537,7 +538,8 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 		private void PlayerJoined(RpcArgs args)
 		{
 			uint playerId = args.GetNext<uint>();
-			var player = CreateClientMockPlayer(playerId, "Player " + playerId);
+			var playerName = "Player " + playerId;
+			var player = CreateClientMockPlayer(playerId, playerName);
 
 			MasterLobby.OnFNPlayerConnected(player);
 		}

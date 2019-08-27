@@ -37,6 +37,11 @@ namespace NPC.Scripts.Networking
                     _playerScript.MakeOtherPlayerCharacter();
                 }
             }
+            
+            if (_playerScript != null && networkObject.Owner.Name != null) 
+            {
+                _playerScript.name = networkObject.Owner.Name;
+            }
 
             else if (_nonPlayerCharacterScript != null)
             {
