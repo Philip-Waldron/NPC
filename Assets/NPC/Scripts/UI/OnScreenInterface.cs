@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking;
 using NPC.Scripts.Characters;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace NPC.Scripts.UI
 {
@@ -176,12 +178,11 @@ namespace NPC.Scripts.UI
         }
         private void SFXVolume(float value)
         {
-            if (Player == null)
+            if (Player != null)
             {
-                return;
+                Player.audioSource.volume = value;
             }
             
-            Player.audioSource.volume = value;
             PlayerPrefs.SetFloat(SFX_VOLUME_PREF, value);
             
             // This is messy, but hey how are ya
