@@ -61,6 +61,7 @@ namespace NPC.Scripts
         public List<Vector3> ValidSpawnPositions = new List<Vector3>();
         public List<Vector3> ValidMovePositions = new List<Vector3>();
         
+        public List<Player> LivePlayers = new List<Player>();
         public List<Player> AllPlayers = new List<Player>();
         public List<Character> NonPlayers = new List<Character>();
 
@@ -146,10 +147,10 @@ namespace NPC.Scripts
         
         private void Update()
         {
+            int livePlayerCount = LivePlayers.Count;
             int allPlayerCount = AllPlayers.Count;
-            maxPlayerCount = allPlayerCount > maxPlayerCount ? allPlayerCount : maxPlayerCount;
-            
-            if (AllPlayers.Count == 1 && maxPlayerCount > 1)
+
+            if (livePlayerCount == 1 && allPlayerCount > 1)
             {
                 WinState.Invoke();
             }
@@ -286,7 +287,7 @@ namespace NPC.Scripts
                 if (player != null && otherPlayer)
                 {
                     player.MakeOtherPlayerCharacter();
-                    AllPlayers.Add(player);
+                    LivePlayers.Add(player);
                 }
                 else if (npc != null)
                 {
@@ -333,9 +334,9 @@ namespace NPC.Scripts
 
         public void CharacterDeath(Character character)
         {
-            if (AllPlayers.Contains(character))
+            if (LivePlayers.Contains(character))
             {
-                AllPlayers.Remove((Player)character);
+                LivePlayers.Remove((Player)character);
             }
             else if (NonPlayers.Contains(character))
             {

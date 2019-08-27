@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966cda07e37da4648a9c81e913cf6a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  identificationSprite: {fileID: 6514195680016893111}
+  characterIdentifier: {fileID: 6514195680016893113}
   identificationText: {fileID: 4237226970347780638}
   characterName: Player
   speechBubble: {fileID: 3899307150692157425}
@@ -1920,6 +1920,31 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5481597340036937014, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481597340036937014, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481597340036937014, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481597340036937014, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481597340036937014, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5730533242610305935, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_Layer
@@ -1993,14 +2018,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 8565614246252515112}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &6514195680016893111 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 3222394472677673887, guid: 9caec9a4f2a35f9438883c2a774657c1,
+--- !u!1 &6514195680016893113 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3222394472677673873, guid: 9caec9a4f2a35f9438883c2a774657c1,
     type: 3}
   m_PrefabInstance: {fileID: 8565614246252515112}
   m_PrefabAsset: {fileID: 0}

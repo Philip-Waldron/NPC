@@ -14,10 +14,14 @@ namespace NPC.Scripts.UI
         public Transform inventoryBar;
         public TextMeshProUGUI playerCount;
         public TextMeshProUGUI spectatingText;
+        public TextMeshProUGUI playerName;
+        public TextMeshProUGUI songName;
         public GameObject winScreen;
         public GameObject menuScreen;
         public GameObject rootMenuScreen;
         public GameObject settingsScreen;
+        public GameObject audioSettings;
+        public GameObject graphicsSettings;
 
         [Header("Menu Buttons")] 
         public Button settingsButton;
@@ -25,15 +29,20 @@ namespace NPC.Scripts.UI
         public Button quitButton;
         public Button closeMenuButton;
         
-        [Header("Settings Buttons")] 
+        [Header("Settings")] 
         public TMP_InputField nameField;
         public Button backToMenuButton;
+        public Button audioTab;
+        public Button graphicsTab;
+        [Space(10)] 
+        public Slider masterVolume;
+        public Slider musicVolume;
+        public Slider sfxVolume;
 
         [Header("Audio")] 
         public AudioSource audioSource;
         public List<AudioClip> backgroundMusic = new List<AudioClip>();
         private GameManager gameManager;
-        private int maxPlayerCount;
         private NetWorker server;
         public Player Player { private get; set; }
 
@@ -43,26 +52,39 @@ namespace NPC.Scripts.UI
             
             // Button Listeners
             settingsButton.onClick.AddListener(OpenSettings);
+            audioTab.onClick.AddListener(AudioSettings);
+            graphicsTab.onClick.AddListener(GraphicsSettings);
             backToLobbyButton.onClick.AddListener(BackToLobby);
             quitButton.onClick.AddListener(QuitApplication);
             closeMenuButton.onClick.AddListener(CloseMenu);
             backToMenuButton.onClick.AddListener(BackToMenu);
+            
+            // Slider Listeners
+            masterVolume.onValueChanged.AddListener(MasterVolume);
+            musicVolume.onValueChanged.AddListener(MusicVolume);
+            sfxVolume.onValueChanged.AddListener(SFXVolume);
+            // Set Values
+            AudioListener.volume = masterVolume.value;
+            audioSource.volume = musicVolume.value;
+
+            // Text Field Listeners
             nameField.onEndEdit.AddListener(SetPlayerName);
             nameField.onSelect.AddListener(DisableUserInput);
             
             // Music
             audioSource.clip = backgroundMusic[Random.Range(0, backgroundMusic.Count)];
+            songName.SetText("Song:  " + audioSource.clip.name + "  by  Ahsan  Iqbal");
             audioSource.Play();
         }
         private void Update()
         {
+            int livePlayersCount = gameManager.LivePlayers.Count;
             int allPlayerCount = gameManager.AllPlayers.Count;
-            maxPlayerCount = allPlayerCount > maxPlayerCount ? allPlayerCount : maxPlayerCount;
-            SetPlayerCount(allPlayerCount);
+            SetPlayerCount(livePlayersCount, allPlayerCount);
         }
-        private void SetPlayerCount(int players)
+        private void SetPlayerCount(int players, int allPlayers)
         {
-            string s = players + " | " + maxPlayerCount;
+            string s = players + " | " + allPlayers;
             playerCount.SetText(s);
         }
         public void SetSpectatingText(string playerName)
@@ -85,11 +107,25 @@ namespace NPC.Scripts.UI
                 menuScreen.SetActive(state);
             }
             Player.DisableInput = menuScreen.activeSelf;
+            
+            // Reset Menu
+            BackToMenu();
+            AudioSettings();
         }
         private void OpenSettings()
         {
             settingsScreen.SetActive(true);
             rootMenuScreen.SetActive(false);
+        }
+        private void AudioSettings()
+        {
+            audioSettings.SetActive(true);
+            graphicsSettings.SetActive(false);
+        }
+        private void GraphicsSettings()
+        {
+            graphicsSettings.SetActive(true);
+            audioSettings.SetActive(false);
         }
         public void BackToLobby()
         {
@@ -116,6 +152,28 @@ namespace NPC.Scripts.UI
         {
             Player.SetCharacterName(n);
             Player.DisableInput = false;
+        }
+        private static void MasterVolume(float value)
+        {
+            AudioListener.volume = value;
+        }
+        private void MusicVolume(float value)
+        {
+            audioSource.volume = value;
+        }
+        private void SFXVolume(float value)
+        {
+            Player.audioSource.volume = value;
+            
+            // This is messy, but hey how are ya
+            foreach (Character nonPlayer in gameManager.NonPlayers)
+            {
+                nonPlayer.audioSource.volume = value;
+            }
+            foreach (Player player in gameManager.AllPlayers)
+            {
+                player.audioSource.volume = value;
+            }
         }
     }
 }

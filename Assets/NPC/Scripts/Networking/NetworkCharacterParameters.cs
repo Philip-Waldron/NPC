@@ -73,7 +73,7 @@ namespace NPC.Scripts.Networking
         {
             if (networkObject.IsServer)
             {
-                BroadcastName(_playerScript.characterName + "  " + networkObject.Networker.ServerPlayerCounter);
+                BroadcastName(_playerScript.characterName + "_" + networkObject.Networker.ServerPlayerCounter);
             }
         }
 
@@ -81,7 +81,7 @@ namespace NPC.Scripts.Networking
         {
             if (_playerScript != null)
             {
-                _playerScript.RemoveFromAllPlayersList();
+                _playerScript.RemoveFromLivePlayersList();
             }
         }
 

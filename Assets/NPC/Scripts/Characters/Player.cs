@@ -84,7 +84,7 @@ namespace NPC.Scripts.Characters
         private bool isOtherPlayer;
 
         public bool DisableInput { get; set; } // Used for disabling user input when the menu is open
-        
+
         private void Start()
         {
             AdjustAmmo();
@@ -97,8 +97,12 @@ namespace NPC.Scripts.Characters
             SetupParticleSystem();
             
             SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
-            GameManager.onScreenInterface.Player = this;
             selfSpectatePosition = playerCamera.localPosition;
+            if (networkedParameters.networkObject.IsOwner)
+            {
+                GameManager.onScreenInterface.Player = this;
+            }
+            audioSource.volume = GameManager.onScreenInterface.sfxVolume.value;
             
             // Add Listeners
             onDeath.AddListener(ShootRelease);
@@ -107,16 +111,17 @@ namespace NPC.Scripts.Characters
             GameManager.WinState.AddListener(OnWin);
 
             // Add to GameManager Lists
+            GameManager.LivePlayers.Add(this);
             GameManager.AllPlayers.Add(this);
 
             networkedParameters.GenerateName();
-            SetCharacterName(characterName + "  " + GameManager.AllPlayers.Count);
+            SetCharacterName(characterName + "_" + GameManager.LivePlayers.Count);
         }
         
         //todo: Find better means of updating the player Count
-        public void RemoveFromAllPlayersList()
+        public void RemoveFromLivePlayersList()
         {
-            GameManager.AllPlayers.Remove(this);
+            GameManager.LivePlayers.Remove(this);
         }
         
         private void Update()
@@ -431,11 +436,9 @@ namespace NPC.Scripts.Characters
         }
         public void SetCharacterName(string newName)
         {
-            string originalName = characterName;
-            
             characterName = newName;
             identificationText.SetText(characterName);
-            GameManager.onScreenInterface.nameField.text = newName;
+            GameManager.onScreenInterface.playerName.SetText(characterName);
         }
         public void Interact(InputAction.CallbackContext context)
         {
@@ -697,14 +700,14 @@ namespace NPC.Scripts.Characters
         }
         private void OnWin()
         {
-            if (!IsDead && !isOtherPlayer)
+            if (!IsDead && networkedParameters.networkObject.IsOwner)
             {
                 GameManager.onScreenInterface.WinScreen();
             }
         }
         private void OnDeathSpectate()
         {
-            if (GameManager.AllPlayers.Count > 1)
+            if (GameManager.AllPlayers.Count > 1 && networkedParameters.networkObject.IsOwner)
             {
                 SpectatePlayer(GameManager.AllPlayers.Count);
             }
@@ -723,7 +726,9 @@ namespace NPC.Scripts.Characters
                     Vector3 targetCameraPos = spectatingPlayer.playerCamera.transform.localPosition;
                     playerCamera.SetParent(spectatingPlayer.transform);
                     playerCamera.localPosition = targetCameraPos;
-                    GameManager.onScreenInterface.SetSpectatingText(spectatingPlayer.characterName);
+                    string n = spectatingPlayer.characterName;
+                    string s = spectatingPlayer.IsDead ? n + ",  but  they're  dead  lmao" : n;
+                    GameManager.onScreenInterface.SetSpectatingText(s);
                     break;
             }
         }

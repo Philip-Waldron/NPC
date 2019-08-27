@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6a0f2caf1022644880f901b07505e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDuration: 7
+  pickupDuration: 5
   pickupAudio: {fileID: 8300000, guid: b9f1a9d110d293e4b8f35c908650cd81, type: 3}
   pickupBar: {fileID: 8176674014426914265}
   pickupBarImage: {fileID: 5301690701455924361}
@@ -25,10 +25,14 @@ MonoBehaviour:
   audioSource: {fileID: 8171927854241196948}
   Rarity: 60
   itemSprite: {fileID: 0}
-  scanLineDuration: 5
+  scanDuration: 5
+  scanRadius: 4
   revealDuration: 15
   particleEffect: {fileID: 1018188143152966057, guid: 065ce00efc378de47adb5e9a04311254,
     type: 3}
+  _playerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1001 &6014630622584487757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -128,6 +132,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4377985319871071166, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1519547598387970967, guid: 7c58c7da86937344a9d52e779bb3810d,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

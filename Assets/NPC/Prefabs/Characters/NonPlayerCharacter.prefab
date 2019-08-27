@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9fc9a54d6752b4f9fa397f245d3d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  identificationSprite: {fileID: 2041033025119797442}
+  characterIdentifier: {fileID: 2041033025119797452}
   identificationText: {fileID: 9005371553782267499}
   characterName: NPC
   speechBubble: {fileID: 8082054762246456196}
@@ -233,10 +233,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5730992265262328554, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3222394472677673873, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7555844228076979534, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
@@ -298,9 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &2041033025119797442 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 3222394472677673887, guid: 9caec9a4f2a35f9438883c2a774657c1,
+--- !u!1 &2041033025119797452 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3222394472677673873, guid: 9caec9a4f2a35f9438883c2a774657c1,
     type: 3}
   m_PrefabInstance: {fileID: 3524922179386461021}
   m_PrefabAsset: {fileID: 0}

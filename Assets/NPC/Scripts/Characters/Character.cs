@@ -14,8 +14,8 @@ namespace NPC.Scripts.Characters
         // Character.
         protected SpriteRenderer SpriteRenderer;
 
-        [Header("Scan")]
-        [SerializeField] protected SpriteRenderer identificationSprite;
+        [Header("Scan")] 
+        [SerializeField] protected GameObject characterIdentifier;
         [SerializeField] public TextMeshPro identificationText;
         [SerializeField] public string characterName = "Character Name";
 
@@ -30,7 +30,7 @@ namespace NPC.Scripts.Characters
         private readonly Color _disabledColor = new Color(1, 1, 1, 0);
 
         [Header("Audio")]
-        [SerializeField] protected AudioSource audioSource;
+        [SerializeField] public AudioSource audioSource;
         [SerializeField] protected List<AudioClip> audioClips = new List<AudioClip>();
 
         [Header("Animation")]
@@ -140,11 +140,9 @@ namespace NPC.Scripts.Characters
 
         IEnumerator OnScan(float scanDuration)
         {
-            identificationSprite.enabled = true;
-            identificationText.renderer.enabled = true;
+            characterIdentifier.SetActive(true);
             yield return new WaitForSeconds(scanDuration);
-            identificationSprite.enabled = false;
-            identificationText.renderer.enabled = false;
+            characterIdentifier.SetActive(false);
         }
 
         private IEnumerator Emote(Sprite emoteSprite, float duration)
