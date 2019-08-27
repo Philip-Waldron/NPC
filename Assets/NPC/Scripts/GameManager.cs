@@ -219,7 +219,7 @@ namespace NPC.Scripts
 
         public void OnPlayerAccepted(NetworkingPlayer player, NetWorker netWorker)
         {
-            Debug.Log("Connected!");
+            //disabled for now - assigning ownership causes checks done in NetworkStart to inaccurately disable elements
 //            MainThreadManager.Run(() =>
 //            {
 //                Vector3 position = new Vector3(0.5f, 0.5f, 0);
@@ -233,24 +233,15 @@ namespace NPC.Scripts
             MainThreadManager.Run(() =>
             {
                 //Loop through all players and find the player who disconnected, store all it's networkobjects to a list
-                List<NetworkObject> toDelete = new List<NetworkObject>();
-                foreach (var no in netWorker.NetworkObjectList)
+                var objectsToDelete = netWorker.NetworkObjectList.Where(networkedObject => networkedObject.Owner == player).ToList();
+                
+                if (objectsToDelete.Count <= 0) return;
+                
+                //iterate backwards to ensure indexing does not go out of bounds
+                for (var i = objectsToDelete.Count - 1; i >= 0; i--)
                 {
-                    if (no.Owner == player)
-                    {
-                        //Found him
-                        toDelete.Add(no);
-                    }
-                }
-
-                //Remove the actual network object outside of the foreach loop, as we would modify the collection at runtime elsewise. (could also use a return, too late)
-                if (toDelete.Count > 0)
-                {
-                    for (int i = toDelete.Count - 1; i >= 0; i--)
-                    {
-                        netWorker.NetworkObjectList.Remove(toDelete[i]);
-                        toDelete[i].Destroy();
-                    }
+                    netWorker.NetworkObjectList.Remove(objectsToDelete[i]);
+                    objectsToDelete[i].Destroy();
                 }
             });
         }

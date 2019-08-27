@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
@@ -56,15 +57,11 @@ namespace NPC.Scripts.Networking
             MainThreadManager.Run(() =>
             {
                 //Loop through the network objects to see if the disconnected player is the host
-                foreach (var networkObject in sender.NetworkObjectList)
+                if (sender.NetworkObjectList.Any(senderNetworkObject => senderNetworkObject.Owner.IsHost))
                 {
-                    if (networkObject.Owner.IsHost)
-                    {
-                        //todo: Add a disconnect message here instead of just bootin em out
-                        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-                    }
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(0);
                 }
-                
+
                 NetworkManager.Instance.Disconnect();
             });
         }
@@ -87,10 +84,7 @@ namespace NPC.Scripts.Networking
 
         private void Update()
         {
-            if (networkObject == null)
-            {
-                return;
-            }
+            if (networkObject == null) return;
 
             if (_playerScript != null)
             {
@@ -111,10 +105,7 @@ namespace NPC.Scripts.Networking
 
         private void UpdatePosition(Vector2 position)
         {
-            if (networkObject == null)
-            {
-                return;
-            }
+            if (networkObject == null) return;
 
             _gridPosition = position;
 
