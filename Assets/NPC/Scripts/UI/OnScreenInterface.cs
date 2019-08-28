@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking;
 using NPC.Scripts.Characters;
 using TMPro;
@@ -12,6 +11,9 @@ namespace NPC.Scripts.UI
 {
     public class OnScreenInterface : MonoBehaviour
     {
+        [Header("UI Behaviour")] 
+        public bool disablePlayerWhenOpen = true;
+        
         [Header("UI References")]
         public Transform inventoryBar;
         public TextMeshProUGUI playerCount;
@@ -24,12 +26,14 @@ namespace NPC.Scripts.UI
         public GameObject settingsScreen;
         public GameObject audioSettings;
         public GameObject graphicsSettings;
+        public Image spectatingBackground;
 
         [Header("Menu Buttons")] 
         public Button settingsButton;
         public Button backToLobbyButton;
         public Button quitButton;
         public Button closeMenuButton;
+        public Button shuffleMusicButton;
         
         [Header("Settings")] 
         public TMP_InputField nameField;
@@ -65,6 +69,7 @@ namespace NPC.Scripts.UI
             quitButton.onClick.AddListener(QuitApplication);
             closeMenuButton.onClick.AddListener(CloseMenu);
             backToMenuButton.onClick.AddListener(BackToMenu);
+            shuffleMusicButton.onClick.AddListener(ShuffleMusic);
             
             // Slider Listeners
             masterVolume.onValueChanged.AddListener(MasterVolume);
@@ -73,21 +78,18 @@ namespace NPC.Scripts.UI
             // Set Values
             MasterVolume(PlayerPrefs.GetFloat(MASTER_VOLUME_PREF));
             MusicVolume(PlayerPrefs.GetFloat(MUSIC_VOLUME_PREF));
-            SFXVolume(PlayerPrefs.GetFloat(SFX_VOLUME_PREF));
+            //Handled by the Player
+            //SFXVolume(PlayerPrefs.GetFloat(SFX_VOLUME_PREF));
             masterVolume.value = PlayerPrefs.GetFloat(MASTER_VOLUME_PREF);
             musicVolume.value = PlayerPrefs.GetFloat(MUSIC_VOLUME_PREF);
             sfxVolume.value = PlayerPrefs.GetFloat(SFX_VOLUME_PREF);
 
-            Debug.Log(PlayerPrefs.GetFloat(MASTER_VOLUME_PREF));
-            
             // Text Field Listeners
             nameField.onEndEdit.AddListener(SetPlayerName);
             nameField.onSelect.AddListener(DisableUserInput);
             
             // Music
-            audioSource.clip = backgroundMusic[Random.Range(0, backgroundMusic.Count)];
-            songName.SetText("Song:  " + audioSource.clip.name + "  by  Ahsan  Iqbal");
-            audioSource.Play();
+            ShuffleMusic();
         }
         private void Update()
         {
@@ -100,10 +102,11 @@ namespace NPC.Scripts.UI
             string s = players + " | " + allPlayers;
             playerCount.SetText(s);
         }
-        public void SetSpectatingText(string playerName)
+        public void SetSpectatingText(string n)
         {
-            string s = "You're  Spectating  " + playerName;
+            string s = "You're  Spectating  " + n;
             spectatingText.SetText(s);
+            spectatingBackground.enabled = true;
         }
         public void WinScreen()
         {
@@ -119,7 +122,8 @@ namespace NPC.Scripts.UI
             {
                 menuScreen.SetActive(state);
             }
-            Player.DisableInput = menuScreen.activeSelf;
+            
+            Player.DisableInput = disablePlayerWhenOpen ? false : menuScreen.activeSelf;
             
             // Reset Menu
             BackToMenu();
@@ -159,11 +163,20 @@ namespace NPC.Scripts.UI
         }
         private void DisableUserInput(string n)
         {
+            if (!disablePlayerWhenOpen)
+            {
+                return;
+            }
             Player.DisableInput = true;
         }
         private void SetPlayerName(string n)
         {
             Player.SetCharacterName(n);
+
+            if (!disablePlayerWhenOpen)
+            {
+                return;
+            }
             Player.DisableInput = false;
         }
         private static void MasterVolume(float value)
@@ -176,13 +189,8 @@ namespace NPC.Scripts.UI
             audioSource.volume = value;
             PlayerPrefs.SetFloat(MUSIC_VOLUME_PREF, value);
         }
-        private void SFXVolume(float value)
+        public void SFXVolume(float value)
         {
-            if (Player != null)
-            {
-                Player.audioSource.volume = value;
-            }
-            
             PlayerPrefs.SetFloat(SFX_VOLUME_PREF, value);
             
             // This is messy, but hey how are ya
@@ -194,6 +202,13 @@ namespace NPC.Scripts.UI
             {
                 player.audioSource.volume = value;
             }
+        }
+
+        public void ShuffleMusic()
+        {
+            audioSource.clip = backgroundMusic[Random.Range(0, backgroundMusic.Count)];
+            songName.SetText("Song:  " + audioSource.clip.name + ".mp3  by  Ahsan  Iqbal");
+            audioSource.Play();
         }
     }
 }

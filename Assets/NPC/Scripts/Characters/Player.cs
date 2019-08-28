@@ -105,10 +105,12 @@ namespace NPC.Scripts.Characters
             if (networkedParameters.networkObject.IsOwner)
             {
                 GameManager.onScreenInterface.Player = this;
+                
+                // Set Global Effects Volume
+                GameManager.onScreenInterface.SFXVolume(PlayerPrefs.GetFloat("SFXVolume"));
+                GameManager.onScreenInterface.sfxVolume.value = PlayerPrefs.GetFloat("SFXVolume");
             }
 
-            audioSource.volume = PlayerPrefs.GetFloat("SFXVolume");
-            
             // Add Listeners
             onDeath.AddListener(ShootRelease);
             onDeath.AddListener(StopAllCoroutines);
