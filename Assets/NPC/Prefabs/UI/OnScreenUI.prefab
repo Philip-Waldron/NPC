@@ -8130,7 +8130,7 @@ GameObject:
   m_Layer: 5
   m_Name: OnScreenUI
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -8265,6 +8265,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a15a910b716abf841ab32480ebfe9d96, type: 3}
   - {fileID: 8300000, guid: cd827b98cf3dcac4dbfea2c3f74a013a, type: 3}
   - {fileID: 8300000, guid: b98bfcfc9c49ae14e97e9c9f56fb9222, type: 3}
+  - {fileID: 8300000, guid: e0e280b3c538db74db669ffc365380b5, type: 3}
 --- !u!82 &3380861141520608701
 AudioSource:
   m_ObjectHideFlags: 0
