@@ -153,10 +153,13 @@ namespace NPC.Scripts.Characters
             {
                 return;
             }
+
             Collider2D[] playerColliders = Physics2D.OverlapCircleAll(transform.position, NonPlayerClass.detectionRadius, playerMask);
             foreach (Collider2D playerCollider in playerColliders)
             {
                 Player player = playerCollider.GetComponent<Player>();
+                
+                Debug.Log(player.characterName);
 
                 if (player.IsDead)
                 {
@@ -178,7 +181,6 @@ namespace NPC.Scripts.Characters
             {
                 return false;
             }
-
             SpeakText(NonPlayerClass.alerts[Random.Range(0, NonPlayerClass.alerts.Count)], NonPlayerClass.alertDuration);
             audioSource.clip = NonPlayerClass.alertAudio;
             audioSource.Play();

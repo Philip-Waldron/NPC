@@ -357,8 +357,7 @@ namespace NPC.Scripts.Characters
                         {
                             hitPlayer = true;
                         }
-                        else if (target is NonPlayerCharacter &&
-                                 !hit.collider.GetComponent<NonPlayerCharacter>().IsDead)
+                        else if (target is NonPlayerCharacter && !hit.collider.GetComponent<NonPlayerCharacter>().IsDead)
                         {
                             hitNonPlayer = true;
                         }
@@ -604,8 +603,7 @@ namespace NPC.Scripts.Characters
         /// <param name="scalar"></param>
         public void AdjustDisguise(float adjustment, bool scalar = false)
         {
-            float adjustedDisguiseIntegrity = PlayerClass.disguiseIntegrity;
-
+            float adjustedDisguiseIntegrity = _disguiseIntegrity;
             if (scalar)
             {
                 adjustedDisguiseIntegrity += (adjustedDisguiseIntegrity * adjustment);
@@ -614,11 +612,9 @@ namespace NPC.Scripts.Characters
             {
                 adjustedDisguiseIntegrity += adjustment;
             }
-
             _disguiseIntegrity = adjustedDisguiseIntegrity;
-            _disguiseIntegrity = _disguiseIntegrity > PlayerClass.maxDisguiseIntegrity ? PlayerClass.maxDisguiseIntegrity : PlayerClass.disguiseIntegrity;
-            _disguiseIntegrity = _disguiseIntegrity < PlayerClass.minDisguiseIntegrity ? PlayerClass.minDisguiseIntegrity : PlayerClass.disguiseIntegrity;
-            
+            _disguiseIntegrity = _disguiseIntegrity > PlayerClass.maxDisguiseIntegrity ? PlayerClass.maxDisguiseIntegrity : _disguiseIntegrity; // Over the max?
+            _disguiseIntegrity = _disguiseIntegrity < PlayerClass.minDisguiseIntegrity ? PlayerClass.minDisguiseIntegrity : _disguiseIntegrity; // Over the min?
             _elapsedTime = Mathf.InverseLerp(PlayerClass.maxDisguiseIntegrity, PlayerClass.minDisguiseIntegrity, _disguiseIntegrity);
         }
         public void AdjustAmmo()

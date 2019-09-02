@@ -25,78 +25,16 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b146bed5476ae804585d34b0a4e58c82, type: 3}
   - {fileID: 21300000, guid: c768694eaa5fec84f946d3364c12f446, type: 3}
   audioSource: {fileID: 372695506464961733}
-  audioClips:
-  - {fileID: 8300000, guid: 3a49720b59736604aa029408885ebbd8, type: 3}
-  - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
-  - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
   Animator: {fileID: 1981132466786172452}
-  deathPuddleParticleEffect: {fileID: 7245982541705081319, guid: 4581732006de6994fa982b55c427ce04,
-    type: 3}
-  deathSplatterParticleEffect: {fileID: 7245982541705081319, guid: 96a24f7f7c231694eba60aa3cb27fca6,
-    type: 3}
-  bulletHole: {fileID: 7245982541705081319, guid: 92ad4855a7596da41bd33724bc84ceaf,
-    type: 3}
   onDeath:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   networkedParameters: {fileID: 0}
-  _detectionRadius: 3
-  _detectionFrequency: {x: 2, y: 10}
-  _alerts:
-  - Whoa!
-  - Hey!
-  - UwU
-  _playerMask:
+  playerMask:
     serializedVersion: 2
     m_Bits: 256
-  _detectionChanceCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 100
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 75
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 100
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  alertAudio: {fileID: 8300000, guid: 896f7f6385fba1749953daa1df54ccb2, type: 3}
-  _waitTimeRange: {x: 1, y: 5}
-  _walkCloseNodeRange: {x: 1, y: 4}
-  _walkFarDistanceRange: {x: 5, y: 25}
-  _timeToMove: 0.3
-  _waitChance: 40
-  _walkToCloseChance: 20
-  _walkToFarChance: 10
-  _walkToRandomChance: 10
-  _walkInRoomChance: 15
-  _walkToItemChance: 5
-  _talkativenessRange: {x: 5, y: 15}
-  UsePathfinding: 0
 --- !u!114 &2597228477026952477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +100,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3222394472677673873, guid: 9caec9a4f2a35f9438883c2a774657c1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 474047629950386863, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_Name
@@ -236,11 +179,6 @@ PrefabInstance:
     - target: {fileID: 5730992265262328554, guid: 9caec9a4f2a35f9438883c2a774657c1,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222394472677673873, guid: 9caec9a4f2a35f9438883c2a774657c1,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7555844228076979534, guid: 9caec9a4f2a35f9438883c2a774657c1,
