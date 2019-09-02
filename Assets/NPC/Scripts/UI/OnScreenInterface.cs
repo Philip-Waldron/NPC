@@ -56,6 +56,8 @@ namespace NPC.Scripts.UI
         private const string MASTER_VOLUME_PREF = "MasterVolume";
         private const string MUSIC_VOLUME_PREF = "MusicVolume";
         private const string SFX_VOLUME_PREF = "SFXVolume";
+
+        private int songIndex;
             
         private void Awake()
         {
@@ -89,6 +91,7 @@ namespace NPC.Scripts.UI
             nameField.onSelect.AddListener(DisableUserInput);
             
             // Music
+            songIndex = Random.Range(0, backgroundMusic.Count - 1);
             ShuffleMusic();
         }
         private void Update()
@@ -206,7 +209,9 @@ namespace NPC.Scripts.UI
 
         public void ShuffleMusic()
         {
-            audioSource.clip = backgroundMusic[Random.Range(0, backgroundMusic.Count)];
+            songIndex++;
+            songIndex = songIndex == backgroundMusic.Count ? 0 : songIndex; // Over the max?
+            audioSource.clip = backgroundMusic[songIndex];
             songName.SetText("Song:  " + audioSource.clip.name + ".mp3  by  Ahsan  Iqbal");
             audioSource.Play();
         }

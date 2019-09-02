@@ -158,14 +158,10 @@ namespace NPC.Scripts.Characters
             foreach (Collider2D playerCollider in playerColliders)
             {
                 Player player = playerCollider.GetComponent<Player>();
-                
-                Debug.Log(player.characterName);
-
                 if (player.IsDead)
                 {
                     return;
                 }
-
                 int detectionChance = Mathf.RoundToInt(NonPlayerClass.detectionChanceCurve.Evaluate(player.DisguiseIntegrity));
                 if (detectionChance != 0 && IsAlerted(detectionChance))
                 {

@@ -8266,6 +8266,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cd827b98cf3dcac4dbfea2c3f74a013a, type: 3}
   - {fileID: 8300000, guid: b98bfcfc9c49ae14e97e9c9f56fb9222, type: 3}
   - {fileID: 8300000, guid: e0e280b3c538db74db669ffc365380b5, type: 3}
+  - {fileID: 8300000, guid: 1715318001a38ac4b9af3ce86cad6081, type: 3}
+  - {fileID: 8300000, guid: fd91d79aa3c12bb4cbb5ed6b8528f413, type: 3}
+  - {fileID: 8300000, guid: 15f78e52e670b7843bbc57485ad45e8b, type: 3}
 --- !u!82 &3380861141520608701
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9474,7 +9477,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: shuffle  music_
+  m_text: next  song_
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ea0e50399a9c654b88df6906c9d8056, type: 2}
   m_sharedMaterial: {fileID: 3677741500063648608, guid: 6ea0e50399a9c654b88df6906c9d8056,
