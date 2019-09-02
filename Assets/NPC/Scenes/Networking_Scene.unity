@@ -278,12 +278,6 @@ PrefabInstance:
       objectReference: {fileID: 1129942107}
     - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
         type: 3}
-      propertyPath: otherPlayerPrefab
-      value: 
-      objectReference: {fileID: 8091573288568294791, guid: b8eed74d086271842abf3db6d9d73c47,
-        type: 3}
-    - target: {fileID: 8413109758330679114, guid: fc3ea58be1c4f324eb66a2251b4bf606,
-        type: 3}
       propertyPath: Zones.Array.data[17].ItemsInZone
       value: 0
       objectReference: {fileID: 0}

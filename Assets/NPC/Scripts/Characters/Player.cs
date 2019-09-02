@@ -4,104 +4,96 @@ using System.Collections.Generic;
 using System.Linq;
 using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Unity;
+using NPC.Scripts.Classes.PlayerClasses;
 using NPC.Scripts.Items;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace NPC.Scripts.Characters
 {
     public class Player : Character
     {
-        [Header("Shooting")]
-        [SerializeField] private bool _useAmmo = true;
-        [SerializeField, Range(1, 3)] public int AmmoCount = 1;
-        [SerializeField, Range(1f, 10f)] public float _shootRange;
-        [SerializeField] private GameObject _laserParticleEffect;
-        [SerializeField] private GameObject _shootParticleEffect;
-        [SerializeField] private GameObject _bulletChargeSprite;
-        [SerializeField] private Transform _bulletCharges;
-        [SerializeField, Range(0f, 3f)] private float _bulletChargeTime = 1;
+        [Header("Player References")]
         [SerializeField] private Slider _chargeBar;
-        [SerializeField] private string _bulletSortLayer = "UnderCharacter";
-        [SerializeField] private AudioClip shootAudioClip;
-        [SerializeField, Range(0f, 1f)] private float _shootNonPlayerPenalty = .2f;
-
-        [Header("Cooldown")] 
-        [SerializeField, Range(0f, 10f)] private float _shootCooldownTime;
         [SerializeField] private Slider _cooldownBar;
-        private float _lastShotTime;
-        public bool QueuedWeaponCharge { get; set; }
-        
-        private int _startBulletChargeFrame;
-        private float _chargingFor;
-        private bool _bulletCharging;
-        private bool _chargeReady;
-        private LineRenderer _bulletLine;
-        private Coroutine _lineRendererAnimation;
-        private Collider2D _thisCollider2D;
-        private readonly List<ParticleSystem> _laserParticleSystem = new List<ParticleSystem>();
-        
-        [Header("Items")]
-        [SerializeField, Space(10f), Range(.1f, 3f)]public float pickupRange;
-        [SerializeField] public LayerMask itemMask;
-        [SerializeField] private GameObject itemPrefab;
-        [SerializeField, Range(0, 10)] private int inventoryCount = 3;
-        private readonly List<Item> _inventory = new List<Item>();
-        private bool _validItemPickup;
-        public bool HoldingPickupButton { get; set; }
-        private int _inventoryIndex = 0;
-
-        [Header("Disguise")]
-        [SerializeField] public float MaxDisguiseIntegrity = 100f;
-        [SerializeField] public float MinDisguiseIntegrity = 0f;
-        [SerializeField] private float _disguiseIntegrity = 100f;
-        [SerializeField] private float _disguiseDuration = 300f;
-        [SerializeField] private Slider _disguiseBar;
-        public float DisguiseIntegrity => _disguiseIntegrity;
-        private float timeScalar;
-        private float _elapsedTime;
-        private float _startDisguise;
-
-        [Header("Movement")]
-        [SerializeField, Range(.1f, 1f)] public float _timeToMove;
+        [SerializeField, Space(10)] private Slider _disguiseBar;
+        [SerializeField] private Transform _bulletCharges;
+        [SerializeField, Space(10)] public LayerMask _itemMask;
         [SerializeField] private LayerMask obstacleLayer;
-
-        private Vector2 _moveDirection;
-        private bool _moving;
-
-        [Header("Emote")]
-        public float _emoteDuration = 2f;
-
+        [SerializeField, Space(10)] private string _bulletSortLayer = "UnderCharacter";
+        
         [Header("Spectating")]
-        public Transform playerCamera;
-        private int spectatingIndex;
-        private Vector3 selfSpectatePosition;
-        [HideInInspector] public UnityEvent onSpectateStart;
-        [HideInInspector] public UnityEvent onSpectateEnd;
+        public Transform _playerCamera;
 
         [Header("Other Player Character")]
         [Tooltip("List of GameObjects to be disabled when Other Player")]
         [SerializeField] private List<GameObject> otherPlayerObjects = new List<GameObject>();
         [SerializeField] private PlayerInput playerInput;
-        private bool isOtherPlayer;
+
+        [HideInInspector] public UnityEvent onSpectateStart;
+        [HideInInspector] public UnityEvent onSpectateEnd;
+        
+        public PlayerClass PlayerClass { get; private set; }
+        
+        private Vector2 _moveDirection;
+        private Vector3 _selfSpectatePosition;
+        
+        private int _spectatingIndex;
+        private int _startBulletChargeFrame;
+        public int AmmoCount { get; set; }
+        private int _inventoryIndex = 0;
+        
+        private float _lastShotTime;
+        private float _chargingFor;
+        private float _disguiseIntegrity;
+        private float _timeScalar;
+        private float _elapsedTime;
+        private float _startDisguise;
+        public float DisguiseIntegrity => _disguiseIntegrity;
+        
+        private GameObject _laserParticleEffect;
+        private GameObject _shootParticleEffect;
+
+        private bool _isOtherPlayer;
+        private bool _queuedWeaponCharge;
+        private bool _bulletCharging;
+        private bool _chargeReady;
+        private bool _validItemPickup;
+        private bool _moving;
+        public bool HoldingPickupButton { get; set; }
+        
+        private LineRenderer _bulletLine;
+        
+        private Coroutine _lineRendererAnimation;
+        
+        private Collider2D _thisCollider2D;
+        
+        private readonly List<ParticleSystem> _laserParticleSystem = new List<ParticleSystem>();
+        private readonly List<Item> _inventory = new List<Item>();
 
         public bool DisableInput { get; set; } // Used for disabling user input when the menu is open
 
         private void Start()
         {
-            AdjustAmmo();
-            _lastShotTime = Time.time - _shootCooldownTime;
+            // Cache
+            Transform t;
             
-            _thisCollider2D = transform.GetComponent<Collider2D>();
-            _startDisguise = _disguiseIntegrity;
-            timeScalar = _disguiseDuration / MaxDisguiseIntegrity;
+            // Setup
+            SetupClass();
+            AdjustAmmo();
             SetupLineRenderer();
             SetupParticleSystem();
             
-            SpriteRenderer.sortingOrder = -Mathf.CeilToInt(transform.position.y);
-            selfSpectatePosition = playerCamera.localPosition;
+            // Assign Values
+            _lastShotTime = Time.time - PlayerClass.shootCooldownTime;
+            _thisCollider2D = (t = transform).GetComponent<Collider2D>();
+            _startDisguise = _disguiseIntegrity;
+            _timeScalar = PlayerClass.disguiseDuration / PlayerClass.maxDisguiseIntegrity;
+            SpriteRenderer.sortingOrder = -Mathf.CeilToInt(t.position.y);
+            _selfSpectatePosition = _playerCamera.localPosition;
             if (networkedParameters.networkObject.IsOwner)
             {
                 GameManager.onScreenInterface.Player = this;
@@ -123,8 +115,23 @@ namespace NPC.Scripts.Characters
             GameManager.LivePlayers.Add(this);
             GameManager.AllPlayers.Add(this);
 
+            // Naming
             networkedParameters.GenerateName();
             SetCharacterName(characterName + "_" + GameManager.LivePlayers.Count);
+        }
+
+        private void SetupClass()
+        {
+            // Assign class
+            PlayerClass = GameManager.PlayerClasses[Random.Range(0, GameManager.PlayerClasses.Count)];
+            characterClass = PlayerClass;
+            
+            // Assign local values
+            AmmoCount = PlayerClass.ammoCount;
+            audioClips = PlayerClass.audioClips.ToArray();
+            _disguiseIntegrity = PlayerClass.disguiseIntegrity;
+            animatorController = PlayerClass.animatorController;
+            Animator.runtimeAnimatorController = animatorController;
         }
         
         //todo: Find better means of updating the player Count
@@ -135,19 +142,22 @@ namespace NPC.Scripts.Characters
         
         private void Update()
         {
+            // Cache
+            Transform t = transform;
+            
             // Update Disguise.
-            _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / MaxDisguiseIntegrity);
-            _elapsedTime += Time.deltaTime / _disguiseDuration;
-            _disguiseIntegrity = IsDead? 0f : Mathf.Lerp(_startDisguise, MinDisguiseIntegrity, _elapsedTime);
+            _disguiseBar.SetValueWithoutNotify(DisguiseIntegrity / PlayerClass.maxDisguiseIntegrity);
+            _elapsedTime += Time.deltaTime / PlayerClass.disguiseDuration;
+            _disguiseIntegrity = IsDead? 0f : Mathf.Lerp(_startDisguise, PlayerClass.minDisguiseIntegrity, _elapsedTime);
             
             // Update Cooldown and Charge Bars
-            _cooldownBar.SetValueWithoutNotify((Time.time - _lastShotTime) / _shootCooldownTime);
-            _chargeBar.SetValueWithoutNotify(_chargingFor > _bulletChargeTime ? 1 : _chargingFor / _bulletChargeTime);
+            _cooldownBar.SetValueWithoutNotify((Time.time - _lastShotTime) / PlayerClass.shootCooldownTime);
+            _chargeBar.SetValueWithoutNotify(_chargingFor > PlayerClass.bulletChargeTime ? 1 : _chargingFor / PlayerClass.bulletChargeTime);
 
             // Move.
             if (!_moving && _moveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(transform, transform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
+                StartCoroutine(MoveToPosition(t, t.position + new Vector3(_moveDirection.x, _moveDirection.y), PlayerClass.timeToMove));
             }
 
             AnimationSpeed = _moveDirection.sqrMagnitude;
@@ -159,7 +169,7 @@ namespace NPC.Scripts.Characters
                 
                 _chargingFor += Time.deltaTime;
 
-                if (_chargingFor >= _bulletChargeTime && !_chargeReady)
+                if (_chargingFor >= PlayerClass.bulletChargeTime && !_chargeReady)
                 {
                     if (_lineRendererAnimation != null)
                     {
@@ -176,14 +186,14 @@ namespace NPC.Scripts.Characters
             }
 
             // Shoot Queueing
-            if ((Time.time - _lastShotTime) >= _shootCooldownTime && !_bulletCharging && QueuedWeaponCharge)
+            if ((Time.time - _lastShotTime) >= PlayerClass.shootCooldownTime && !_bulletCharging && _queuedWeaponCharge)
             {
                 ShootCharge();
             } 
         }
         public void MakeOtherPlayerCharacter()
         {
-            isOtherPlayer = true;
+            _isOtherPlayer = true;
             playerInput.enabled = false;
             foreach (GameObject otherPlayerObject in otherPlayerObjects)
             {
@@ -203,7 +213,7 @@ namespace NPC.Scripts.Characters
         }
         private void SetupParticleSystem()
         {
-            _laserParticleEffect = Instantiate(_laserParticleEffect, transform);
+            _laserParticleEffect = Instantiate(PlayerClass.laserParticleEffect, transform);
             foreach (Transform child in _laserParticleEffect.transform)
             {
                 ParticleSystem particle = child.GetComponent<ParticleSystem>();
@@ -241,13 +251,13 @@ namespace NPC.Scripts.Characters
             }
             if (context.performed && AmmoCount > 0 && !IsDead)
             {
-                switch ((Time.time - _lastShotTime) >= _shootCooldownTime)
+                switch ((Time.time - _lastShotTime) >= PlayerClass.shootCooldownTime)
                 {
                     case true: // Weapon has cooled down
                         ShootCharge();
                         break;
                     default: // Weapon has not cooled down
-                        QueuedWeaponCharge = true;
+                        _queuedWeaponCharge = true;
                         break;
                 }
             }
@@ -277,7 +287,7 @@ namespace NPC.Scripts.Characters
             switch (_bulletCharging)
                 {
                     case true: // When the weapon is charging
-                        if (_chargingFor >= _bulletChargeTime)
+                        if (_chargingFor >= PlayerClass.bulletChargeTime)
                         {
                             Shoot();
                         }
@@ -285,13 +295,13 @@ namespace NPC.Scripts.Characters
                         {
                             _bulletLine.enabled = false;
                         }
-                        QueuedWeaponCharge = false;
+                        _queuedWeaponCharge = false;
                         _bulletCharging = false;
                         _chargeReady = false;
                         _chargingFor = 0;
                         break;
                     default: // When the weapon is cooling down
-                        QueuedWeaponCharge = false;
+                        _queuedWeaponCharge = false;
                         break;
                 }
         }
@@ -315,20 +325,20 @@ namespace NPC.Scripts.Characters
                 particle.Stop();
             }
             _lineRendererAnimation = StartCoroutine(FlashLineRenderer(0.1f, 3, Color.red, Color.cyan, true));
-            _shootParticleEffect = Instantiate(_shootParticleEffect);
+            _shootParticleEffect = Instantiate(PlayerClass.shootParticleEffect);
 
             // Cooldown
             _lastShotTime = Time.time;
             
             // Audio
-            audioSource.clip = shootAudioClip;
+            audioSource.clip = PlayerClass.shootAudioClip;
             audioSource.Play();
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));
             Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
             Vector3 position = transform.position;
             Vector3 direction = mousePositionNormalised - position;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, _shootRange).OrderBy(h => h.distance).ToArray();
+            RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, PlayerClass.shootRange).OrderBy(h => h.distance).ToArray();
 
             bool hitPlayer = false;
             bool hitNonPlayer = false;
@@ -364,12 +374,12 @@ namespace NPC.Scripts.Characters
 
             if (hitPlayer) // Reward for killing player
             {
-                AdjustDisguise(MaxDisguiseIntegrity);
+                AdjustDisguise(PlayerClass.maxDisguiseIntegrity);
             }
             if (hitNonPlayer) // Punishment for hitting NPC
             {
-                AdjustDisguise(-_shootNonPlayerPenalty, true); // If we make this scalar, we encourage players to play more recklessly when they are nearly out of disguise
-                if (!_useAmmo)
+                AdjustDisguise(-PlayerClass.shootNonPlayerPenalty, true); // If we make this scalar, we encourage players to play more recklessly when they are nearly out of disguise
+                if (!PlayerClass.useAmmo)
                 {
                     return;
                 }
@@ -378,7 +388,7 @@ namespace NPC.Scripts.Characters
             }
             if (!hitPlayer && !hitNonPlayer) // Hit nothing
             {
-                if (!_useAmmo)
+                if (!PlayerClass.useAmmo)
                 {
                     return;
                 }
@@ -392,7 +402,7 @@ namespace NPC.Scripts.Characters
             Vector3 mousePositionNormalised = new Vector3(mousePosition.x, mousePosition.y, 0f);
             Vector3 position = transform.position;
 
-            Vector3 direction = (mousePositionNormalised - position).normalized * _shootRange;
+            Vector3 direction = (mousePositionNormalised - position).normalized * PlayerClass.shootRange;
             Vector3 endPoint = position + direction;
 
             _laserParticleEffect.transform.right = direction;
@@ -404,7 +414,7 @@ namespace NPC.Scripts.Characters
             if (context.action.triggered)
             {
                 networkedParameters.BroadcastEmote(0);
-                Emote(0, _emoteDuration);
+                Emote(0, PlayerClass.emoteDuration);
             }
         }
         public void Emote2(InputAction.CallbackContext context)
@@ -412,7 +422,7 @@ namespace NPC.Scripts.Characters
             if (context.action.triggered)
             {
                 networkedParameters.BroadcastEmote(1);
-                Emote(1, _emoteDuration);
+                Emote(1, PlayerClass.emoteDuration);
             }
         }
         public void Emote3(InputAction.CallbackContext context)
@@ -420,7 +430,7 @@ namespace NPC.Scripts.Characters
             if (context.action.triggered)
             {
                 networkedParameters.BroadcastEmote(2);
-                Emote(2, _emoteDuration);
+                Emote(2, PlayerClass.emoteDuration);
             }
         }
         public void Emote4(InputAction.CallbackContext context)
@@ -428,7 +438,7 @@ namespace NPC.Scripts.Characters
             if (context.action.triggered)
             {
                 networkedParameters.BroadcastEmote(3);
-                Emote(3, _emoteDuration);
+                Emote(3, PlayerClass.emoteDuration);
             }
         }
         public void EmoteF(InputAction.CallbackContext context)
@@ -436,7 +446,7 @@ namespace NPC.Scripts.Characters
             if (context.action.triggered)
             {
                 networkedParameters.BroadcastEmote(4);
-                Emote(4, _emoteDuration);
+                Emote(4, PlayerClass.emoteDuration);
             }
         }
         #endregion
@@ -473,8 +483,8 @@ namespace NPC.Scripts.Characters
             {
                 Vector3 position = transform.position;
                 
-                Array itemColliders = Physics2D.OverlapCircleAll(position, pickupRange, itemMask);
-                float minDistance = pickupRange;
+                Array itemColliders = Physics2D.OverlapCircleAll(position, PlayerClass.pickupRange, _itemMask);
+                float minDistance = PlayerClass.pickupRange;
                 Item selectedItem = null;
 
                 foreach (Collider2D itemCollider in itemColliders)
@@ -501,7 +511,7 @@ namespace NPC.Scripts.Characters
                         AdjustInventory();
                         break;
                     default:
-                        if (_inventory.Count <= inventoryCount)
+                        if (_inventory.Count <= PlayerClass.inventoryCount)
                         {
                             selectedItem.PickupItem(this);
                         }
@@ -577,7 +587,7 @@ namespace NPC.Scripts.Characters
             
             foreach (Item item in _inventory)
             { 
-                GameObject itemImage = Instantiate(itemPrefab, GameManager.onScreenInterface.inventoryBar);
+                GameObject itemImage = Instantiate(PlayerClass.itemPrefab, GameManager.onScreenInterface.inventoryBar);
                 itemImage.GetComponent<Image>().sprite = item.itemSprite;
                 if (index == _inventoryIndex)
                 {
@@ -594,7 +604,7 @@ namespace NPC.Scripts.Characters
         /// <param name="scalar"></param>
         public void AdjustDisguise(float adjustment, bool scalar = false)
         {
-            float adjustedDisguiseIntegrity = _disguiseIntegrity;
+            float adjustedDisguiseIntegrity = PlayerClass.disguiseIntegrity;
 
             if (scalar)
             {
@@ -606,14 +616,14 @@ namespace NPC.Scripts.Characters
             }
 
             _disguiseIntegrity = adjustedDisguiseIntegrity;
-            _disguiseIntegrity = _disguiseIntegrity > MaxDisguiseIntegrity ? MaxDisguiseIntegrity : _disguiseIntegrity;
-            _disguiseIntegrity = _disguiseIntegrity < MinDisguiseIntegrity ? MinDisguiseIntegrity : _disguiseIntegrity;
+            _disguiseIntegrity = _disguiseIntegrity > PlayerClass.maxDisguiseIntegrity ? PlayerClass.maxDisguiseIntegrity : PlayerClass.disguiseIntegrity;
+            _disguiseIntegrity = _disguiseIntegrity < PlayerClass.minDisguiseIntegrity ? PlayerClass.minDisguiseIntegrity : PlayerClass.disguiseIntegrity;
             
-            _elapsedTime = Mathf.InverseLerp(MaxDisguiseIntegrity, MinDisguiseIntegrity, _disguiseIntegrity);
+            _elapsedTime = Mathf.InverseLerp(PlayerClass.maxDisguiseIntegrity, PlayerClass.minDisguiseIntegrity, _disguiseIntegrity);
         }
         public void AdjustAmmo()
         {
-            if (!_useAmmo)
+            if (!PlayerClass.useAmmo)
             {
                 return;
             }
@@ -628,7 +638,7 @@ namespace NPC.Scripts.Characters
             AmmoCount = AmmoCount < 0 ? 0 : AmmoCount;
             for (int i = 0; i < AmmoCount; i++)
             {
-                Instantiate(_bulletChargeSprite, _bulletCharges);
+                Instantiate(PlayerClass.bulletChargeSprite, _bulletCharges);
             }
         }
         public IEnumerator MoveToPosition(Transform targetTransform, Vector3 position, float timeToMove)
@@ -664,7 +674,7 @@ namespace NPC.Scripts.Characters
 
             if (_moveDirection != Vector2.zero)
             {
-                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), _timeToMove));
+                StartCoroutine(MoveToPosition(targetTransform, targetTransform.position + new Vector3(_moveDirection.x, _moveDirection.y), PlayerClass.timeToMove));
             }
             else
             {
@@ -702,16 +712,16 @@ namespace NPC.Scripts.Characters
                 switch (context.ReadValue<float>() > 0)
                 {
                     case true:
-                        spectatingIndex--;
-                        spectatingIndex = spectatingIndex < 0 ? GameManager.AllPlayers.Count : spectatingIndex;
+                        _spectatingIndex--;
+                        _spectatingIndex = _spectatingIndex < 0 ? GameManager.AllPlayers.Count : _spectatingIndex;
                         break;
                     default:
-                        spectatingIndex++;
-                        spectatingIndex = spectatingIndex > GameManager.AllPlayers.Count ? 0 : spectatingIndex;
+                        _spectatingIndex++;
+                        _spectatingIndex = _spectatingIndex > GameManager.AllPlayers.Count ? 0 : _spectatingIndex;
                         break;
                 }
                 
-                SpectatePlayer(spectatingIndex);
+                SpectatePlayer(_spectatingIndex);
             }
         }
         private void OnWin()
@@ -733,8 +743,8 @@ namespace NPC.Scripts.Characters
             switch (index == GameManager.AllPlayers.Count)
             {
                 case true:
-                    playerCamera.SetParent(transform);
-                    playerCamera.localPosition = selfSpectatePosition;
+                    _playerCamera.SetParent(transform);
+                    _playerCamera.localPosition = _selfSpectatePosition;
                     GameManager.onScreenInterface.SetSpectatingText("yourself,  you  dead  bitch");
                     break;
                 default:
@@ -743,9 +753,9 @@ namespace NPC.Scripts.Characters
                     {
                         break;
                     }
-                    Vector3 targetCameraPos = spectatingPlayer.playerCamera.transform.localPosition;
-                    playerCamera.SetParent(spectatingPlayer.transform);
-                    playerCamera.localPosition = targetCameraPos;
+                    Vector3 targetCameraPos = spectatingPlayer._playerCamera.transform.localPosition;
+                    _playerCamera.SetParent(spectatingPlayer.transform);
+                    _playerCamera.localPosition = targetCameraPos;
                     string n = spectatingPlayer.characterName;
                     string s = spectatingPlayer.IsDead ? n + ",  but  they're  dead  lmao" : n;
                     GameManager.onScreenInterface.SetSpectatingText(s);

@@ -45,7 +45,7 @@ namespace NPC.Scripts.Networking
 
             else if (_nonPlayerCharacterScript != null)
             {
-                _nonPlayerCharacterScript.UsePathfinding = true;
+                _nonPlayerCharacterScript.NonPlayerClass.usePathfinding = true;
                 _nonPlayerCharacterScript.RollState();
             }
             
@@ -95,7 +95,7 @@ namespace NPC.Scripts.Networking
             {
                 if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
                 {
-                    StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript._timeToMove));
+                    StartCoroutine(_playerScript.MoveToPosition(_playerScript.gameObject.transform, networkObject.gridPosition, _playerScript.PlayerClass.timeToMove));
                 }
             }
 
@@ -103,7 +103,7 @@ namespace NPC.Scripts.Networking
             {
                 if (_gridPosition != networkObject.gridPosition && !networkObject.IsOwner)
                 {
-                    StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript._timeToMove));
+                    StartCoroutine(_nonPlayerCharacterScript.MoveToPosition(_nonPlayerCharacterScript.gameObject.transform, networkObject.gridPosition, _nonPlayerCharacterScript.NonPlayerClass.timeToMove));
                 }
             }
         }
@@ -155,7 +155,7 @@ namespace NPC.Scripts.Networking
 
             if (_playerScript != null)
             {
-                _playerScript.Emote(index, _playerScript._emoteDuration);
+                _playerScript.Emote(index, _playerScript.PlayerClass.emoteDuration);
             }
         }
 

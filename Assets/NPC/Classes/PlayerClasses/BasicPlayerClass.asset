@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6325332ef6e533418663675196ccf7c, type: 3}
+  m_Name: BasicPlayerClass
+  m_EditorClassIdentifier: 
+  animatorController: {fileID: 9100000, guid: e86e183a22932dc429d354fe7f39b69a, type: 2}
+  deathPuddleParticleEffect: {fileID: 7245982541705081319, guid: 4581732006de6994fa982b55c427ce04,
+    type: 3}
+  deathSplatterParticleEffect: {fileID: 7245982541705081319, guid: 96a24f7f7c231694eba60aa3cb27fca6,
+    type: 3}
+  bulletHole: {fileID: 7245982541705081319, guid: 92ad4855a7596da41bd33724bc84ceaf,
+    type: 3}
+  audioClips:
+  - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
+  - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
+  - {fileID: 8300000, guid: 3a49720b59736604aa029408885ebbd8, type: 3}
+  useAmmo: 0
+  ammoCount: 1
+  shootRange: 3
+  laserParticleEffect: {fileID: 1018188143152966057, guid: cc47ada8c6adfd44fac6d722acd44ff3,
+    type: 3}
+  shootParticleEffect: {fileID: 1018188143152966057, guid: ba9ddf3ad14a51f49b623f1fee23c7e2,
+    type: 3}
+  itemPrefab: {fileID: 2902278329957687687, guid: 7ad562dabcdf32946990c788335cab8f,
+    type: 3}
+  bulletChargeSprite: {fileID: 4807289715813367792, guid: e40d8b1837c88644086a43ff6d1b4a21,
+    type: 3}
+  bulletChargeTime: 2
+  shootAudioClip: {fileID: 8300000, guid: 244f825a85028aa4b858d05e90623dbd, type: 3}
+  shootNonPlayerPenalty: 0.2
+  shootCooldownTime: 3
+  pickupRange: 3
+  inventoryCount: 5
+  maxDisguiseIntegrity: 100
+  minDisguiseIntegrity: 0
+  disguiseIntegrity: 100
+  disguiseDuration: 300
+  timeToMove: 0.2
+  emoteDuration: 2

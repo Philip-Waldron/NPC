@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NPC.Scripts.Classes.NonPlayerClasses;
 using Pathfinding;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -10,83 +11,76 @@ namespace NPC.Scripts.Characters
 {
     public class NonPlayerCharacter : Character
     {
-        [Header("Detection")]
-        [SerializeField, Range(0f, 20f)] private float _detectionRadius = 5f;
-        [SerializeField] private Vector2 _detectionFrequency;
-        [SerializeField] private List<string> _alerts = new List<string>();
-        [SerializeField] private LayerMask _playerMask;
-        [SerializeField] private AnimationCurve _detectionChanceCurve;
-        [SerializeField] private AudioClip alertAudio;
 
-        [Header("Path-finding")]
-        [SerializeField] private Vector2 _waitTimeRange = new Vector2(1, 5);
-        [SerializeField] private Vector2Int _walkCloseNodeRange = new Vector2Int(1, 4);
-        [SerializeField] private Vector2 _walkFarDistanceRange = new Vector2(5, 25);
-        [SerializeField, Range(.1f, 1f)] public float _timeToMove;
+        [Header("Non Player Setup")]
+        [SerializeField] private LayerMask playerMask;
 
         // A* Path-finding
         private Seeker _seeker;
         private Path _path;
-        private int _currentWaypoint;
-
-        [Header("Path-finding Chances")]
-        [SerializeField] private float _waitChance = 40;
-        [SerializeField] private float _walkToCloseChance = 20;
-        [SerializeField] private float _walkToFarChance = 10;
-        [SerializeField] private float _walkToRandomChance = 10;
-        [SerializeField] private float _walkInRoomChance = 15;
-        [SerializeField] private float _walkToItemChance = 5;
-
+        private int _currentWayPoint;
+        public NonPlayerClass NonPlayerClass { get; private set; }
+        
         private float _totalChance;
-
-        [Header("Emote")]
-        [SerializeField] private Vector2 _talkativenessRange;
         private float _talkativeness;
-
-        private float _emoteDuration = 2f;
-        private float _alertDuration = 2f;
-
-        public bool UsePathfinding = false;
+        private float _detectionFrequency;
 
         private void Start()
         {
+            SetupClass();
+            
             // Add to GameManager Lists
             GameManager.NonPlayers.Add(this);
             
-            // Setup
+            // Add references
             _seeker = GetComponent<Seeker>();
-            float detectionFrequency = Random.Range(_detectionFrequency.x, _detectionFrequency.y);
-            InvokeRepeating(nameof(DetectPlayersAttempt), detectionFrequency, detectionFrequency);
-            _talkativeness = Random.Range(_talkativenessRange.x, _talkativenessRange.y);
+            
+            // Invoke methods
+            InvokeRepeating(nameof(DetectPlayersAttempt), _detectionFrequency, _detectionFrequency);
             InvokeRepeating(nameof(RandomSpeech), _talkativeness, _talkativeness);
+            
+            // Add listeners
             onDeath.AddListener(StopAllCoroutines);
 
-            _totalChance = _waitChance + _walkToCloseChance +
-                           _walkToFarChance + _walkToRandomChance +
-                           _walkInRoomChance + _walkToItemChance;
-
             RollState();
+        }
+        
+        private void SetupClass()
+        {
+            // Assign class
+            NonPlayerClass = GameManager.NonPlayerClasses[Random.Range(0, GameManager.NonPlayerClasses.Count)];
+            characterClass = NonPlayerClass;
+            
+            // Assign local values
+            animatorController = NonPlayerClass.animatorController;
+            Animator.runtimeAnimatorController = animatorController;
+            audioClips = NonPlayerClass.audioClips.ToArray();
+            _totalChance = NonPlayerClass.waitChance + NonPlayerClass.walkToCloseChance +
+                           NonPlayerClass.walkToFarChance + NonPlayerClass.walkToRandomChance +
+                           NonPlayerClass.walkInRoomChance + NonPlayerClass.walkToItemChance;
+            _talkativeness = Random.Range(NonPlayerClass.talkativenessRange.x, NonPlayerClass.talkativenessRange.y);
+            _detectionFrequency = Random.Range(NonPlayerClass.detectionFrequency.x, NonPlayerClass.detectionFrequency.y);
         }
 
         public void RollState()
         {
-            if (IsDead || !UsePathfinding)
+            if (IsDead || !NonPlayerClass.usePathfinding)
             {
                 return;
             }
 
             float roll = Random.Range(0, _totalChance);
             // Wait.
-            if (roll < _waitChance)
+            if (roll < NonPlayerClass.waitChance)
             {
-                float waitTime = Random.Range(_waitTimeRange.x, _waitTimeRange.y);
+                float waitTime = Random.Range(NonPlayerClass.waitTimeRange.x, NonPlayerClass.waitTimeRange.y);
                 StartCoroutine(Wait(waitTime));
             }
             // Walk to close node.
-            else if (roll < _waitChance + _walkToCloseChance)
+            else if (roll < NonPlayerClass.waitChance + NonPlayerClass.walkToCloseChance)
             {
                 List<Vector3> validPositions = new List<Vector3>();
-                int nodeRange = Random.Range(_walkCloseNodeRange.x, _walkCloseNodeRange.y + 1);
+                int nodeRange = Random.Range(NonPlayerClass.walkCloseNodeRange.x, NonPlayerClass.walkCloseNodeRange.y + 1);
                 List<GraphNode> nodesToCheck = new List<GraphNode>() { AstarPath.active.GetNearest(transform.position, NNConstraint.Default).node };
                 List<GraphNode> newNodesToCheck = new List<GraphNode>();
 
@@ -109,22 +103,22 @@ namespace NPC.Scripts.Characters
                 WalkToPosition(targetPosition);
             }
             // Walk to far position.
-            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance)
+            else if (roll < NonPlayerClass.waitChance + NonPlayerClass.walkToCloseChance + NonPlayerClass.walkToFarChance)
             {
-                float radius = Random.Range(_walkFarDistanceRange.x, _walkFarDistanceRange.y);
+                float radius = Random.Range(NonPlayerClass.walkFarDistanceRange.x, NonPlayerClass.walkFarDistanceRange.y);
                 Vector3 point = Random.insideUnitSphere * radius;
 
                 point += transform.position;
                 WalkToPosition(point);
             }
             // Walk to random position.
-            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance)
+            else if (roll < NonPlayerClass.waitChance + NonPlayerClass.walkToCloseChance + NonPlayerClass.walkToFarChance + NonPlayerClass.walkToRandomChance)
             {
                 Vector3 targetPosition = GameManager.ValidMovePositions[Random.Range(0, GameManager.ValidMovePositions.Count - 1)];
                 WalkToPosition(targetPosition);
             }
             // Walk in room.
-            else if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance)
+            else if (roll < NonPlayerClass.waitChance + NonPlayerClass.walkToCloseChance + NonPlayerClass.walkToFarChance + NonPlayerClass.walkToRandomChance + NonPlayerClass.walkInRoomChance)
             {
                 Vector3Int tilePosition = GameManager.Tilemap.WorldToCell(transform.position);
                 Tile tile = (Tile)GameManager.Tilemap.GetTile(tilePosition);
@@ -133,9 +127,9 @@ namespace NPC.Scripts.Characters
                 WalkToPosition(targetPosition);
             }
             // Walk to item. TODO: implement.
-            else // if (roll < _waitChance + _walkToCloseChance + _walkToFarChance + _walkToRandomChance + _walkInRoomChance + _walkToItemChance)
+            else // if (roll < NonPlayerClass.waitChance + NonPlayerClass.walkToCloseChance + NonPlayerClass.walkToFarChance + NonPlayerClass.walkToRandomChance + NonPlayerClass.walkInRoomChance + NonPlayerClass.walkToItemChance)
             {
-                float waitTime = Random.Range(_waitTimeRange.x, _waitTimeRange.y);
+                float waitTime = Random.Range(NonPlayerClass.waitTimeRange.x, NonPlayerClass.waitTimeRange.y);
                 StartCoroutine(Wait(waitTime));
             }
         }
@@ -159,7 +153,7 @@ namespace NPC.Scripts.Characters
             {
                 return;
             }
-            Collider2D[] playerColliders = Physics2D.OverlapCircleAll(transform.position, _detectionRadius, _playerMask);
+            Collider2D[] playerColliders = Physics2D.OverlapCircleAll(transform.position, NonPlayerClass.detectionRadius, playerMask);
             foreach (Collider2D playerCollider in playerColliders)
             {
                 Player player = playerCollider.GetComponent<Player>();
@@ -169,7 +163,7 @@ namespace NPC.Scripts.Characters
                     return;
                 }
 
-                int detectionChance = Mathf.RoundToInt(_detectionChanceCurve.Evaluate(player.DisguiseIntegrity));
+                int detectionChance = Mathf.RoundToInt(NonPlayerClass.detectionChanceCurve.Evaluate(player.DisguiseIntegrity));
                 if (detectionChance != 0 && IsAlerted(detectionChance))
                 {
                     break;
@@ -185,8 +179,8 @@ namespace NPC.Scripts.Characters
                 return false;
             }
 
-            SpeakText(_alerts[Random.Range(0, _alerts.Count)], _alertDuration);
-            audioSource.clip = alertAudio;
+            SpeakText(NonPlayerClass.alerts[Random.Range(0, NonPlayerClass.alerts.Count)], NonPlayerClass.alertDuration);
+            audioSource.clip = NonPlayerClass.alertAudio;
             audioSource.Play();
             return true;
         }
@@ -201,9 +195,9 @@ namespace NPC.Scripts.Characters
             if (!path.error)
             {
                 _path = path;
-                _currentWaypoint = 0;
+                _currentWayPoint = 0;
 
-                StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWaypoint], _timeToMove));
+                StartCoroutine(MoveToPosition(transform, _path.vectorPath[_currentWayPoint], NonPlayerClass.timeToMove));
             }
             else
             {
@@ -232,10 +226,10 @@ namespace NPC.Scripts.Characters
                 yield return null;
             }
 
-            if (_path != null && _currentWaypoint + 1 < _path.vectorPath.Count)
+            if (_path != null && _currentWayPoint + 1 < _path.vectorPath.Count)
             {
-                _currentWaypoint++;
-                StartCoroutine(MoveToPosition(targetTransform, _path.vectorPath[_currentWaypoint], _timeToMove));
+                _currentWayPoint++;
+                StartCoroutine(MoveToPosition(targetTransform, _path.vectorPath[_currentWayPoint], NonPlayerClass.timeToMove));
             }
             else
             {

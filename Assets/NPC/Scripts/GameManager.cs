@@ -5,6 +5,8 @@ using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
 using NPC.Scripts.Characters;
+using NPC.Scripts.Classes.NonPlayerClasses;
+using NPC.Scripts.Classes.PlayerClasses;
 using NPC.Scripts.Items;
 using NPC.Scripts.UI;
 using UnityEngine;
@@ -51,7 +53,9 @@ namespace NPC.Scripts
         private int _rarityTotal;
 
         [Header("Player Animations")]
-        public List<RuntimeAnimatorController> AnimatorControllers = new List<RuntimeAnimatorController>();
+        public List<PlayerClass> PlayerClasses = new List<PlayerClass>();
+        public List<NonPlayerClass> NonPlayerClasses = new List<NonPlayerClass>();
+        //public List<RuntimeAnimatorController> AnimatorControllers = new List<RuntimeAnimatorController>();
     
         [Header("Zone Manager")]
         public Tilemap Tilemap;
@@ -283,7 +287,7 @@ namespace NPC.Scripts
                 else if (npc != null)
                 {
                     NonPlayers.Add(npc);
-                    npc.UsePathfinding = true;
+                    npc.NonPlayerClass.usePathfinding = true;
                 }
 
                 ValidSpawnPositions.RemoveAt(index); 

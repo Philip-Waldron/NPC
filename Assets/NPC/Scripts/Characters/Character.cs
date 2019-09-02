@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NPC.Scripts.Classes;
 using NPC.Scripts.Networking;
 using TMPro;
 using UnityEngine;
@@ -13,7 +14,8 @@ namespace NPC.Scripts.Characters
     {
         // Character.
         protected SpriteRenderer SpriteRenderer;
-
+        protected CharacterClass characterClass;
+        
         [Header("Scan")] 
         [SerializeField] protected GameObject characterIdentifier;
         [SerializeField] public TextMeshPro identificationText;
@@ -31,17 +33,14 @@ namespace NPC.Scripts.Characters
 
         [Header("Audio")]
         [SerializeField] public AudioSource audioSource;
-        [SerializeField] protected List<AudioClip> audioClips = new List<AudioClip>();
+        protected AudioClip[] audioClips;
 
         [Header("Animation")]
         public Animator Animator;
-        [SerializeField, Space(10)] private GameObject deathPuddleParticleEffect;
-        [SerializeField] private GameObject deathSplatterParticleEffect;
-        [SerializeField] private GameObject bulletHole;
 
         protected Vector2 AnimationMoveDirection = Vector2.zero;
         protected float AnimationSpeed;
-        private RuntimeAnimatorController _animatorController;
+        protected RuntimeAnimatorController animatorController;
 
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
         private static readonly int Vertical = Animator.StringToHash("Vertical");
@@ -58,11 +57,8 @@ namespace NPC.Scripts.Characters
         private void Awake()
         {
             networkedParameters = gameObject.GetComponent<NetworkCharacterParameters>();
-
             SpriteRenderer = GetComponent<SpriteRenderer>();
             GameManager = FindObjectOfType<GameManager>();
-            _animatorController = GameManager.AnimatorControllers[Random.Range(0, GameManager.AnimatorControllers.Count)];
-            Animator.runtimeAnimatorController = _animatorController;
             identificationText.SetText(characterName);
         }
 
@@ -119,9 +115,9 @@ namespace NPC.Scripts.Characters
             GameManager.CharacterDeath(this);
 
             // Death Effects
-            Instantiate(deathPuddleParticleEffect, transform);
-            GameObject splatter = Instantiate(deathSplatterParticleEffect, transform);
-            GameObject bulletHole = Instantiate(this.bulletHole, transform);
+            Instantiate(characterClass.deathPuddleParticleEffect, transform);
+            GameObject splatter = Instantiate(characterClass.deathSplatterParticleEffect, transform);
+            GameObject bulletHole = Instantiate(characterClass.bulletHole, transform);
             bulletHole.transform.position = hitPoint;
             splatter.transform.position = transform.position;
             splatter.transform.right = target;
@@ -129,8 +125,8 @@ namespace NPC.Scripts.Characters
 
             // Messaging
             Scan(Mathf.Infinity);
-            Emote(Random.Range(2, 4), 3f);
-            SpeakAudio(Random.Range(0, audioClips.Count));
+            Emote(Random.Range(2, 4), characterClass.emoteDuration);
+            SpeakAudio(Random.Range(0, audioClips.Length));
         }
 
         public void Scan(float revealDuration)

@@ -12,14 +12,11 @@ namespace NPC.Scripts.UI
         private void Awake()
         {
             nameField.onEndEdit.AddListener(UpdateName);
-
-            Debug.Log(PlayerPrefs.GetString(CHARACTER_NAME_PREF));
             nameField.text = PlayerPrefs.GetString(CHARACTER_NAME_PREF);
         }
 
         private static void UpdateName(string s)
         {
-            
             PlayerPrefs.SetString(CHARACTER_NAME_PREF, s);
         }
     }

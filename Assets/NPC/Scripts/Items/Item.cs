@@ -76,8 +76,7 @@ namespace NPC.Scripts.Items
 
         private bool VerifyPickup(Player player)
         {
-            bool valid = Vector2.Distance(player.transform.position, transform.position) <= player.pickupRange && 
-                         player.HoldingPickupButton;
+            bool valid = Vector2.Distance(player.transform.position, transform.position) <= player.PlayerClass.pickupRange && player.HoldingPickupButton;
             
             if (!valid) // makes sure you have to stay within range for the whole countdown
             {
