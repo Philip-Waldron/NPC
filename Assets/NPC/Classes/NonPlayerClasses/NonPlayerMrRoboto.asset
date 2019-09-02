@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33376c305ba248344beabdb4edc4f08c, type: 3}
+  m_Name: NonPlayerMrRoboto
+  m_EditorClassIdentifier: 
+  timeToMove: 0.3
+  animatorController: {fileID: 9100000, guid: e78f2c95805d78c4f9c8161f7916e2f3, type: 2}
+  deathPuddleParticleEffect: {fileID: 7245982541705081319, guid: 4581732006de6994fa982b55c427ce04,
+    type: 3}
+  deathSplatterParticleEffect: {fileID: 7245982541705081319, guid: 96a24f7f7c231694eba60aa3cb27fca6,
+    type: 3}
+  bulletHole: {fileID: 7245982541705081319, guid: 92ad4855a7596da41bd33724bc84ceaf,
+    type: 3}
+  audioClips:
+  - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
+  - {fileID: 8300000, guid: 3a49720b59736604aa029408885ebbd8, type: 3}
+  - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
+  emoteDuration: 2
+  detectionRadius: 3
+  detectionFrequency: {x: 2, y: 10}
+  talkativenessRange: {x: 5, y: 15}
+  alertDuration: 2
+  alerts:
+  - bleep boop
+  - whrrrr
+  - krchnk
+  detectionChanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.0000010115759
+      outSlope: -0.0000010115759
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.18766756
+    - serializedVersion: 3
+      time: 0.6296297
+      value: 0
+      inSlope: -0.0059108455
+      outSlope: -0.0059108455
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.19621767
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  alertAudio: {fileID: 8300000, guid: 896f7f6385fba1749953daa1df54ccb2, type: 3}
+  usePathfinding: 0
+  waitTimeRange: {x: 1, y: 5}
+  walkCloseNodeRange: {x: 1, y: 4}
+  walkFarDistanceRange: {x: 5, y: 25}
+  waitChance: 40
+  walkToCloseChance: 20
+  walkToFarChance: 10
+  walkToRandomChance: 10
+  walkInRoomChance: 15
+  walkToItemChance: 5
