@@ -357,8 +357,7 @@ namespace NPC.Scripts.Characters
                         {
                             hitPlayer = true;
                         }
-                        else if (target is NonPlayerCharacter &&
-                                 !hit.collider.GetComponent<NonPlayerCharacter>().IsDead)
+                        else if (target is NonPlayerCharacter && !hit.collider.GetComponent<NonPlayerCharacter>().IsDead)
                         {
                             hitNonPlayer = true;
                         }
@@ -604,7 +603,7 @@ namespace NPC.Scripts.Characters
         /// <param name="scalar"></param>
         public void AdjustDisguise(float adjustment, bool scalar = false)
         {
-            float adjustedDisguiseIntegrity = PlayerClass.disguiseIntegrity;
+            float adjustedDisguiseIntegrity = _disguiseIntegrity;
 
             if (scalar)
             {

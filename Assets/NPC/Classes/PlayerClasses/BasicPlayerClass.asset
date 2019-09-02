@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6325332ef6e533418663675196ccf7c, type: 3}
   m_Name: BasicPlayerClass
   m_EditorClassIdentifier: 
+  timeToMove: 0.3
   animatorController: {fileID: 9100000, guid: e86e183a22932dc429d354fe7f39b69a, type: 2}
   deathPuddleParticleEffect: {fileID: 7245982541705081319, guid: 4581732006de6994fa982b55c427ce04,
     type: 3}
@@ -23,6 +24,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c78508f98641ec747b9efdc7cc61b51c, type: 3}
   - {fileID: 8300000, guid: c24e6eb5d1656104d99603328bb22101, type: 3}
   - {fileID: 8300000, guid: 3a49720b59736604aa029408885ebbd8, type: 3}
+  emoteDuration: 2
   useAmmo: 0
   ammoCount: 1
   shootRange: 3
@@ -36,13 +38,11 @@ MonoBehaviour:
     type: 3}
   bulletChargeTime: 2
   shootAudioClip: {fileID: 8300000, guid: 244f825a85028aa4b858d05e90623dbd, type: 3}
-  shootNonPlayerPenalty: 0.2
+  shootNonPlayerPenalty: 1
   shootCooldownTime: 3
   pickupRange: 3
   inventoryCount: 5
   maxDisguiseIntegrity: 100
   minDisguiseIntegrity: 0
-  disguiseIntegrity: 100
-  disguiseDuration: 300
-  timeToMove: 0.2
-  emoteDuration: 2
+  disguiseIntegrity: 60
+  disguiseDuration: 60
