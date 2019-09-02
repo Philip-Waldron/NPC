@@ -45,4 +45,4 @@ MonoBehaviour:
   maxDisguiseIntegrity: 100
   minDisguiseIntegrity: 0
   disguiseIntegrity: 100
-  disguiseDuration: 300
+  disguiseDuration: 10
