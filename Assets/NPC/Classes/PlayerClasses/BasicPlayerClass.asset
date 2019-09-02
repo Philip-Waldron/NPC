@@ -38,11 +38,11 @@ MonoBehaviour:
     type: 3}
   bulletChargeTime: 2
   shootAudioClip: {fileID: 8300000, guid: 244f825a85028aa4b858d05e90623dbd, type: 3}
-  shootNonPlayerPenalty: 1
+  shootNonPlayerPenalty: 0.2
   shootCooldownTime: 3
   pickupRange: 3
   inventoryCount: 5
   maxDisguiseIntegrity: 100
   minDisguiseIntegrity: 0
-  disguiseIntegrity: 60
-  disguiseDuration: 60
+  disguiseIntegrity: 100
+  disguiseDuration: 300

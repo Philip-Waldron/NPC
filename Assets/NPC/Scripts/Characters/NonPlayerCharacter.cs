@@ -153,6 +153,7 @@ namespace NPC.Scripts.Characters
             {
                 return;
             }
+
             Collider2D[] playerColliders = Physics2D.OverlapCircleAll(transform.position, NonPlayerClass.detectionRadius, playerMask);
             foreach (Collider2D playerCollider in playerColliders)
             {

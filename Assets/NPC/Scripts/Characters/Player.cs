@@ -604,7 +604,6 @@ namespace NPC.Scripts.Characters
         public void AdjustDisguise(float adjustment, bool scalar = false)
         {
             float adjustedDisguiseIntegrity = _disguiseIntegrity;
-
             if (scalar)
             {
                 adjustedDisguiseIntegrity += (adjustedDisguiseIntegrity * adjustment);
@@ -613,11 +612,9 @@ namespace NPC.Scripts.Characters
             {
                 adjustedDisguiseIntegrity += adjustment;
             }
-
             _disguiseIntegrity = adjustedDisguiseIntegrity;
-            _disguiseIntegrity = _disguiseIntegrity > PlayerClass.maxDisguiseIntegrity ? PlayerClass.maxDisguiseIntegrity : PlayerClass.disguiseIntegrity;
-            _disguiseIntegrity = _disguiseIntegrity < PlayerClass.minDisguiseIntegrity ? PlayerClass.minDisguiseIntegrity : PlayerClass.disguiseIntegrity;
-            
+            _disguiseIntegrity = _disguiseIntegrity > PlayerClass.maxDisguiseIntegrity ? PlayerClass.maxDisguiseIntegrity : _disguiseIntegrity; // Over the max?
+            _disguiseIntegrity = _disguiseIntegrity < PlayerClass.minDisguiseIntegrity ? PlayerClass.minDisguiseIntegrity : _disguiseIntegrity; // Over the min?
             _elapsedTime = Mathf.InverseLerp(PlayerClass.maxDisguiseIntegrity, PlayerClass.minDisguiseIntegrity, _disguiseIntegrity);
         }
         public void AdjustAmmo()

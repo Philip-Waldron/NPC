@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33376c305ba248344beabdb4edc4f08c, type: 3}
   m_Name: BasicNonPlayerClass
   m_EditorClassIdentifier: 
-  timeToMove: 0.2
+  timeToMove: 0.3
   animatorController: {fileID: 9100000, guid: e78f2c95805d78c4f9c8161f7916e2f3, type: 2}
   deathPuddleParticleEffect: {fileID: 7245982541705081319, guid: 4581732006de6994fa982b55c427ce04,
     type: 3}
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   alertAudio: {fileID: 8300000, guid: 896f7f6385fba1749953daa1df54ccb2, type: 3}
-  usePathfinding: 0
+  usePathfinding: 1
   waitTimeRange: {x: 1, y: 5}
   walkCloseNodeRange: {x: 1, y: 4}
   walkFarDistanceRange: {x: 5, y: 25}
