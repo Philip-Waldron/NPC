@@ -25,6 +25,9 @@ namespace NPC.Scripts.Characters
         private float _talkativeness;
         private float _detectionFrequency;
 
+        //TODO: Find not awful way of giving network override to disable AI Pathing
+        public bool avoidUpdatingState = false;
+
         private void Start()
         {
             SetupClass();
@@ -42,7 +45,7 @@ namespace NPC.Scripts.Characters
             // Add listeners
             onDeath.AddListener(StopAllCoroutines);
 
-            RollState();
+//            RollState();
         }
         
         private void SetupClass()
@@ -64,7 +67,7 @@ namespace NPC.Scripts.Characters
 
         public void RollState()
         {
-            if (IsDead || !NonPlayerClass.usePathfinding)
+            if (IsDead || !NonPlayerClass.usePathfinding || avoidUpdatingState)
             {
                 return;
             }

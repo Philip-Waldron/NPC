@@ -14,7 +14,7 @@ namespace NPC.Scripts.Networking
             _netWorker = netWorker;
             SceneManager.sceneLoaded += SceneLoaded;
             SceneManager.sceneUnloaded += SceneUnloaded;
-            SceneManager.LoadScene("Lobby");
+            SceneManager.LoadScene("Networking_Scene");
         }
 
         public void SceneLoaded(Scene scene, LoadSceneMode mode)

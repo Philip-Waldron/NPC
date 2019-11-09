@@ -45,8 +45,15 @@ namespace NPC.Scripts.Networking
 
             else if (_nonPlayerCharacterScript != null)
             {
-                _nonPlayerCharacterScript.NonPlayerClass.usePathfinding = true;
-                _nonPlayerCharacterScript.RollState();
+                if (networkObject.IsOwner)
+                {
+                    _nonPlayerCharacterScript.NonPlayerClass.usePathfinding = true;
+                    _nonPlayerCharacterScript.RollState();
+                }
+                else
+                {
+                    _nonPlayerCharacterScript.avoidUpdatingState = true;
+                }
             }
             
             if (!(NetworkManager.Instance.Networker is IServer) && _playerScript != null)
@@ -75,7 +82,7 @@ namespace NPC.Scripts.Networking
         {
             if (networkObject.IsServer)
             {
-                BroadcastName(_playerScript.characterName + "_" + networkObject.Networker.ServerPlayerCounter);
+//                BroadcastName(_playerScript.characterName + "_" + networkObject.Networker.ServerPlayerCounter);
             }
         }
 
@@ -159,20 +166,20 @@ namespace NPC.Scripts.Networking
             }
         }
 
-        public override void Name(RpcArgs args)
-        {
-            if (_playerScript != null)
-            {
-                _playerScript.SetCharacterName(args.GetAt<string>(0));
-            }
-        }
-
-        public void BroadcastName(string n)
-        {
-            if (networkObject.IsOwner)
-            {
-                networkObject.SendRpc(RPC_NAME, Receivers.AllBuffered, n);
-            }
-        }
+//        public override void Name(RpcArgs args)
+//        {
+//            if (_playerScript != null)
+//            {
+//                _playerScript.SetCharacterName(args.GetAt<string>(0));
+//            }
+//        }
+//
+//        public void BroadcastName(string n)
+//        {
+//            if (networkObject.IsOwner)
+//            {
+//                networkObject.SendRpc(RPC_NAME, Receivers.AllBuffered, n);
+//            }
+//        }
     }
 }

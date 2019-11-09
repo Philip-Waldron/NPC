@@ -10,7 +10,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 	{
 		public const byte RPC_SHOTS_FIRED = 0 + 5;
 		public const byte RPC_EMOTE = 1 + 5;
-		public const byte RPC_NAME = 2 + 5;
 		
 		public PlayerNetworkObject networkObject = null;
 
@@ -26,7 +25,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			base.SetupHelperRpcs(networkObject);
 			networkObject.RegisterRpc("ShotsFired", ShotsFired, typeof(Vector2), typeof(Vector2));
 			networkObject.RegisterRpc("Emote", Emote, typeof(int));
-			//networkObject.RegisterRpc("Name", Name, typeof(string));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -115,12 +113,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// </summary>
 		public abstract void Emote(RpcArgs args);
 		
-		/// <summary>
-		/// Arguments:
-		/// string name
-		/// </summary>
-		public abstract void Name(RpcArgs args);
-
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}
 }
