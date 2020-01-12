@@ -12,7 +12,7 @@ public class MultiplayerMenu : MonoBehaviour
 {
 	public InputField ipAddress = null;
 	public InputField portNumber = null;
-	public bool DontChangeSceneOnConnect = true;
+	public bool DontChangeSceneOnConnect = false;
 	public string masterServerHost = string.Empty;
 	public ushort masterServerPort = 15940;
 	public string natServerHost = string.Empty;
@@ -38,9 +38,6 @@ public class MultiplayerMenu : MonoBehaviour
 
 	private void Start()
 	{
-		// This is a bit of a hack, but it might work...
-		OnApplicationQuit();
-		
 		ipAddress.text = "127.0.0.1";
 		portNumber.text = "15937";
 
@@ -230,8 +227,6 @@ public class MultiplayerMenu : MonoBehaviour
 			else
 			{
 				NetworkObject.Flush(networker); //Called because we are already in the correct scene!
-				SceneLoader sceneLoader = new SceneLoader();
-				sceneLoader.ServerLoaded(server);
 			}
 		}
 	}
@@ -247,19 +242,5 @@ public class MultiplayerMenu : MonoBehaviour
 	{
 		for (int i = 0; i < _uiButtons.Count; ++i)
 			_uiButtons[i].interactable = value;
-	}
-
-	private void OnApplicationQuit()
-	{
-		if (getLocalNetworkConnections)
-		{
-			NetWorker.EndSession();
-		}
-
-		if (server != null)
-		{
-			Debug.Log(server + " was disconnected.");
-			server.Disconnect(true);
-		}
 	}
 }

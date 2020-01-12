@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking.Lobby;
 using System;
+using NPC.Scripts.Networking;
 using UnityEngine.SceneManagement;
 
 namespace BeardedManStudios.Forge.Networking.Unity.Lobby
@@ -136,7 +137,10 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         public void StartGame(int sceneID)
         {
-	        SceneManager.LoadScene("Networking_Scene");
+	        if (NetworkManager.Instance.IsServer)
+	        {
+		        SceneManager.LoadScene("Networking_Scene");
+	        }
         }
         #endregion
 
@@ -428,28 +432,32 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
 		private void SetupComplete()
 		{
-			LobbyService.Instance.SetLobbyMaster(this);
-            LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);
-            
-			//If I am the host, then I should show the kick button for all players here
-			LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
-			item.SetParent(Grid);
-			PutBackToPool(item);
-
-			_myself = GrabPlayer(LobbyService.Instance.MyMockPlayer);
-			if (!LobbyPlayers.Contains(_myself))
-				LobbyPlayers.Add(_myself);
-			Myself.Init(this);
-			Myself.Setup(_myself, true);
-
-			List<IClientMockPlayer> currentPlayers = LobbyService.Instance.MasterLobby.LobbyPlayers;
-			for (int i = 0; i < currentPlayers.Count; ++i)
+			MainThreadManager.Run(() =>
 			{
-				IClientMockPlayer currentPlayer = currentPlayers[i];
-				if (currentPlayer == _myself)
-					continue;
-				OnFNPlayerConnected(currentPlayers[i]);
-			}
+				LobbyService.Instance.SetLobbyMaster(this);
+				LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);
+            
+				//If I am the host, then I should show the kick button for all players here
+
+				LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
+				item.SetParent(Grid);
+				PutBackToPool(item);
+
+				_myself = GrabPlayer(LobbyService.Instance.MyMockPlayer);
+				if (!LobbyPlayers.Contains(_myself))
+					LobbyPlayers.Add(_myself);
+				Myself.Init(this);
+				Myself.Setup(_myself, true);
+
+				List<IClientMockPlayer> currentPlayers = LobbyService.Instance.MasterLobby.LobbyPlayers;
+				for (int i = 0; i < currentPlayers.Count; ++i)
+				{
+					IClientMockPlayer currentPlayer = currentPlayers[i];
+					if (currentPlayer == _myself)
+						continue;
+					OnFNPlayerConnected(currentPlayers[i]);
+				}
+			});
 		}
 		#endregion
 	}

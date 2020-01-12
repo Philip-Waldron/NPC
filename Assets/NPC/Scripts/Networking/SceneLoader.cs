@@ -1,20 +1,23 @@
 ﻿using System;
 using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Unity;
 using BeardedManStudios.Forge.Networking.Unity.Lobby;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NPC.Scripts.Networking
 {
-    public class SceneLoader
+    public class SceneLoader: MonoBehaviour
     {
-        private NetWorker _netWorker;
-        public void ServerLoaded(NetWorker netWorker)
+        private void Start()
         {
-            _netWorker = netWorker;
             SceneManager.sceneLoaded += SceneLoaded;
             SceneManager.sceneUnloaded += SceneUnloaded;
-            SceneManager.LoadScene("Networking_Scene");
+
+            var scene = SceneManager.GetActiveScene();
+            
+            if (scene.name == "Networking_Scene")
+                StartGame(scene);
         }
 
         public void SceneLoaded(Scene scene, LoadSceneMode mode)
@@ -32,8 +35,8 @@ namespace NPC.Scripts.Networking
             {
                 var gameManager = gameObject.GetComponent<GameManager>();
                 if (gameManager == null) continue;
-                _netWorker.playerAccepted += gameManager.OnPlayerAccepted;
-                _netWorker.playerDisconnected += gameManager.OnPlayerDisconnected;
+                NetworkManager.Instance.Networker.playerAccepted += gameManager.OnPlayerAccepted;
+                NetworkManager.Instance.Networker.playerDisconnected += gameManager.OnPlayerDisconnected;
 
                 foundComponent = true;
                 break;
@@ -48,7 +51,7 @@ namespace NPC.Scripts.Networking
         {
             if (scene.name == "Networking_Scene" || scene.name == "Lobby")
             {
-                _netWorker.Disconnect(false);
+                NetworkManager.Instance.Networker.Disconnect(true);
             }
         }
     }
